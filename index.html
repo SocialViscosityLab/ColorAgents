@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- Juan Salamanca 2018 -->
+
+<html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+
+    Color Agents
+
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/poole.css">
+
+  <script src="libs/p5.js" type="text/javascript"></script>
+  <script src="libs/p5.dom.js" type="text/javascript"></script>
+  <script src="libs/chroma.min.js" type="text/javascript"></script>
+
+  <!-- ColorPicker -->
+  <script src="colorAgents.js"></script>
+  <script src="colorAgentFactory.js"></script> 
+  <script src="agentClass.js"></script>
+  <script src="libs/chroma.js"></script> 
+
+
+  <style type="text/css">
+  #drop_zone {
+    padding: 24px;
+    border-style: dashed;
+    font-size: 12pt;
+    width: 960px;
+    height: 70px;
+  }
+</style>
+
+</head>
+
+
+<body>
+
+  <div class="container content">
+    <main>
+      <article class="page">  
+
+        <p>
+        <label>University of Illinois at Urbana-Champaign &middot; Juan Salamanca 2018 
+        </label></p> 
+
+        <h1 class="page-title">Color Agents</h1>
+
+         <div id="ColorAgents"></div>
+
+          <!-- Subtitle -->
+        <h4 id="results"> Color space dimensions</h4>
+
+        <!-- Palette buttons -->
+        <p>Composed color <button  type = "button" id = "switch_Normal" > Show color </button></p>
+        <p>HSV color space
+        <button  type = "button" id = "switch_Hue" > Show hue </button>
+        <button  type = "button" id = "switch_Saturation" > Show saturation </button>
+        <button  type = "button" id = "switch_Value" > Show Value </button></p>
+        <p>Lab color space
+        <button  type = "button" id = "switch_Luminance" > Show luminance </button></p>
+        
+
+        <hr>
+        <!-- References -->
+        <h3 id="references">References</h3>
+
+        <p><a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue</a></p>
+
+        <p><a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js</a></p>
+
+        <p><a href="http://p5js.org" target="_blank">P5*js</a></p>
+
+        <p><a href="http://colormine.org/color-converter" target="_blank">Color converter</a></p>
+
+        <p><a href="http://handprint.com/LS/CVS/color.html" target="_blank">Color vision theory</a></p>
+
+        <p><a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a></p>
+
+      </article>
+    </main>
+  </div>
+</body>
+</html>
