@@ -19,6 +19,15 @@ class AgentColor{
 		p5.fill(this.color.rgb());
 		p5.noStroke();
 		p5.ellipse(this.pos.x,this.pos.y,20,20);
+		p5.fill(0,100);
+		p5.text(this.id, this.pos.x - 2,this.pos.y - 11);
+	}
+
+		visualizeInteractions(p5, others){
+		for (var j= 0 ; j < this.agentDistancePairs.length ; j++) {
+			p5.stroke(0,20);
+			p5.line(this.agentDistancePairs[j].agent.pos.x,this.agentDistancePairs[j].agent.pos.y,this.pos.x,this.pos.y);
+		}
 	}
 
 	move (p5){
@@ -72,12 +81,6 @@ class AgentColor{
 		}
 	}
 
-	visualizeInteractions(p5, others){
-		for (var j= 0 ; j < this.agentDistancePairs.length ; j++) {
-			p5.stroke(0,20);
-			p5.line(this.agentDistancePairs[j].agent.pos.x,this.agentDistancePairs[j].agent.pos.y,this.pos.x,this.pos.y);
-		}
-	}
 
 	meAgainstAll(p5, target){
 		if (this.pos.x > 0 && this.pos.x < p5.width && this.pos.y > 0 && this.pos.y < p5.height){

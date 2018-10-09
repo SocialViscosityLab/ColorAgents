@@ -9,7 +9,7 @@ var colorAgents = function(p5){
 		p5.createCanvas(960,500);
 
 		var rainbow = new ColorFactory();
-		var colors = rainbow.getNona();
+		var colors = rainbow.getAll();
 
 		for(var i=0; i< colors.length; i++){
 			var a = new AgentColor(p5, i, colors[i]);

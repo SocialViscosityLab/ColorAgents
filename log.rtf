@@ -1,0 +1,96 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c100000;}
+\margl1440\margr1440\vieww13100\viewh18980\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Monday 8, 2018\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf0 \expnd0\expndtw0\kerning0
+Very good!\
+\'a0\
+\pard\pardeftab720\partightenfactor0
+
+\b \cf0 Questions
+\b0 \
+The dynamics in the simmulation involve a distance metric. How do you define it? Hsv, rgb or using the one you showed me on friday.\
+\pard\pardeftab720\li960\fi-960\partightenfactor0
+
+\i \cf0 The one I showed on Friday. It is a Euclidean distance in a LAB space. The info is here : {\field{\*\fldinst{HYPERLINK "https://gka.github.io/chroma.js/#chroma-distance"}}{\fldrslt \cf2 \ul \ulc2 https://gka.github.io/chroma.js/#chroma-distance}}. The reason why the final shape is not a circle is that the Lab distance between rainbow colors is not equidistant. See attachment to see the distance between adjacent colors in the rainbow palette I used. If we use a color palette with equidistant Lab colors then we might have a less geometric distribution.
+\i0 \
+\'a0\
+Is each node computing its distance to the rest in real-time?\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i No, the distance is computed only once at the beginning. Agents have two distances: \'93perceived distance\'94 and \'93proximity\'94 or geometric distance. Each agent compares its color with others\'92 colors and estimate their perceived distance. Then the perceived distance is converted into a desired proximity. All that operation is made only once at the setup time.\'a0 If A has a perceived distance to B, then B also has a perceived distance to A. The mutually perceived distances are equidistant because I use the same measurement function in both agents, but that might change to represent that one agent has full sight and the other is color-blind. \'a0\'a0\'a0
+\i0 \
+\'a0\
+How is movement defined? Specially the direction.\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i This is a vector operation. The position of each agent is a vector, then I subtract both vectors and from the resulting vector I calculate the bearing. The speed is a constant step length used to get the x and y components of the agent\'92s motion.
+\i0 \
+\'a0\
+\pard\pardeftab720\partightenfactor0
+
+\b \cf0 Thoughts
+\b0 \
+What happens if we start reducing the connections of each node using some statistics:\'a0\
+- each node is only connected randomly\'a0 to X% of the total available connections. This is to (vaguely) simmulate that you cant look in 360\'b0. At which amount of X the system fails to find equilibrium? How is 'uninformation' related to viscosity?\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i Good point. The way you describe it here is simpler than defining a visual angle for the agents. I actually prefer choosing a % because it could also be related to the capacity of attention of human cognition. I might perceive a bunch of things, but I only pay attention to few of them.
+\i0 \
+\'a0\
+- i would say viscosity is related to the ammount of information you have of your surroundings. If your vision/connections-to-other-agents are limmited, then viscosity is higher, limiting your displacement. Or perhaps, uninformation is compensated by the network balancing out the lack of reference and achieving equilibrium.\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i I like what I am reading. This needs to be studied because being uninformed might actually reduce the viscosity under certain conditions of the network. \'a0
+\i0 \
+\'a0\
+- this leads to exploring another scenario on the simmulator: only a Y% of the total nodes has all the information the rest only has 50% of the connections. How is equilibrium related to Y%? Perhaps the more informed find rest first, but maybe not, as they are also influenced by the uninformed.\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i This can be coded and tested easily. But the result is also contingent to the number of agents. \'a0
+\i0 \
+\'a0\
+-last scenario: the limitation of information is given to a specific sector of the color pallette (i.e. blues and magentas will have 50% connections to other nodes and the rest will have 100% connections). How is equilibrium reached? The least informed will need to move more to find equilibrium, while the more informed will find rest faster (?).\'a0\
+\pard\pardeftab720\partightenfactor0
+
+\i \cf0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 Another interesting question. Maestro, you were inspired, what did you put in that morning coffee?
+\i0 \
+\'a0\
+- how are the three simmulations different? The first one is called "equally limited information" the second one is called "uneven information" the last one is "sectorized lack of information".\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i Let\'92s test that!
+\i0 \
+\'a0\
+\pard\pardeftab720\partightenfactor0
+
+\b \cf0 Measures
+\b0 \
+I assume we have every info on every node. Equilibrium is related to the amount of movement in time, it could be a measure of 'rest'. If we plot the movement of first experiment (\uc0\u8710 displacement/\u8710 time) of every node in time we will see how its movement starts descending evenly for all nodes until all reach 0 movement (equilibrium).\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i Yes, that is one metric. It is simple and easy to estimate. I am actually thinking that each agent should have a \'93I am done\'94 criteria. It would be a moment when the agent decides to rest because it has reached an optimal proximity to its neighbors.
+\i0 \
+\'a0\
+If we doit for the uneven experiments what do we see?\
+\'a0\
+All experiments could be human-replicated.\
+\'a0\
+What are wee looking at here? Viscosity as a function of info? Viscosity related to awareness of the environment? Viscosity as cohesion between similar class elements?\
+\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\i Each experiment has its own focus, but all are related to the process of finding optimal organization. There is clearly a relationship with network theory and social network analysis (excluding symbolic communication). There is a seminal study in the field that I might need to revisit: {\field{\*\fldinst{HYPERLINK "https://mitpress.mit.edu/books/growing-artificial-societies"}}{\fldrslt \cf2 \ul \ulc2 Growing Artificial Societies}}. I would like to ruminate more this point because I feel that we need a more specific measurement of social viscosity. The way I define it so far is: \'93the resistance to action flow exerted by actors\'97whether human or nonhuman\'97acting concurrently. Such resistance is created by mutual disturbances that occur between humans and artifacts during the interactions that bind them together in a social practice.\'94 (In press). Taking out the non-humans of the scenario for a moment, \'a0in the Color Agents experiment there is \'91goal completion hindering\'92 because agents cannot rest until their neighbors also set to rest, but there is also \'91action flow hindering\'92 that can be estimated by measuring the changes in bearing of the trajectory vector of each agent. \'a0
+\i0 \
+\pard\pardeftab720\partightenfactor0
+
+\i \cf0 \'a0
+\i0 \
+
+\i I would say that the viscosity happens at the moment agents need act in order to achieve their own \'93I am done\'94 moment. It is not estimated by time to task completion, but rather by \'93struggle\'94 to achieve a goal. I say that it is not related to time because if there were only three agents, I do not expect to observe much viscosity, but they might take a while to achieve balance if they are very far from each other. Then time is not a measure of the struggle, necessarily.
+\i0 \
+\'a0\
+Se me fue la olla master. Atento a este tema.\
+
+\i \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 Thanks for your thoughts, quite inspiring interaction. Let\'92s keep on it!!!
+\i0 \
+\'a0\
+Abrazos}
