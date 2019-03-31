@@ -34,6 +34,9 @@ class Human extends Agent{
 		// set the index of this color inside the color mental model
 		this.cMentalModel.setMyIndex(this.colorValues);
 
+		// visual perception angle
+		this.visualPerceptionAngle = Math.PI*3/4;
+
 		/* Percentage of "color similarity" that triggers this agent to act. Value between 0 and 1. Where 1 means
 		that all the colors fall within the range of colors that trigger actions. 0.7 means that only
 		colors within 70% range of perceived colors trigger actions. */
@@ -87,14 +90,19 @@ class Human extends Agent{
 		// }else{
 		// 	p5.ellipse(this.pos.x,this.pos.y, (2*document.getElementById("range").value*this.radiusFactor));
 		//
-		this.drawHeading(p5);
+		if (document.getElementById('rule').value == 'radius' || document.getElementById('rule').value == 'byField'){
+			this.drawHeading(p5);
+		}
 	}
 
 	drawHeading(p5, lngth){
-		let nX = Math.cos(this.bearing) * 10;
-		let nY = Math.sin(this.bearing) * 10;
+		let radius = Number(document.getElementById("range").value) * this.radiusFactor;
+		let nX = Math.cos(this.bearing) * radius;
+		let nY = Math.sin(this.bearing) * radius;
+		p5.fill(100,5);
 		p5.line(this.lastPos.x, this.lastPos.y , this.pos.x + nX, this.pos.y + nY);
-		//p5.text(this.bearing, this.pos.x, this.pos.y);
+		p5.arc(this.lastPos.x, this.lastPos.y, radius*2, radius*2, this.bearing - this.visualPerceptionAngle/2, this.bearing + this.visualPerceptionAngle/2);
+		p5.noFill();
 	}
 
 	/**
@@ -127,8 +135,10 @@ class Human extends Agent{
 	* Interact with other agents
 	*/
 	interact (){
+		console.log(this.id);
 		// Define with whom to interact
 		this.setInteractants();
+
 		// Store my current position
 		this.locations.push({x:this.pos.x, y:this.pos.y});
 
@@ -138,7 +148,7 @@ class Human extends Agent{
 		for (let i of this.interactants) {
 			/* this gate has this rationale: If the perceived difference between my color and other agent's is less than my
 			threshold for action, then do act */
-		let doAct = this.cMentalModel.isActionTrigger(i.colorValues, this.colorTriggerBoundary);
+			let doAct = this.cMentalModel.isActionTrigger(i.colorValues, this.colorTriggerBoundary);
 
 			if(doAct){
 				// Use the mental model to calculate the perceived distance to each interactant
@@ -160,7 +170,9 @@ class Human extends Agent{
 			}
 		}
 		// update the bearing after being compared with all the interactants
-		this.bearing = Math.atan2(this.pos.y-this.lastPos.y, this.pos.x-this.lastPos.x);
+		if(this.pos.x != this.lastPos.x && this.pos.y != this.lastPos.y){
+			this.bearing = Math.atan2(this.pos.y-this.lastPos.y, this.pos.x-this.lastPos.x);
+		}
 	}
 
 	/**
@@ -177,6 +189,10 @@ class Human extends Agent{
 			break;
 			case 'radius':
 			this.chooseByRadius(val.value * this.radiusFactor);
+			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
+			break;
+			case 'byField':
+			this.chooseByField('radius', val.value * this.radiusFactor);
 			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
 			break;
 			case 'all':
@@ -242,26 +258,51 @@ class Human extends Agent{
 			}
 		}
 	}
-/**
-Choose the agents ahead of this agent. 'Ahead' is defined by the bearing of this agent
-* @param modality the kind of methos used to retrieve other agents in the world
-* @param k the lenght of the radius scope or the amount of nearby agents to be retrieved
-*/
+	/**
+	Choose the agents ahead of this agent. 'Ahead' is defined by the bearing of this agent
+	* @param modality the method used to retrieve interactants
+	* @param k the lenght of the radius scope or the amount of nearby agents to be retrieved
+	*/
 	chooseByField(modality, k){
 		switch (modality){
 			case 'radius':
 			// get them by radius
-			chooseByRadius(k);
-			// filter them by perception field
+			this.chooseByRadius(k);
 			break;
 			case 'nCloser':
 			// get them by proximity
-			chooseNClosest(k);
-			// filter them by perception field
+			this.chooseNClosest(k);
 			break;
 			default:
 			// get them all
-			// filter them by perception field
+			for (let e of this.pairs){
+				if (!this.interactants.includes(e)){
+					this.interactants.push(e);
+				}
+			}
+		}
+		let c = 1;
+		for (let i of this.interactants) {
+			console.log(c + " " +i.id);
+			c++;
+		}
+		//filter interactants by perception scope
+		//console.log("  upper: "+ (this.bearing + this.visualPerceptionAngle/2));
+		//console.log("  lower: "+ (this.bearing - this.visualPerceptionAngle/2));
+		for (let i of this.interactants) {
+			let angleBetween = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
+			console.log('   '+i.id);
+			if ((this.bearing - this.visualPerceptionAngle/2) < angleBetween && angleBetween < (this.bearing + this.visualPerceptionAngle/2)){
+				console.log('     in');
+				if (!this.interactants.includes(i)){
+					this.interactants.unshift(i);
+					console.log('       added');
+				}
+			} else{
+				console.log('    out')
+				this.interactants.splice(i);
+				console.log('       removed');
+			}
 		}
 	}
 }

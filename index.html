@@ -64,14 +64,15 @@
           <button  type = "button" id = "showTrajectories" > Show Trajectories </button>
           <button  type = "button" id = "showInteractions" > Show Interactions </button>
           <br>
-          <select id="rule">
-            <option value=''>Choose interaction rule</option>
-            <option value="all">Compare with all</option>
-            <option value="nCloser">Compare with the N closer</option>
-            <option value="radius">Compare with those within a radius</option>
-          </select>
-          <input type="range" min="0" max="29" value="1" id="range"> <span id="sliderValue" style="font-size:12px"> 1 </span> </input>
-          <br>
+          <p style="font-size:12px"> Agents choose interactants by
+            <select id="rule">
+              <option value='byField'>visual perception field</option>
+              <option value="all">compare with all</option>
+              <option value="nCloser">compare with the N closer</option>
+              <option value="radius">compare with those within a radius</option>
+            </select>
+            <input type="range" min="0" max="29" value="1" id="range"> <span id="sliderValue" style="font-size:12px"> 1 </span> </input>
+          </p>
           <button  type = "button" id = "run" > Run Simulation </button>
           <button  type = "button" id = "reset" > Reset </button>
           <hr>

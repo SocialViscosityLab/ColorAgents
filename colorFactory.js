@@ -107,7 +107,7 @@ class ColorFactory{
 			break;
 			// ---- BINARY TEST
 			case 'test':
-			let test=['red','yel','pur'];
+			let test=['red','gre','pur'];
 
 			for (var i = 0; i < this.test.length; i++) {
 				var tmp = this.test[i].split(' ');

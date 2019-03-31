@@ -9,7 +9,8 @@ class Agent{
     // lastPosition
     this.lastPos = globalP5.createVector(x,y);
     // bearing
-    this.bearing = Math.random(0, Math.PI*2);
+    this.bearing = Math.random() * Math.PI*2;
+    this.bearing = globalP5.map(this.bearing,0,Math.PI*2, -Math.PI, Math.PI);
   }
 
   move(dist, destX, destY){
