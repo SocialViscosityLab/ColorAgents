@@ -16,12 +16,6 @@ class Human extends Agent{
 		//this.colorValues {name, chroma}
 		this.colorValues = theColor;
 
-		// The Human pairs in the world
-		this.pairs=[];
-
-		// A subset of this.pairs including the agents with whom this agent interacts
-		this.interactants=[];
-
 		// the location where this agent has been
 		this.locations=[];
 
@@ -33,6 +27,9 @@ class Human extends Agent{
 
 		// set the index of this color inside the color mental model
 		this.cMentalModel.setMyIndex(this.colorValues);
+
+		// visual perception angle
+		this.visualPerceptionAngle = Math.PI*3/4;
 
 		/* Percentage of "color similarity" that triggers this agent to act. Value between 0 and 1. Where 1 means
 		that all the colors fall within the range of colors that trigger actions. 0.7 means that only
@@ -58,7 +55,12 @@ class Human extends Agent{
 	*/
 	updateMyWorld(world){
 		// The world has changed!!! Update all the references to the world
-		this.pairs = world.getHumans(this);
+		console.log(this.id);
+		for(let h of world.getHumans(this)){
+			if (!this.pairsWith(h)){
+				this.addPair(h,false);
+			}
+		}
 	}
 
 	/**
@@ -87,26 +89,31 @@ class Human extends Agent{
 		// }else{
 		// 	p5.ellipse(this.pos.x,this.pos.y, (2*document.getElementById("range").value*this.radiusFactor));
 		//
-		this.drawHeading(p5);
+		if (document.getElementById('rule').value == 'radius' || document.getElementById('rule').value == 'byField'){
+			this.drawHeading(p5);
+		}
 	}
 
 	drawHeading(p5, lngth){
-		let nX = Math.cos(this.bearing) * 10;
-		let nY = Math.sin(this.bearing) * 10;
+		let radius = Number(document.getElementById("range").value) * this.radiusFactor;
+		let nX = Math.cos(this.bearing) * radius;
+		let nY = Math.sin(this.bearing) * radius;
+		p5.fill(100,5);
 		p5.line(this.lastPos.x, this.lastPos.y , this.pos.x + nX, this.pos.y + nY);
-		//p5.text(this.bearing, this.pos.x, this.pos.y);
+		p5.arc(this.lastPos.x, this.lastPos.y, radius*2, radius*2, this.bearing - this.visualPerceptionAngle/2, this.bearing + this.visualPerceptionAngle/2);
+		p5.noFill();
 	}
 
 	/**
 	* Show links between this and other agents with whom it interacts
 	*/
-	visualizeInteractions(p5, others){
+	visualizeInteractions(p5){
 		// for each pair
-		for (let pair of this.interactants) {
+		for (let pair of this.getHumanInteractants()) {
 			// grey stroke
 			p5.stroke(0,20);
 			// draw an edge connecting this agent and its pair
-			p5.line(pair.pos.x + 2,pair.pos.y + 2,this.pos.x,this.pos.y);
+			p5.line(pair.agent.pos.x + 2,pair.agent.pos.y + 2,this.pos.x,this.pos.y);
 		}
 	}
 
@@ -128,17 +135,22 @@ class Human extends Agent{
 	*/
 	interact (){
 		// Define with whom to interact
-		this.setInteractants();
+		let interactants = this.getPairs();
+
+		// filter pairs
+		interactants = this.filterInteractants(interactants);
+
 		// Store my current position
 		this.locations.push({x:this.pos.x, y:this.pos.y});
 
 		// store the last position before moving
 		this.lastPos.set(this.pos);
 
-		for (let i of this.interactants) {
+		for (let i of interactants) {
+			i = i.agent;
 			/* this gate has this rationale: If the perceived difference between my color and other agent's is less than my
 			threshold for action, then do act */
-		let doAct = this.cMentalModel.isActionTrigger(i.colorValues, this.colorTriggerBoundary);
+			let doAct = this.cMentalModel.isActionTrigger(i.colorValues, this.colorTriggerBoundary);
 
 			if(doAct){
 				// Use the mental model to calculate the perceived distance to each interactant
@@ -160,108 +172,120 @@ class Human extends Agent{
 			}
 		}
 		// update the bearing after being compared with all the interactants
-		this.bearing = Math.atan2(this.pos.y-this.lastPos.y, this.pos.x-this.lastPos.x);
+		if(this.pos.x != this.lastPos.x && this.pos.y != this.lastPos.y){
+			this.bearing = Math.atan2(this.pos.y-this.lastPos.y, this.pos.x-this.lastPos.x);
+		}
 	}
 
 	/**
 	* Asign the subset of pairs to interact with. By default it assigns all of them
 	*/
-	setInteractants(){
+	filterInteractants(agents){
 		// read the user choice
 		let tmp = document.getElementById('rule').value;
 		let val = document.getElementById("range");
+		let interactants;
 		switch(tmp){
-			case 'nCloser':
-			this.chooseNClosest(Number(val.value));
+			case 'nClosest':
 			document.getElementById('sliderValue').innerHTML = val.value;
+			interactants = this.chooseNClosest(agents, Number(val.value));
 			break;
 			case 'radius':
-			this.chooseByRadius(val.value * this.radiusFactor);
 			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
+			interactants = this.chooseByRadius(agents, val.value * this.radiusFactor);
+			break;
+			case 'byField':
+			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
+			interactants = this.chooseByField(agents,'radius', val.value * this.radiusFactor);
 			break;
 			case 'all':
-			for (let e of this.pairs){
-				if (!this.interactants.includes(e)){
-					this.interactants.push(e);
-				}
-			}
+			interactants = this.resetInteractants();
 			break;
 		}
+		// function isInteractant(element){
+		// 	return element.interactant == true;
+		// }
+		return interactants.filter(this.isInteractant);
 	}
 
 	/**
 	* Selects the euclidean closest q agents and sets them as the new interactants
 	* @param n the amount of agents to be retrieved
 	*/
-	chooseNClosest(n){
+	chooseNClosest(agents, n){
 		let tempCollection = [];
 		// calculate distance to all the pairs
-		for(let i of this.pairs){
-			let proximity = this.sMentalModel.euclideanDist(this, i);
-			tempCollection.push({pair:i,prox:proximity});
+		for(let i of agents){
+			let proximity = this.sMentalModel.euclideanDist(this, i.agent);
+			tempCollection.push({agent:i,prox:proximity});
 		}
 		// sort them by proximity
 		tempCollection.sort(function(a,b){
 			return a.prox-b.prox;
 		});
 		// sets the upper limit of n
-		if (n > this.pairs.length){
-			n = this.pairs.length;
+		if (n > agents.length){
+			n = agents.length;
 		}
-		// update collection of interactants
-		if (n==0){
-			this.interactants = [];
-		}else{
-			for (var i = 0; i < n; i++) {
-				if (!this.interactants.includes(tempCollection[i].pair)){
-					this.interactants.unshift(tempCollection[i].pair);
-				} else{
-					// remove agent
-					this.interactants.splice(n);
+		// reset all the agents
+		for (let a of agents) {
+			a.interactant = false;
+		}
+		// enable the top N
+		for (var i = 0; i < n; i++) {
+			for (let a of agents) {
+				if(_.isEqual(a, tempCollection[i].agent)){
+					a.interactant = true;
 				}
 			}
 		}
+		return agents;
 	}
 
 	/**
 	* Choose the ones inside a given radius
 	* @param r the lenght of the radius (scope) around this agent
 	*/
-	chooseByRadius(r){
+	chooseByRadius(agents, r){
 		// calculate distance to all the pairs
-		for(let i of this.pairs){
-			let proximity = this.sMentalModel.euclideanDist(this, i);
+		for(let i of agents){
+			let proximity = this.sMentalModel.euclideanDist(this, i.agent);
 			if (proximity <= r){
-				if (!this.interactants.includes(i)){
-					this.interactants.unshift(i);
-				}
+				i.interactant = true;
 			} else {
-				if (this.interactants.includes(i)){
-					this.interactants.splice(i);
-				}
+				i.interactant = false;
 			}
 		}
+		return agents;
 	}
-/**
-Choose the agents ahead of this agent. 'Ahead' is defined by the bearing of this agent
-* @param modality the kind of methos used to retrieve other agents in the world
-* @param k the lenght of the radius scope or the amount of nearby agents to be retrieved
-*/
-	chooseByField(modality, k){
+	/**
+	Choose the agents ahead of this agent. 'Ahead' is defined by the bearing of this agent
+	* @param modality the method used to retrieve interactants
+	* @param k the lenght of the radius scope or the amount of nearby agents to be retrieved
+	*/
+	chooseByField(agents, modality, k){
 		switch (modality){
 			case 'radius':
 			// get them by radius
-			chooseByRadius(k);
-			// filter them by perception field
+			agents = this.chooseByRadius(agents, k);
 			break;
 			case 'nCloser':
 			// get them by proximity
-			chooseNClosest(k);
-			// filter them by perception field
+			agents = this.chooseNClosest(agents, k);
 			break;
-			default:
-			// get them all
-			// filter them by perception field
 		}
+		//filter interactants by perception scope
+		//console.log("  upper: "+ (this.bearing + this.visualPerceptionAngle/2));
+		//console.log("  lower: "+ (this.bearing - this.visualPerceptionAngle/2));
+		for (let a of agents) {
+			let i = a.agent;
+			let angleBetween = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
+			if ((this.bearing - this.visualPerceptionAngle/2) < angleBetween && angleBetween < (this.bearing + this.visualPerceptionAngle/2)){
+				a.interactant = true;
+			} else{
+				a.interactant = false;
+			}
+		}
+		return agents;
 	}
 }
