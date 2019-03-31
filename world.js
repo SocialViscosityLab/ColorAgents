@@ -57,7 +57,7 @@ class World{
     if (agent){
       return this.observers.filter(subscriber => subscriber !== agent && subscriber instanceof Human);//
     } else {
-        return this.observers.filter(subscriber => {subscriber instanceof Human});
+        return this.observers.filter(subscriber => subscriber instanceof Human);
     }
   }
 

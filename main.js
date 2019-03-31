@@ -35,7 +35,7 @@ var colorAgents = function(p5){
 
 	function initialize(){
 		// Instantiate all the colors
-		var cFactory = new ColorFactory('secondary');
+		var cFactory = new ColorFactory('munsell');
 		// Retrieve al the colors
 		var colors = cFactory.getAll();
 		// clear agents
@@ -44,10 +44,14 @@ var colorAgents = function(p5){
 		for(var i=0; i< colors.length; i++){
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
-			var a = new Human(x, y, colors[i].name, colors[i].chroma, 'secondary','linear', 20, 100);
+			var a = new Human(x, y, colors[i].name, colors[i].chroma, 'munsell','linear', 20, 100);
 		//	agents.push(a);
 			world.subscribe(a);
 		}
+		let nObservers = world.observers.length;
+		console.log("Observers in the world: "+nObservers);
+		console.log("Pairs of first agent: "+world.observers[0].pairs.length);
+		console.log("Pairs of last agent: "+world.observers[nObservers-1].pairs.length);
 	}
 
 	// ***** DRAW ******
@@ -56,13 +60,13 @@ var colorAgents = function(p5){
 		let agents = world.getAgents();
 		// go over all the agents
 		for (var a = 0; a< agents.length; a++){
-			//agents[a].run(p5,agents);
+			//show agent
 			if (showAgents){
 				agents[a].show(p5);
 			}
 			// show network
 			if (showInteractions){
-				agents[a].visualizeInteractions(p5, agents);
+				agents[a].visualizeInteractions(p5);
 			}
 			// animate agents
 			if (showTrajectories){
