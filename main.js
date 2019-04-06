@@ -9,7 +9,7 @@ var colorAgents = function(p5){
 	// Boolean variable to control the animation
 	var running;
 	// Booleans for buttons
-	let showAgents, showTrajectory, showInteractions;
+	let showAgents, showTrajectory, showInteractions, showPerField;
 	let intervalInstance;
 
 	// ***** Setup ******
@@ -21,6 +21,7 @@ var colorAgents = function(p5){
 		showAgents = true;
 		showTrajectories = false;
 		showInteractions = true;
+		showPerField = true;
 		// Animation starts on hold
 		running = false;
 		// Create an agent for each color
@@ -30,6 +31,7 @@ var colorAgents = function(p5){
 		document.getElementById("showAgents").onclick = sAgents;
 		document.getElementById("showTrajectories").onclick = sTrajectories;
 		document.getElementById("showInteractions").onclick = sInteractions;
+		document.getElementById("showPerceptionField").onclick = sPerField;
 		document.getElementById("reset").onclick = initialize;
 	}
 
@@ -49,9 +51,10 @@ var colorAgents = function(p5){
 			world.subscribe(a);
 		}
 		let nObservers = world.observers.length;
-		console.log("Observers in the world: "+nObservers);
-		console.log("Pairs of first agent: "+world.observers[0].pairs.length);
-		console.log("Pairs of last agent: "+world.observers[nObservers-1].pairs.length);
+
+		document.getElementById("agentsInWorld").innerHTML = nObservers;
+		document.getElementById("humansInWorld").innerHTML = world.getHumans().length;
+		document.getElementById("nonhumansInWorld").innerHTML = world.getNonhumans().length;
 	}
 
 	// ***** DRAW ******
@@ -68,6 +71,10 @@ var colorAgents = function(p5){
 			if (showInteractions){
 				agents[a].visualizeInteractions(p5);
 			}
+			//
+			if (showPerField){
+				agents[a].showPerceptionField(p5);
+			}
 			// animate agents
 			if (showTrajectories){
 				agents[a].showTrajectory(p5);
@@ -82,11 +89,12 @@ var colorAgents = function(p5){
 		if (document.getElementById("rule").value != ''){
 			running = !running;
 			if (running){
+				// the interval controlling how often the world updtaes itself. Units in milliseconds
 				intervalInstance = setInterval(() => {world.runAgents()}, 100);
 			} else {
 				clearInterval(intervalInstance);
 			}
-			// Change DOM element
+			// Update DOM element content
 			if (running){
 				document.getElementById("run").innerHTML = "Running";
 			} else {
@@ -107,6 +115,10 @@ var colorAgents = function(p5){
 
 	function sInteractions(){
 		showInteractions = !showInteractions;
+	}
+
+	function sPerField(){
+		showPerField = !showPerField;
 	}
 }
 

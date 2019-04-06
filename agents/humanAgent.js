@@ -55,7 +55,6 @@ class Human extends Agent{
 	*/
 	updateMyWorld(world){
 		// The world has changed!!! Update all the references to the world
-		console.log(this.id);
 		for(let h of world.getHumans(this)){
 			if (!this.pairsWith(h)){
 				this.addPair(h,false);
@@ -79,29 +78,29 @@ class Human extends Agent{
 		// draw ellipse
 		p5.ellipse(this.pos.x,this.pos.y, 4);
 		// black text
-		p5.fill(0,100);
+		p5.fill(0,50);
 		// print agent ID
 		p5.text(this.id, this.pos.x - 2,this.pos.y - 11);
 		p5.noFill();
-		p5.stroke(this.colorValues.rgb());
-		// if (this.interactants.length > 1){
-		// 	p5.ellipse(this.pos.x,this.pos.y, (2*document.getElementById("range").value*this.radiusFactor)/ (this.interactants.length));
-		// }else{
-		// 	p5.ellipse(this.pos.x,this.pos.y, (2*document.getElementById("range").value*this.radiusFactor));
-		//
-		if (document.getElementById('rule').value == 'radius' || document.getElementById('rule').value == 'byField'){
-			this.drawHeading(p5);
-		}
 	}
 
-	drawHeading(p5, lngth){
-		let radius = Number(document.getElementById("range").value) * this.radiusFactor;
-		let nX = Math.cos(this.bearing) * radius;
-		let nY = Math.sin(this.bearing) * radius;
-		p5.fill(100,5);
-		p5.line(this.lastPos.x, this.lastPos.y , this.pos.x + nX, this.pos.y + nY);
-		p5.arc(this.lastPos.x, this.lastPos.y, radius*2, radius*2, this.bearing - this.visualPerceptionAngle/2, this.bearing + this.visualPerceptionAngle/2);
-		p5.noFill();
+	showPerceptionField(p5){
+		// stroke color
+		p5.stroke(this.colorValues.rgb()[0],this.colorValues.rgb()[1],this.colorValues.rgb()[2],50);
+		// for radius
+		if (document.getElementById('rule').value == 'radius'){
+			p5.ellipse(this.pos.x,this.pos.y, (2*document.getElementById("range").value*this.radiusFactor));
+		}
+		// for arcs
+		if (document.getElementById('rule').value == 'byField'){
+			let radius = Number(document.getElementById("range").value) * this.radiusFactor;
+			let nX = Math.cos(this.bearing) * radius;
+			let nY = Math.sin(this.bearing) * radius;
+			p5.fill(100,5);
+			//p5.line(this.lastPos.x, this.lastPos.y , this.pos.x + nX, this.pos.y + nY);
+			p5.arc(this.lastPos.x, this.lastPos.y, radius*2, radius*2, this.bearing - this.visualPerceptionAngle/2, this.bearing + this.visualPerceptionAngle/2, p5.PIE);
+			p5.noFill();
+		}
 	}
 
 	/**
@@ -121,7 +120,7 @@ class Human extends Agent{
 	* Shows the trajectory
 	*/
 	showTrajectory(p5){
-		p5.stroke(this.colorValues.rgb());
+		p5.stroke(this.colorValues.rgb()[0],this.colorValues.rgb()[1],this.colorValues.rgb()[2],100);
 		p5.noFill();
 		p5.beginShape();
 		for(let l of this.locations){
@@ -134,7 +133,6 @@ class Human extends Agent{
 	* Interact with other agents
 	*/
 	interact (){
-		console.log(this.id);
 		// Define with whom to interact
 		let interactants = this.getPairs();
 
@@ -168,8 +166,10 @@ class Human extends Agent{
 				let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
 				//Calculate the difference between the spatialMagnitude and the actual spatial distance
 				let currentDist = this.sMentalModel.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
+				// Calculate the angle between this and the pair agent
+				let angle = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
 				// Adjust the position
-				this.move((currentDist - spatialMag), i.pos.x, i.pos.y);
+				this.move((currentDist - spatialMag), angle);
 			}
 		}
 		// update the bearing after being compared with all the interactants
@@ -198,10 +198,6 @@ class Human extends Agent{
 			case 'byField':
 			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
 			interactants = this.chooseByField(agents,'radius', val.value * this.radiusFactor);
-			break;
-			case 'byField':
-			this.chooseByField('radius', val.value * this.radiusFactor);
-			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
 			break;
 			case 'all':
 			interactants = this.resetInteractants();
@@ -268,7 +264,6 @@ class Human extends Agent{
 	* @param modality the method used to retrieve interactants
 	* @param k the lenght of the radius scope or the amount of nearby agents to be retrieved
 	*/
-
 	chooseByField(agents, modality, k){
 		switch (modality){
 			case 'radius':
@@ -284,12 +279,13 @@ class Human extends Agent{
 		//console.log("  upper: "+ (this.bearing + this.visualPerceptionAngle/2));
 		//console.log("  lower: "+ (this.bearing - this.visualPerceptionAngle/2));
 		for (let a of agents) {
-			let i = a.agent;
-			let angleBetween = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
-			if ((this.bearing - this.visualPerceptionAngle/2) < angleBetween && angleBetween < (this.bearing + this.visualPerceptionAngle/2)){
-				a.interactant = true;
-			} else{
-				a.interactant = false;
+			if (a.interactant == true){
+				let angleBetween = Math.atan2(a.agent.pos.y - this.pos.y, a.agent.pos.x - this.pos.x);
+				if ((this.bearing - this.visualPerceptionAngle/2) < angleBetween && angleBetween < (this.bearing + this.visualPerceptionAngle/2)){
+					a.interactant = true;
+				} else{
+					a.interactant = false;
+				}
 			}
 		}
 		return agents;

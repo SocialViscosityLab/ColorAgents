@@ -89,7 +89,7 @@ class ColorFactory{
 			break;
 			// ---- MUNSELL
 			case 'munsell':
-			let munsellNames=["cGR","dGR","cGR","dR","cR","dRVi","cRVi","dVi","cVi","dViA","cViA","dA","cA","dAV","cAV","dV","cV","dVG","cVG","dG"]
+			let munsellNames=["cGR","dGR","	*cGR","dR","cR","dRVi","cRVi","dVi","cVi","dViA","cViA","dA","cA","dAV","cAV","dV","cV","dVG","cVG","dG"]
 
 			for (var i = this.munsellValues.length - 1; i >= 0; i--) {
 				var tmp = this.munsellValues[i].split(' ');

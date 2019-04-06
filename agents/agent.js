@@ -7,7 +7,7 @@ class Agent{
     // lastPosition
     this.lastPos = globalP5.createVector(x,y);
     // bearing
-    this.bearing = globalP5.map((Math.random() * Math.PI*2),0,Math.PI*2, -Math.PI, Math.PI);
+    this.bearing = globalP5.map(Math.atan2(this.pos.y - 250, this.pos.x- 250),0,Math.PI*2, -Math.PI, Math.PI);
     // The pairs in the world. Stores objects with two attributes: agent{Agent} and interactant{boolean}
     this.pairs=[];
   }
@@ -59,9 +59,12 @@ class Agent{
     return false;
   }
 
-  move(dist, destX, destY){
-    // Calculate the angle between this and the pair agent
-    var angle = Math.atan2(destY - this.pos.y, destX - this.pos.x);
+/**
+* Moves closer or away from the position of the other agent
+@param  dist the magnitude of the displacement
+@param  angle the direction of this movement
+*/
+  move(dist, angle){
     // Get step in x
     var stepX = Math.cos(angle) * dist * this.stepLengthFactor;
     // Get step in y

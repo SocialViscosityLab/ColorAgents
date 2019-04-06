@@ -15,7 +15,13 @@
   <title>Color Agents Workshop</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/poole.css">
+  <style>
+  p{font-size:11px;}
+  </style>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   <script src="libs/p5.js" type="text/javascript"></script>
   <script src="libs/p5.dom.js" type="text/javascript"></script>
@@ -43,111 +49,125 @@
 
 <body>
 
-  <div class="container content">
-    <main>
-      <article class="page">
+  <div class="container">
+    <div class="row">
+      <br>
+      <p style="font-size:12px"> <img class="img-responsive" src="images/D4SV.png" width="160"> Design for social viscosity lab &nbsp |  &nbsp University of Illinois at Urbana-Champaign</p>
+      <hr>
+    </div>
+    <div class="row">
+      <!-- MENU -->
+      <div class="col-sm-2">
 
+
+        <!-- TITLE -->
+        <h4 class="page-title">Agent based model of color proximity </h4>
         <br>
-        <br>
+        <!-- Pull down -->
         <p>
-          <label>University of Illinois at Urbana-Champaign &middot; Juan Salamanca 2019
-          </label></p>
+          <select id="rule">
+            <option value =""> Interaction rule</option>
+            <option value="all">interact with all</option>
+            <option value="nClosest">interact with N closest</option>
+            <option value="radius">interact with those within radius</option>
+            <option value='byField'>interact with those in visual perception field</option>
+          </select>
+        </p>
 
-          <h1 class="page-title">Color Agents</h1>
+        <!-- Slider -->
+        <p>
+          Scope <span id="sliderValue" > 1 </span>
+          <input type="range" min="0" max="29" value="1" id="range"></input>
+        </p>
 
-          <hr>
-          <!-- Subtitle -->
-          <h4 id="results"> Display agents</h4>
-
-          <!-- Palette buttons -->
-          <button  type = "button" id = "showAgents" > Show Agents </button>
-          <button  type = "button" id = "showTrajectories" > Show Trajectories </button>
-          <button  type = "button" id = "showInteractions" > Show Interactions </button>
-          <br>
-          <p style="font-size:12px"> Agents choose interactants by
-            <select id="rule">
-              <option value='byField'>visual perception field</option>
-              <option value="all">compare with all</option>
-              <option value="nCloser">compare with the N closer</option>
-              <option value="radius">compare with those within a radius</option>
-            </select>
-            <input type="range" min="0" max="29" value="1" id="range"> <span id="sliderValue" style="font-size:12px"> 1 </span> </input>
-          </p>
+        <!-- Control simulation buttons -->
+        <p>
           <button  type = "button" id = "run" > Run Simulation </button>
           <button  type = "button" id = "reset" > Reset </button>
-          <hr>
+        </p>
 
-          <div id="ColorAgents"></div>
 
-          <hr>
-          <!-- References -->
-          <h3 id="references">References</h3>
+        <!-- Visibility Buttons -->
+        <p><input  type = "checkbox" id = "showAgents" checked> Show agents </input></p>
+        <p><input  type = "checkbox" id = "showTrajectories" > Show trajectories </input></p>
+        <p><input  type = "checkbox" id = "showInteractions" checked> Show interactions </input></p>
+        <p><input  type = "checkbox" id = "showPerceptionField" checked> Show perception field </input></p>
+        <hr>
 
-          <p style="font-size:12px"><a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue </a>,
+        <!-- References -->
+        <h5 id="references">References</h5>
 
-            <a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js </a>,
+        <p>
+          <a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue </a>,
+          <a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js </a>,
+          <a href="http://p5js.org" target="_blank">P5.js</a>,
+          <a href="http://colormine.org/color-converter" target="_blank">Color converter</a>,
+          <a href="http://handprint.com/LS/CVS/color.html" target="_blank">Color vision theory</a>,
+          <a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a>
+        </p>
+      </div>
 
-            <a href="http://p5js.org" target="_blank">P5.js</a>,
+      <!-- DISPLAY -->
+      <div class="col-sm-10" align="right">
+        <p style = "font-size:12px">Observers in the world: <span id="agentsInWorld" > 0 </span> &nbsp | Humans: <span id="humansInWorld" > 0 </span> &nbsp  | Non-humans: <span id="nonhumansInWorld" > 0 </span></p>
 
-            <a href="http://colormine.org/color-converter" target="_blank">Color converter</a>,
+        <!-- P5js canvas -->
+        <div id="ColorAgents" align="center"></div>
 
-            <a href="http://handprint.com/LS/CVS/color.html" target="_blank">Color vision theory</a>,
-
-            <a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a>
-
-            <hr>
-            <!--
-            <div>
-            <h2> Discussion with Daniel Gomez </h2>
-            <p>October 8, 2018</p>
-
-            <h3>Questions</h3>
-            <p>The dynamics in the simmulation involve a distance metric. How do you define it? Hsv, rgb or using the one you showed me on friday.
-            The one I showed on Friday. It is a Euclidean distance in a LAB space. The info is here : https://gka.github.io/chroma.js/#chroma-distance. The reason why the final shape is not a circle is that the Lab distance between rainbow colors is not equidistant. See attachment to see the distance between adjacent colors in the rainbow palette I used. If we use a color palette with equidistant Lab colors then we might have a less geometric distribution.</p>
-
-            <p><b>Is each node computing its distance to the rest in real-time?</b><p>
-
-            <p><i>No, the distance is computed only once at the beginning. Agents have two distances: “perceived distance” and “proximity” or geometric distance. Each agent compares its color with others’ colors and estimate their perceived distance. Then the perceived distance is converted into a desired proximity. All that operation is made only once at the setup time.  If A has a perceived distance to B, then B also has a perceived distance to A. The mutually perceived distances are equidistant because I use the same measurement function in both agents, but that might change to represent that one agent has full sight and the other is color-blind.  </i> </p>
-
-            <p><b>How is movement defined? Specially the direction.</b></p>
-
-            <p><i>This is a vector operation. The position of each agent is a vector, then I subtract both vectors and from the resulting vector I calculate the bearing. The speed is a constant step length used to get the x and y components of the agent’s motion.</i><p>
-
-            <h3>Thoughts</h3>
-            <p>What happens if we start reducing the connections of each node using some statistics: <p>
-            <p>- each node is only connected randomly  to X% of the total available connections. This is to (vaguely) simmulate that you cant look in 360°. At which amount of X the system fails to find equilibrium? How is 'uninformation' related to viscosity?<p>
-            <p><i>Good point. The way you describe it here is simpler than defining a visual angle for the agents. I actually prefer choosing a % because it could also be related to the capacity of attention of human cognition. I might perceive a bunch of things, but I only pay attention to few of them.</i></p>
-
-            <p>- i would say viscosity is related to the ammount of information you have of your surroundings. If your vision/connections-to-other-agents are limmited, then viscosity is higher, limiting your displacement. Or perhaps, uninformation is compensated by the network balancing out the lack of reference and achieving equilibrium.</p>
-            <p><i>I like what I am reading. This needs to be studied because being uninformed might actually reduce the viscosity under certain conditions of the network.  </i></p>
-
-            <p>- this leads to exploring another scenario on the simmulator: only a Y% of the total nodes has all the information the rest only has 50% of the connections. How is equilibrium related to Y%? Perhaps the more informed find rest first, but maybe not, as they are also influenced by the uninformed.</p>
-            <p><i>This can be coded and tested easily. But the result is also contingent to the number of agents.<p></i>  
-
-            <p>-last scenario: the limitation of information is given to a specific sector of the color pallette (i.e. blues and magentas will have 50% connections to other nodes and the rest will have 100% connections). How is equilibrium reached? The least informed will need to move more to find equilibrium, while the more informed will find rest faster (?). <p>
-            <p><i> Another interesting question. Maestro, you were inspired, what did you put in that morning coffee?</i></p>
-
-            <p>- how are the three simmulations different? The first one is called "equally limited information" the second one is called "uneven information" the last one is "sectorized lack of information".</p>
-            <p><i>Let’s test that!</i></p>
-
-            <h3>Measures</h3>
-            <p>I assume we have every info on every node. Equilibrium is related to the amount of movement in time, it could be a measure of 'rest'. If we plot the movement of first experiment (∆displacement/∆time) of every node in time we will see how its movement starts descending evenly for all nodes until all reach 0 movement (equilibrium).</p>
-            <p><i>                Yes, that is one metric. It is simple and easy to estimate. I am actually thinking that each agent should have a “I am done” criteria. It would be a moment when the agent decides to rest because it has reached an optimal proximity to its neighbors.</i></p>
-
-            <p>If we doit for the uneven experiments what do we see?</p>
-
-            <p>All experiments could be human-replicated.</p>
-
-            <p>What are wee looking at here? Viscosity as a function of info? Viscosity related to awareness of the environment? Viscosity as cohesion between similar class elements?</p>
-            <p><i> Each experiment has its own focus, but all are related to the process of finding optimal organization. There is clearly a relationship with network theory and social network analysis (excluding symbolic communication). There is a seminal study in the field that I might need to revisit: Growing Artificial Societies. I would like to ruminate more this point because I feel that we need a more specific measurement of social viscosity. The way I define it so far is: “the resistance to action flow exerted by actors—whether human or nonhuman—acting concurrently. Such resistance is created by mutual disturbances that occur between humans and artifacts during the interactions that bind them together in a social practice.” (In press). Taking out the non-humans of the scenario for a moment,  in the Color Agents experiment there is ‘goal completion hindering’ because agents cannot rest until their neighbors also set to rest, but there is also ‘action flow hindering’ that can be estimated by measuring the changes in bearing of the trajectory vector of each agent.</i></p>
-
-            <p><i>I would say that the viscosity happens at the moment agents need act in order to achieve their own “I am done” moment. It is not estimated by time to task completion, but rather by “struggle” to achieve a goal. I say that it is not related to time because if there were only three agents, I do not expect to observe much viscosity, but they might take a while to achieve balance if they are very far from each other. Then time is not a measure of the struggle, necessarily.</i></p>
-
-          </p>
-        </div>-->
-
-      </article>
-    </main>
+      </div>
+    </div>
+    <hr>
+    <p style="font-size:9px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self"> P5.js</a></p>
   </div>
 </body>
 </html>
+
+<!--
+<div>
+<h2> Discussion with Daniel Gomez </h2>
+<p>October 8, 2018</p>
+
+<h3>Questions</h3>
+<p>The dynamics in the simmulation involve a distance metric. How do you define it? Hsv, rgb or using the one you showed me on friday.
+The one I showed on Friday. It is a Euclidean distance in a LAB space. The info is here : https://gka.github.io/chroma.js/#chroma-distance. The reason why the final shape is not a circle is that the Lab distance between rainbow colors is not equidistant. See attachment to see the distance between adjacent colors in the rainbow palette I used. If we use a color palette with equidistant Lab colors then we might have a less geometric distribution.</p>
+
+<p><b>Is each node computing its distance to the rest in real-time?</b><p>
+
+<p><i>No, the distance is computed only once at the beginning. Agents have two distances: “perceived distance” and “proximity” or geometric distance. Each agent compares its color with others’ colors and estimate their perceived distance. Then the perceived distance is converted into a desired proximity. All that operation is made only once at the setup time.  If A has a perceived distance to B, then B also has a perceived distance to A. The mutually perceived distances are equidistant because I use the same measurement function in both agents, but that might change to represent that one agent has full sight and the other is color-blind.  </i> </p>
+
+<p><b>How is movement defined? Specially the direction.</b></p>
+
+<p><i>This is a vector operation. The position of each agent is a vector, then I subtract both vectors and from the resulting vector I calculate the bearing. The speed is a constant step length used to get the x and y components of the agent’s motion.</i><p>
+
+<h3>Thoughts</h3>
+<p>What happens if we start reducing the connections of each node using some statistics: <p>
+<p>- each node is only connected randomly  to X% of the total available connections. This is to (vaguely) simmulate that you cant look in 360°. At which amount of X the system fails to find equilibrium? How is 'uninformation' related to viscosity?<p>
+<p><i>Good point. The way you describe it here is simpler than defining a visual angle for the agents. I actually prefer choosing a % because it could also be related to the capacity of attention of human cognition. I might perceive a bunch of things, but I only pay attention to few of them.</i></p>
+
+<p>- i would say viscosity is related to the ammount of information you have of your surroundings. If your vision/connections-to-other-agents are limmited, then viscosity is higher, limiting your displacement. Or perhaps, uninformation is compensated by the network balancing out the lack of reference and achieving equilibrium.</p>
+<p><i>I like what I am reading. This needs to be studied because being uninformed might actually reduce the viscosity under certain conditions of the network.  </i></p>
+
+<p>- this leads to exploring another scenario on the simmulator: only a Y% of the total nodes has all the information the rest only has 50% of the connections. How is equilibrium related to Y%? Perhaps the more informed find rest first, but maybe not, as they are also influenced by the uninformed.</p>
+<p><i>This can be coded and tested easily. But the result is also contingent to the number of agents.<p></i>  
+
+<p>-last scenario: the limitation of information is given to a specific sector of the color pallette (i.e. blues and magentas will have 50% connections to other nodes and the rest will have 100% connections). How is equilibrium reached? The least informed will need to move more to find equilibrium, while the more informed will find rest faster (?). <p>
+<p><i> Another interesting question. Maestro, you were inspired, what did you put in that morning coffee?</i></p>
+
+<p>- how are the three simmulations different? The first one is called "equally limited information" the second one is called "uneven information" the last one is "sectorized lack of information".</p>
+<p><i>Let’s test that!</i></p>
+
+<h3>Measures</h3>
+<p>I assume we have every info on every node. Equilibrium is related to the amount of movement in time, it could be a measure of 'rest'. If we plot the movement of first experiment (∆displacement/∆time) of every node in time we will see how its movement starts descending evenly for all nodes until all reach 0 movement (equilibrium).</p>
+<p><i>                Yes, that is one metric. It is simple and easy to estimate. I am actually thinking that each agent should have a “I am done” criteria. It would be a moment when the agent decides to rest because it has reached an optimal proximity to its neighbors.</i></p>
+
+<p>If we doit for the uneven experiments what do we see?</p>
+
+<p>All experiments could be human-replicated.</p>
+
+<p>What are wee looking at here? Viscosity as a function of info? Viscosity related to awareness of the environment? Viscosity as cohesion between similar class elements?</p>
+<p><i> Each experiment has its own focus, but all are related to the process of finding optimal organization. There is clearly a relationship with network theory and social network analysis (excluding symbolic communication). There is a seminal study in the field that I might need to revisit: Growing Artificial Societies. I would like to ruminate more this point because I feel that we need a more specific measurement of social viscosity. The way I define it so far is: “the resistance to action flow exerted by actors—whether human or nonhuman—acting concurrently. Such resistance is created by mutual disturbances that occur between humans and artifacts during the interactions that bind them together in a social practice.” (In press). Taking out the non-humans of the scenario for a moment,  in the Color Agents experiment there is ‘goal completion hindering’ because agents cannot rest until their neighbors also set to rest, but there is also ‘action flow hindering’ that can be estimated by measuring the changes in bearing of the trajectory vector of each agent.</i></p>
+
+<p><i>I would say that the viscosity happens at the moment agents need act in order to achieve their own “I am done” moment. It is not estimated by time to task completion, but rather by “struggle” to achieve a goal. I say that it is not related to time because if there were only three agents, I do not expect to observe much viscosity, but they might take a while to achieve balance if they are very far from each other. Then time is not a measure of the struggle, necessarily.</i></p>
+
+</p>
+</div>-->
