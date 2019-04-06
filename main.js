@@ -2,6 +2,8 @@
 /**
 * Main class
 */
+
+
 var colorAgents = function(p5){
 
 	// The world
@@ -33,11 +35,14 @@ var colorAgents = function(p5){
 		document.getElementById("showInteractions").onclick = sInteractions;
 		document.getElementById("showPerceptionField").onclick = sPerField;
 		document.getElementById("reset").onclick = initialize;
+		document.getElementById("cFactory").addEventListener('change', ()=>{
+			initialize();
+		})
 	}
 
 	function initialize(){
 		// Instantiate all the colors
-		var cFactory = new ColorFactory('munsell');
+		var cFactory = new ColorFactory(document.getElementById("cFactory").value);
 		// Retrieve al the colors
 		var colors = cFactory.getAll();
 		// clear agents
@@ -46,8 +51,8 @@ var colorAgents = function(p5){
 		for(var i=0; i< colors.length; i++){
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
-			var a = new Human(x, y, colors[i].name, colors[i].chroma, 'munsell','linear', 20, 100);
-		//	agents.push(a);
+			var a = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,document.getElementById("sensibility").value, 20, 100);
+			//	agents.push(a);
 			world.subscribe(a);
 		}
 		let nObservers = world.observers.length;

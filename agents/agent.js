@@ -73,4 +73,17 @@ class Agent{
     this.pos.x += stepX;
     this.pos.y += stepY;
   }
+
+  /**
+  * Moves to the new position
+  @param  target the new position in PVector format
+  */
+    move2(target){
+      // Calculate the angle between this and the pair agent
+      let angle = Math.atan2(target.y - this.pos.y, target.x - this.pos.x);;
+      // move forward in x & y
+      this.pos.x += Math.cos(angle)*target.mag();
+      this.pos.y += Math.sin(angle)*target.mag();
+      return angle;
+    }
 }

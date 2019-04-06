@@ -5,12 +5,13 @@ Human agent that extends Agent
 @param index the id of this agent
 @param theColor the color id of this agent
 @param colorPalette the color palette used by this agent
+@param sensibility a function that represents the perceived proximity between colors from the reference point of this observer.
 @param shortest used by spatial mental model to determine what proximity on canvas is close
 @param farthest used by spatial mental model to determine what proximity on canvas is far away
 */
 class Human extends Agent{
 
-	constructor (x, y, index, theColor, colorPalette, colorMapping, shortest, farthest){
+	constructor (x, y, index, theColor, colorPalette, sensibility, shortest, farthest){
 		super(x, y, index);
 
 		//this.colorValues {name, chroma}
@@ -20,7 +21,7 @@ class Human extends Agent{
 		this.locations=[];
 
 		// this agents cMentalModel. This represents the unique way this agent perceives colors in the world
-		this.cMentalModel = new ColorMentalModel(colorPalette, colorMapping);
+		this.cMentalModel = new ColorMentalModel(colorPalette, document.getElementById("sensibility").value);
 
 		// this agents sMentalModel. This represents the unique way this agent perceives distances in the world
 		this.sMentalModel = new SpatialMentalModel(shortest, farthest);
@@ -97,7 +98,7 @@ class Human extends Agent{
 			let nX = Math.cos(this.bearing) * radius;
 			let nY = Math.sin(this.bearing) * radius;
 			p5.fill(100,5);
-			//p5.line(this.lastPos.x, this.lastPos.y , this.pos.x + nX, this.pos.y + nY);
+			p5.line(this.lastPos.x, this.lastPos.y , this.pos.x + nX, this.pos.y + nY);
 			p5.arc(this.lastPos.x, this.lastPos.y, radius*2, radius*2, this.bearing - this.visualPerceptionAngle/2, this.bearing + this.visualPerceptionAngle/2, p5.PIE);
 			p5.noFill();
 		}
@@ -154,6 +155,7 @@ class Human extends Agent{
 			if(doAct){
 				// Use the mental model to calculate the perceived distance to each interactant
 				let perceivedColorDistance = this.cMentalModel.getPerceivedColorDistance(i.colorValues);
+
 				/*
 				There are spatial distances between this agent's location and the interactants' locations. Such distances may not correspond to
 				this agent's perceived color distance when converted into spatial distances. The reult of mapping of the perceived color
@@ -164,14 +166,21 @@ class Human extends Agent{
 				a Spatial Mental Model.
 				*/
 				let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
+
 				//Calculate the difference between the spatialMagnitude and the actual spatial distance
 				let currentDist = this.sMentalModel.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
+
+				let deltaDist = currentDist - spatialMag;
+
 				// Calculate the angle between this and the pair agent
 				let angle = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
-				// Adjust the position
+
 				this.move((currentDist - spatialMag), angle);
 			}
 		}
+
+		// Adjust the position and the bearing
+
 		// update the bearing after being compared with all the interactants
 		if(this.pos.x != this.lastPos.x && this.pos.y != this.lastPos.y){
 			this.bearing = Math.atan2(this.pos.y-this.lastPos.y, this.pos.x-this.lastPos.x);
@@ -281,7 +290,7 @@ class Human extends Agent{
 		for (let a of agents) {
 			if (a.interactant == true){
 				let angleBetween = Math.atan2(a.agent.pos.y - this.pos.y, a.agent.pos.x - this.pos.x);
-				if ((this.bearing - this.visualPerceptionAngle/2) < angleBetween && angleBetween < (this.bearing + this.visualPerceptionAngle/2)){
+				if ((this.bearing - (this.visualPerceptionAngle/2)) < angleBetween && angleBetween < (this.bearing + (this.visualPerceptionAngle/2))){
 					a.interactant = true;
 				} else{
 					a.interactant = false;

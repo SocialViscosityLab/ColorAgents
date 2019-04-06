@@ -63,6 +63,18 @@
         <!-- TITLE -->
         <h4 class="page-title">Agent based model of color proximity </h4>
         <br>
+
+        <!-- Color Factory -->
+        <p>
+          <select id="cFactory">
+            <option value =""> Color Factory</option>
+            <option value="test">Triad</option>
+            <option value="secondary" selected>Secondary</option>
+            <option value="newton">Newton</option>
+            <option value='munsell'>Munsell</option>
+          </select>
+        </p>
+
         <!-- Pull down -->
         <p>
           <select id="rule">
@@ -71,6 +83,13 @@
             <option value="nClosest">interact with N closest</option>
             <option value="radius">interact with those within radius</option>
             <option value='byField'>interact with those in visual perception field</option>
+          </select>
+        </p>
+
+        <p>
+          <select id="sensibility">
+            <option value="linear">linear sensibility</option>
+            <option value="exponential">exponential sensibility</option>
           </select>
         </p>
 
