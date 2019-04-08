@@ -20,6 +20,9 @@ class Human extends Agent{
 		// the location where this agent has been
 		this.locations=[];
 
+		// the latest distances to all other agents
+		this.distances=[];
+
 		// this agents cMentalModel. This represents the unique way this agent perceives colors in the world
 		this.cMentalModel = new ColorMentalModel(colorPalette, document.getElementById("sensibility").value);
 
@@ -167,13 +170,16 @@ class Human extends Agent{
 				*/
 				let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
 
-				//Calculate the difference between the spatialMagnitude and the actual spatial distance
-				let currentDist = this.sMentalModel.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
+				//Calculate the current spatial distance
+				let currentDist = globalP5.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
 
+				//Calculate the difference between the spatialMagnitude and the actual spatial distance
 				let deltaDist = currentDist - spatialMag;
 
 				// Calculate the angle between this and the pair agent
 				let angle = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
+
+				this.updateDistances(i.id,spatialMag, currentDist);
 
 				this.move((currentDist - spatialMag), angle);
 			}
@@ -184,6 +190,27 @@ class Human extends Agent{
 		// update the bearing after being compared with all the interactants
 		if(this.pos.x != this.lastPos.x && this.pos.y != this.lastPos.y){
 			this.bearing = Math.atan2(this.pos.y-this.lastPos.y, this.pos.x-this.lastPos.x);
+		}
+	}
+
+	updateDistances(id,spatialMag, currentDist){
+		if (this.distances.length < 1){
+			this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+		} else {
+			let index = -1;
+			for (var i = 0; i < this.distances.length; i++) {
+				if (this.distances[i].id == id){
+					index = i;
+					break;
+				}
+			}
+
+			if(index != -1){
+				this.distances[index].spatialMag = spatialMag;
+				this.distances[index].currentDist = currentDist;
+			} else {
+				this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+			}
 		}
 	}
 

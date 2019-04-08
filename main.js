@@ -3,11 +3,10 @@
 * Main class
 */
 
+// The world
+var world;
 
 var colorAgents = function(p5){
-
-	// The world
-	var world;
 	// Boolean variable to control the animation
 	var running;
 	// Booleans for buttons
@@ -56,6 +55,9 @@ var colorAgents = function(p5){
 			world.subscribe(a);
 		}
 		let nObservers = world.observers.length;
+
+		// Reset matrix visualizer
+		vizMatrix1D = new InteractionMatrix(p5, world, world.getAgents()[4]);
 
 		document.getElementById("agentsInWorld").innerHTML = nObservers;
 		document.getElementById("humansInWorld").innerHTML = world.getHumans().length;
@@ -128,3 +130,41 @@ var colorAgents = function(p5){
 }
 
 var globalP5 = new p5(colorAgents, "ColorAgents");
+
+
+/// SECOND P5 INSTANCE
+var plotMatrix = function (p5){
+
+	let vizMatrix1D;
+	let showIntMtrx = true;
+
+	p5.setup = function(){
+		p5.createCanvas(500,500);
+		initialize();
+		document.getElementById("reset").addEventListener('click', () =>{initialize();})
+		document.getElementById("showMatrix").onclick = sIntMtrx;
+		document.getElementById("cFactory").addEventListener('change', ()=>{
+			initialize();
+		})
+	}
+
+	function sIntMtrx(){
+		showIntMtrx = !showIntMtrx;
+	}
+
+	function initialize(){
+		// Reset matrix visualizer
+		vizMatrix1D = new InteractionMatrix(p5, world);
+	}
+
+	p5.draw = function(){
+		p5.background(255);
+		// MATRICES
+	if (showIntMtrx){
+		vizMatrix1D.plot(p5.createVector(0,30));
+	}
+}
+
+}
+
+var vizMatrix = new p5(plotMatrix, "PlotMatrix");

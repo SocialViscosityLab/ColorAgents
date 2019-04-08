@@ -34,6 +34,7 @@
   <script src="agents/humanAgent.js" type="text/javascript"></script>
   <script src="agents/nonhumanAgent.js" type="text/javascript"></script>
   <script src="colorFactory.js" type="text/javascript"></script>
+  <script src="dataViz/interactionMatrix.js" type="text/javascript"></script>
 
   <!-- Mental models -->
   <script src="mentalModels/cMentalModel.js" type="text/javascript"></script>
@@ -59,7 +60,6 @@
       <!-- MENU -->
       <div class="col-sm-2">
 
-
         <!-- TITLE -->
         <h4 class="page-title">Agent based model of color proximity </h4>
         <br>
@@ -79,10 +79,10 @@
         <p>
           <select id="rule">
             <option value =""> Interaction rule</option>
-            <option value="all">interact with all</option>
-            <option value="nClosest">interact with N closest</option>
-            <option value="radius">interact with those within radius</option>
-            <option value='byField'>interact with those in visual perception field</option>
+            <option value="all">with all</option>
+            <option value="nClosest">with N closest</option>
+            <option value="radius">with those within radius</option>
+            <option value='byField'>with those in visual perception field</option>
           </select>
         </p>
 
@@ -111,6 +111,7 @@
         <p><input  type = "checkbox" id = "showTrajectories" > Show trajectories </input></p>
         <p><input  type = "checkbox" id = "showInteractions" checked> Show interactions </input></p>
         <p><input  type = "checkbox" id = "showPerceptionField" checked> Show perception field </input></p>
+        <p><input  type = "checkbox" id = "showMatrix" checked> Show interaction matrix </input></p>
         <hr>
 
         <!-- References -->
@@ -127,13 +128,22 @@
       </div>
 
       <!-- DISPLAY -->
-      <div class="col-sm-10" align="right">
-        <p style = "font-size:12px">Observers in the world: <span id="agentsInWorld" > 0 </span> &nbsp | Humans: <span id="humansInWorld" > 0 </span> &nbsp  | Non-humans: <span id="nonhumansInWorld" > 0 </span></p>
+      <div class="col-lg-5">
+        <p style = "font-size:12px">Observers in the world: <span id="agentsInWorld" > 0 </span> &nbsp | &nbsp Humans: <span id="humansInWorld" > 0 </span> &nbsp  | &nbsp Nonhumans: <span id="nonhumansInWorld" > 0 </span></p>
 
         <!-- P5js canvas -->
         <div id="ColorAgents" align="center"></div>
 
       </div>
+
+      <!-- MATRIX -->
+      <div class="col-lg-5" >
+        <p style = "font-size:12px">Interaction matrix</p>
+        <!-- P5js canvas -->
+        <div id="PlotMatrix"></div>
+
+      </div>
+
     </div>
     <hr>
     <p style="font-size:9px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self"> P5.js</a></p>
