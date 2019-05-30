@@ -32,7 +32,10 @@ class ColorMentalModel{
 
     this.myIndex;
   }
-
+  /**
+  * Finds the color index in a color palette
+  * @param {Number} color the color to be matched to a color palette
+  */
   setMyIndex(color){
     this.myIndex = this.findColorIndex(color);
   }
@@ -105,7 +108,7 @@ class ColorMentalModel{
         break;
         case 'exponential':
         // this function is y = a^x where 0<a<1. The closer to 0 the tightest the graph elbow. 0.97 is a good number
-        /** This reseambles the exponential model of human perception defined by Stevens (1975) in
+        /* This reseambles the exponential model of human perception defined by Stevens (1975) in
         Psychophysics: introduction to its perceptual, neural, and social prospects. Wiley
         */
         return 1- Math.pow(0.97,delta);
@@ -133,16 +136,16 @@ class ColorMentalModel{
 
     if (tarIndex < this.myIndex){
       if ((this.myIndex - range) <= tarIndex){
-      //  console.log("  range: " +range + "  tar: "+tarIndex);
+        //  console.log("  range: " +range + "  tar: "+tarIndex);
         return true;
       }
     } else {
       if (tarIndex <= (this.myIndex + range)){
-      //  console.log("  range: " +range + "  tar: "+tarIndex);
+        //  console.log("  range: " +range + "  tar: "+tarIndex);
         return true;
       }
     }
-  //  console.log("  range: " +range+ "  tar: "+tarIndex +"  color beyond boundaries" );
+    //  console.log("  range: " +range+ "  tar: "+tarIndex +"  color beyond boundaries" );
     return false;
   }
 }

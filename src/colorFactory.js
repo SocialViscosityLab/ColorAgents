@@ -1,8 +1,12 @@
 /**
-*
-*/
+ * A factory of color palettes
+ */
 class ColorFactory{
 
+/**
+ * Constructor
+ * @param {String} cSpace The name of color palette from the menu of available palettes: RGB, MUNSELL, SECONDARY, BINARY TEST
+ */
 	constructor(cSpace){
 		this.colors = [];
 		// This code must change. It should read all the palettes available in the sequential palettes folder. Ideally palettes
@@ -76,8 +80,11 @@ class ColorFactory{
 		this.initialize(cSpace);
 	}
 
-	/**
-	*/
+/**
+ * Retrieves the color for the required color space
+ * @param  {String} cSpace The required color space
+ * @return {Array}        [description]
+ */
 	 initialize(cSpace){
 		switch(cSpace){
 			// ---- RGB

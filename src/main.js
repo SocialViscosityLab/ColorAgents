@@ -1,9 +1,4 @@
-// Runs on a local server. For instruccions see: https://github.com/processing/p5.js/wiki/Local-server
-/**
-* Main class
-*/
-
-// The world
+// The global variable world
 var world;
 
 var colorAgents = function(p5){
@@ -89,9 +84,7 @@ var colorAgents = function(p5){
 		}
 	}
 
-	/**
-	* Function controlled by guy element that enables or disables the animation
-	*/
+	//Function controlled by guy element that enables or disables the animation
 	function runSimulation(){
 		if (document.getElementById("rule").value != ''){
 			running = !running;

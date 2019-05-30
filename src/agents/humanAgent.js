@@ -1,55 +1,57 @@
 /**
-Human agent that extends Agent
-@param x the x coordinate on canvas
-@param y the y coordinate on canvas
-@param index the id of this agent
-@param theColor the color id of this agent
-@param colorPalette the color palette used by this agent
-@param sensibility a function that represents the perceived proximity between colors from the reference point of this observer.
-@param shortest used by spatial mental model to determine what proximity on canvas is close
-@param farthest used by spatial mental model to determine what proximity on canvas is far away
+Human agent. Extends Agent
+@param {Number} x the x coordinate on canvas
+@param {Number} y the y coordinate on canvas
+@param {String} index the id of this agent
+@param {String} theColor the color id of this agent
+@param {String} colorPalette the color palette used by this agent
+@param {String} sensibility a function that represents the perceived proximity between colors from the reference point of this observer.
+@param {Number} shortest used by spatial mental model to determine what proximity on canvas is close
+@param {Number} farthest used by spatial mental model to determine what proximity on canvas is far away
 */
 class Human extends Agent{
 
 	constructor (x, y, index, theColor, colorPalette, sensibility, shortest, farthest){
 		super(x, y, index);
 
-		//this.colorValues {name, chroma}
+		/**  A color defined as {name, chroma} */
 		this.colorValues = theColor;
 
-		// the location where this agent has been
+		/** Array with all the locations where this agent has been */
 		this.locations=[];
 
-		// the latest distances to all other agents
+		/** Array with all the latest distances to all other agents */
 		this.distances=[];
 
-		// this agents cMentalModel. This represents the unique way this agent perceives colors in the world
+		/** This agents' color Mental Model. This represents the unique way this agent perceives colors in the world*/
 		this.cMentalModel = new ColorMentalModel(colorPalette, document.getElementById("sensibility").value);
 
-		// this agents sMentalModel. This represents the unique way this agent perceives distances in the world
+		/** This agents' spacial Mental Model. This represents the unique way this agent perceives distances in the world*/
 		this.sMentalModel = new SpatialMentalModel(shortest, farthest);
 
-		// set the index of this color inside the color mental model
+		// Finds the index of this agent's color inside its own color mental model
 		this.cMentalModel.setMyIndex(this.colorValues);
 
-		// visual perception angle
+		/** Visual perception angle in radians*/
 		this.visualPerceptionAngle = Math.PI*3/4;
 
-		/* Percentage of "color similarity" that triggers this agent to act. Value between 0 and 1. Where 1 means
+		/** Percentage of "color similarity" that triggers this agent to act. Value between 0 and 1. Where 1 means
 		that all the colors fall within the range of colors that trigger actions. 0.7 means that only
 		colors within 70% range of perceived colors trigger actions. */
 		this.colorTriggerBoundary = 1;
 
-		// How fast agents move in the animation. This controls the length of the step.
+		/** How fast agents move in the animation. This controls the length of the step. Set to 0.007 by default*/
 		this.stepLengthFactor = 0.007;
 
-		// True when all interactants are within the proximity boundary
+		/** This boolean variable defines when this agent feels "comfortable" with all its interactants.
+		It is true when all interactants are within the proximity boundary. It is used to control when this agents
+		stops or resumes interactions*/
 		this.iAmDone = false;
 
-		// The closest distance in pixels this agent want to be from nearby agents
+		/** The closest distance in pixels this agent want to be from nearby agents*/
 		this.proximityPixelGap = 100;
 
-		// controls the diameter of radius scope
+		/** The radius of interaction scope*/
 		this.radiusFactor = 10;
 	}
 
@@ -88,6 +90,10 @@ class Human extends Agent{
 		p5.noFill();
 	}
 
+/**
+ * Shows the perception fields of agents
+ * @param  {P5} p5 An instance of P5.js
+ */
 	showPerceptionField(p5){
 		// stroke color
 		p5.stroke(this.colorValues.rgb()[0],this.colorValues.rgb()[1],this.colorValues.rgb()[2],50);
@@ -109,6 +115,7 @@ class Human extends Agent{
 
 	/**
 	* Show links between this and other agents with whom it interacts
+	* @param  {P5} p5 An instance of P5.js
 	*/
 	visualizeInteractions(p5){
 		// for each pair
@@ -122,6 +129,7 @@ class Human extends Agent{
 
 	/**
 	* Shows the trajectory
+	* @param  {P5} p5 An instance of P5.js
 	*/
 	showTrajectory(p5){
 		p5.stroke(this.colorValues.rgb()[0],this.colorValues.rgb()[1],this.colorValues.rgb()[2],100);
@@ -134,7 +142,7 @@ class Human extends Agent{
 	}
 
 	/**
-	* Interact with other agents
+	* Call one interaction with other agents stored in its own collection of pairs. It is usually used in recursive structures
 	*/
 	interact (){
 		// Define with whom to interact
@@ -216,6 +224,9 @@ class Human extends Agent{
 
 	/**
 	* Asign the subset of pairs to interact with. By default it assigns all of them
+	*  @param {Array} agents The list of agents with whom this agent will interact. Agents in this list will be matched with
+	*  this agent's list of pairs and set their {boolean} interactant parameter to TRUE.
+	*  @return {Array} The list of "TRUE" interactants
 	*/
 	filterInteractants(agents){
 		// read the user choice
@@ -239,15 +250,14 @@ class Human extends Agent{
 			interactants = this.resetInteractants();
 			break;
 		}
-		// function isInteractant(element){
-		// 	return element.interactant == true;
-		// }
 		return interactants.filter(this.isInteractant);
 	}
 
 	/**
 	* Selects the euclidean closest q agents and sets them as the new interactants
-	* @param n the amount of agents to be retrieved
+	* @param {Array} agents the agents to validate proximity gap
+	* @param {Number} n the amount of agents to be retrieved
+	* @return {Array} The top 'n' closest interactants
 	*/
 	chooseNClosest(agents, n){
 		let tempCollection = [];
@@ -281,7 +291,9 @@ class Human extends Agent{
 
 	/**
 	* Choose the ones inside a given radius
+	* @param {Array} agents the agents to validate if they fall within the radius scope
 	* @param r the lenght of the radius (scope) around this agent
+	* @return {Array} The agents within the radius
 	*/
 	chooseByRadius(agents, r){
 		// calculate distance to all the pairs
@@ -296,9 +308,11 @@ class Human extends Agent{
 		return agents;
 	}
 	/**
-	Choose the agents ahead of this agent. 'Ahead' is defined by the bearing of this agent
-	* @param modality the method used to retrieve interactants
-	* @param k the lenght of the radius scope or the amount of nearby agents to be retrieved
+	* Choose the agents in front of this agent. 'In front' is defined by the bearing of this agent
+	* @param {Array} agents the agents to validate if they are in front of this agent
+	* @param {String} modality the method used to retrieve interactants
+	* @param {Number} k the lenght of the radius scope or the amount of nearby agents to be retrieved
+	* @return {Array} The agents within the perception field
 	*/
 	chooseByField(agents, modality, k){
 		switch (modality){
