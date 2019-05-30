@@ -79,12 +79,18 @@ class World{
     }
   }
 
+/**
+ * Calls interact() funciton on all world observers
+ */
   runAgents(){
     for (var a = 0; a < this.observers.length; a++){
       this.observers[a].interact();
     }
   }
 
+/**
+ * Clears the world's collection of observers
+ */
   reset(){
     this.observers = [];
   }
