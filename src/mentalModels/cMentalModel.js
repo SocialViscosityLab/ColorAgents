@@ -6,8 +6,13 @@
 */
 class ColorMentalModel{
 
-  constructor(colorPalette, sensibility, k){
-    /** The array of colors used by this mental model. For instance a warm color set, a cold color set, a rainbow color set.*/
+/**
+ * Constructor
+ * @param {String} colorPalette The name of the color palette to be used
+ * @param {String} sensibility  The name of the Sensibility function, either linear or exponential
+ */
+  constructor(colorPalette, sensibility){
+    // The array of colors used by this mental model. For instance a warm color set, a cold color set, a rainbow color set.
     var cFactory;
 
     if (colorPalette){
@@ -16,21 +21,21 @@ class ColorMentalModel{
       // Instantiate all the colors
       cFactory = new ColorFactory('newton');
     }
-    /** The color palette retrieved from the color Factory. By default it retrieves all the colors */
+    // The color palette retrieved from the color Factory. By default it retrieves all the colors
     this.colorPalette = cFactory.getAll();
     /* Sensibility is a function that represents the perceived proximity between colors from the reference point of an observer.
     If linear, the perceived proximity increases in equal steps as sorted colors distance from the reference point. If non-linear,
     the perceived proximity increases in greater steps for each sorted color, thus colors closer to the reference point appear way
     closer than distant colors. */
 
-    /** The function of color sensibility. Could be euther linear or exponential*/
+    // The function of color sensibility. Could be euther linear or exponential
     this.sensibility;
 
     if(sensibility){
       this.sensibility = sensibility;
     }
 
-    /** The index of the agent's color. Each agent implements a color mental model.*/
+    // The index of the agent's color. Each agent implements a color mental model.
     this.myIndex;
   }
 

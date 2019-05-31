@@ -3,7 +3,7 @@
 * Observations could be self referenced, meaning that one agent can have a reflexive interaction
 */
 class World{
-  
+
 /**
  * Constructor
  */

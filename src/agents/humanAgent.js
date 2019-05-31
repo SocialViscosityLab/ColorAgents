@@ -175,11 +175,13 @@ class Human extends Agent{
 		} else{
 			this.iAmDone = true;
 		}
+
 	}
 
 	/**
 	* Estimate direction of next step adding the vectors towards each interactant
 	* @param {Array} interactants the collection of interactans of this agent.
+	* @return {p5.Vector} the vector
 	*/
 	estimateBearing(interactants){
 		let vector;
@@ -209,6 +211,7 @@ class Human extends Agent{
 			//Calculate the difference between the spatialMagnitude and the actual spatial distance
 			let deltaDist = currentDist - spatialMag;
 
+			// Update distances. This could be done somewhere else, but here it saves the cost of iterating oiver all the interactants
 			this.updateDistances(i.id,spatialMag, currentDist);
 
 			// for the first interactant

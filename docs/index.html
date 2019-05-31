@@ -204,12 +204,6 @@
                       </a></li>
                       
                       <li><a
-                        href='#humansteplengthfactor'
-                        class='regular pre-open'>
-                        #stepLengthFactor
-                      </a></li>
-                      
-                      <li><a
                         href='#humaniamdone'
                         class='regular pre-open'>
                         #iAmDone
@@ -261,6 +255,12 @@
                         href='#humaninteract'
                         class='regular pre-open'>
                         #interact
+                      </a></li>
+                      
+                      <li><a
+                        href='#humanestimatebearing'
+                        class='regular pre-open'>
+                        #estimateBearing
                       </a></li>
                       
                       <li><a
@@ -1495,7 +1495,7 @@
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>move(dist, angle)</span>
+            <span class='code strong strong truncate'>move(dist, angle, stepLengthFactor)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1507,7 +1507,7 @@
 
  
   
-    <div class='pre p1 fill-light mt0'>move(dist: any, angle: any)</div>
+    <div class='pre p1 fill-light mt0'>move(dist: any, angle: any, stepLengthFactor: any)</div>
    
   
   
@@ -1541,6 +1541,14 @@
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>stepLengthFactor</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -1566,7 +1574,7 @@
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>move2(target)</span>
+            <span class='code strong strong truncate'>move2(vector)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1578,7 +1586,7 @@
 
  
   
-    <div class='pre p1 fill-light mt0'>move2(target: any)</div>
+    <div class='pre p1 fill-light mt0'>move2(vector: p5.Vector)</div>
    
   
   
@@ -1596,8 +1604,8 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>target</span> <code class='quiet'>(any)</code>
-	    the new position in PVector format
+            <span class='code bold'>vector</span> <code class='quiet'>(p5.Vector)</code>
+	    the vector to be added to this agent's position
 
           </div>
           
@@ -2069,54 +2077,6 @@ colors within 70% range of perceived colors trigger actions.</p>
  
   
     <div class='pre p1 fill-light mt0'>colorTriggerBoundary</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humansteplengthfactor'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>stepLengthFactor</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>How fast agents move in the animation. This controls the length of the step. Set to 0.007 by default</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>stepLengthFactor</div>
    
   
   
@@ -2635,6 +2595,76 @@ stops or resumes interactions</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='humanestimatebearing'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>estimateBearing(interactants)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Estimate direction of next step adding the vectors towards each interactant</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>estimateBearing(interactants: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): p5.Vector</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>interactants</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
+	    the collection of interactans of this agent.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>p5.Vector</code>:
+        the vector
+
+      
+    
   
 
   
@@ -3625,12 +3655,14 @@ is returned</p>
   </div>
   
 
-  <p>Color Mental Model
-By default it provides the Newtonean rainbow model.</p>
+  <p>A color mental model is a ordered sequence of colors particular to each agent in
+the world. Every color mental model belongs to an agent, therefore, color mental
+models exist only in the 'mind' of each agent.
+By default this class provides the Newtonean rainbow model.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>new ColorMentalModel(colorPalette: any, sensibility: any, k: any)</div>
+    <div class='pre p1 fill-light mt0'>new ColorMentalModel(colorPalette: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, sensibility: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</div>
    
   
   
@@ -3648,24 +3680,18 @@ By default it provides the Newtonean rainbow model.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>colorPalette</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>colorPalette</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    The name of the color palette to be used
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>sensibility</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>k</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>sensibility</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    The name of the Sensibility function, either linear or exponential
+
           </div>
           
         </div>
@@ -3983,11 +4009,11 @@ indexA and indexB must be between 0 and colorPalette.length</p>
 
   
 
-  <p>Returns the perceived distance for a given percentage of the colorpalette</p>
+  <p>Returns a binary signal if a target color is between a given percentage similarity in the current colorpalette</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>isActionTrigger(target: any, percentage: any)</div>
+    <div class='pre p1 fill-light mt0'>isActionTrigger(target: Color, percentage: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></div>
    
   
   
@@ -4005,16 +4031,18 @@ indexA and indexB must be between 0 and colorPalette.length</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>target</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>target</span> <code class='quiet'>(Color)</code>
+	    target color
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>percentage</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>percentage</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    percentage of "color similarity"
+
           </div>
           
         </div>
@@ -4024,6 +4052,14 @@ indexA and indexB must be between 0 and colorPalette.length</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></code>:
+        True if the target color is similar enough to the index of this cMentalModel
+
+      
+    
   
 
   

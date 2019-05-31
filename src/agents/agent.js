@@ -130,7 +130,7 @@ class Agent{
 
   /**
   *Moves to the new position
-  *@param  vector the vector to be added to this agent's position
+  *@param {p5.Vector} vector the vector to be added to this agent's position
   */
   move2(vector){
     this.pos.add(vector);
