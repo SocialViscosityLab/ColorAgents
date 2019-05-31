@@ -40,9 +40,6 @@ class Human extends Agent{
 		colors within 70% range of perceived colors trigger actions. */
 		this.colorTriggerBoundary = 1;
 
-		/** How fast agents move in the animation. This controls the length of the step. Set to 0.007 by default*/
-		this.stepLengthFactor = 0.007;
-
 		/** This boolean variable defines when this agent feels "comfortable" with all its interactants.
 		It is true when all interactants are within the proximity boundary. It is used to control when this agents
 		stops or resumes interactions*/
@@ -53,6 +50,7 @@ class Human extends Agent{
 
 		/** The radius of interaction scope*/
 		this.radiusFactor = 10;
+
 	}
 
 	/**
@@ -79,7 +77,7 @@ class Human extends Agent{
 			p5.noStroke();
 		}else{
 			// thick stroke
-			p5.stroke(2);
+			p5.stroke(this.colorValues.rgb());
 		}
 		// draw ellipse
 		p5.ellipse(this.pos.x,this.pos.y, 4);
@@ -88,12 +86,15 @@ class Human extends Agent{
 		// print agent ID
 		p5.text(this.id, this.pos.x - 2,this.pos.y - 11);
 		p5.noFill();
+
+		p5.stroke(this.colorValues.rgb());
+		p5.line(this.pos.x, this.pos.y, this.pos.x + Math.cos(this.bearing)*10, this.pos.y + Math.sin(this.bearing)*10);
 	}
 
-/**
- * Shows the perception fields of agents
- * @param  {P5} p5 An instance of P5.js
- */
+	/**
+	* Shows the perception fields of agents
+	* @param  {P5} p5 An instance of P5.js
+	*/
 	showPerceptionField(p5){
 		// stroke color
 		p5.stroke(this.colorValues.rgb()[0],this.colorValues.rgb()[1],this.colorValues.rgb()[2],50);
@@ -141,6 +142,8 @@ class Human extends Agent{
 		p5.endShape();
 	}
 
+
+
 	/**
 	* Call one interaction with other agents stored in its own collection of pairs. It is usually used in recursive structures
 	*/
@@ -157,60 +160,83 @@ class Human extends Agent{
 		// store the last position before moving
 		this.lastPos.set(this.pos);
 
-		for (let i of interactants) {
-			i = i.agent;
-			/* this gate has this rationale: If the perceived difference between my color and other agent's is less than my
-			threshold for action, then do act */
-			let doAct = this.cMentalModel.isActionTrigger(i.colorValues, this.colorTriggerBoundary);
+		// estimate the magnitude and direction of next step
+		let headingVector = this.estimateBearing(interactants);
 
-			if(doAct){
-				// Use the mental model to calculate the perceived distance to each interactant
-				let perceivedColorDistance = this.cMentalModel.getPerceivedColorDistance(i.colorValues);
+		this.bearing = headingVector.heading();
 
-				/*
-				There are spatial distances between this agent's location and the interactants' locations. Such distances may not correspond to
-				this agent's perceived color distance when converted into spatial distances. The reult of mapping of the perceived color
-				distance into a spatial distance is named spatial magnitude. If the difference between the spatial magnitude and the spatial
-				distance is negative, this agent should get closer to the other agent, and viceversa.
+		// Move one step in the heading vector's direction if the vector magnitude is significant
+		let magnitudeThreshold = document.getElementById("changeMagnitude");
 
-				This means that this agent should have a mechanism to transduce perceived color distance into the spatial distances. That is why we need
-				a Spatial Mental Model.
-				*/
-				let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
-
-				//Calculate the current spatial distance
-				let currentDist = globalP5.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
-
-				//Calculate the difference between the spatialMagnitude and the actual spatial distance
-				// let deltaDist = currentDist - spatialMag;
-
-				// Calculate the angle between this and the pair agent
-				let angle = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
-
-				this.updateDistances(i.id,spatialMag, currentDist);
-
-				this.move((currentDist - spatialMag), angle);
-
-				//console.log(this.id + " interacted with: "+ i.id);
-			}
-		}
-
-		// Adjust the position and the bearing
-
-		// update the bearing after being compared with all the interactants
-		if(this.pos.x != this.lastPos.x && this.pos.y != this.lastPos.y){
-			this.bearing = Math.atan2(this.pos.y-this.lastPos.y, this.pos.x-this.lastPos.x);
+		if (headingVector.mag() > Number(magnitudeThreshold.value)){
+			document.getElementById('sliderChangeMagnitude').innerHTML = magnitudeThreshold.value
+			this.iAmDone = false;
+			this.move2(headingVector.normalize());
+		} else{
+			this.iAmDone = true;
 		}
 	}
 
-/**
- * Updates the collections of spatial magnitudes and pixel distances between this
- * agent and other agent identified by its id
- * @param  {String} id          Other agent's ID
- * @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
- * @param  {Number} currentDist Current distance between this and other agent
- */
-	updateDistances(id,spatialMag, currentDist){
+	/**
+	* Estimate direction of next step adding the vectors towards each interactant
+	* @param {Array} interactants the collection of interactans of this agent.
+	*/
+	estimateBearing(interactants){
+		let vector;
+
+		for (let i of interactants) {
+			i = i.agent;
+
+			// Calculate vector magnitude
+
+			// Use the mental model to calculate the perceived distance to each interactant
+			let perceivedColorDistance = this.cMentalModel.getPerceivedColorDistance(i.colorValues);
+
+			/*
+			There are spatial distances between this agent's location and the interactants' locations. Such distances may not correspond to
+			this agent's perceived color distance when converted into spatial distances. The reult of mapping of the perceived color
+			distance into a spatial distance is named spatial magnitude. If the difference between the spatial magnitude and the spatial
+			distance is negative, this agent should get closer to the other agent, and viceversa.
+
+			This means that this agent should have a mechanism to transduce perceived color distance into the spatial distances. That is why we need
+			a Spatial Mental Model.
+			*/
+			let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
+
+			//Calculate the current spatial distance
+			let currentDist = globalP5.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
+
+			//Calculate the difference between the spatialMagnitude and the actual spatial distance
+			let deltaDist = currentDist - spatialMag;
+
+			this.updateDistances(i.id,spatialMag, currentDist);
+
+			// for the first interactant
+			if (!vector){
+				// Calculate the angle between this and the pair agent
+				let tmp =  Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
+				vector = new globalP5.createVector(Math.cos(tmp)*deltaDist, Math.sin(tmp)*deltaDist);
+			} else {
+				let tmp =  Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
+				let tmpV = new globalP5.createVector(Math.cos(tmp)*deltaDist, Math.sin(tmp)*deltaDist)
+				vector.add(tmpV);
+			}
+		}
+		if (vector == undefined){
+			return new globalP5.createVector(0,0);
+		} else {
+			return vector;
+		}
+	}
+
+	/**
+	* Updates the collections of spatial magnitudes and pixel distances between this
+	* agent and other agent identified by its id
+	* @param  {String} id          Other agent's ID
+	* @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
+	* @param  {Number} currentDist Current distance between this and other agent
+	*/
+	updateDistances(id, spatialMag, currentDist){
 		if (this.distances.length < 1){
 			this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
 		} else {
@@ -316,6 +342,7 @@ class Human extends Agent{
 		}
 		return agents;
 	}
+
 	/**
 	* Choose the agents in front of this agent. 'In front' is defined by the bearing of this agent
 	* @param {Array} agents the agents to validate if they are in front of this agent
