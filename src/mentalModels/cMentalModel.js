@@ -1,37 +1,39 @@
 /**
-Color Mental Model
-* By default it provides the Newtonean rainbow model.
+* A color mental model is a ordered sequence of colors particular to each agent in
+* the world. Every color mental model belongs to an agent, therefore, color mental
+* models exist only in the 'mind' of each agent.
+* By default this class provides the Newtonean rainbow model.
 */
 class ColorMentalModel{
 
   constructor(colorPalette, sensibility, k){
-    //The array of colors used by this mental model. For instance a warm color set, a cold color set, a rainbow color set.
+    /** The array of colors used by this mental model. For instance a warm color set, a cold color set, a rainbow color set.*/
     var cFactory;
+
     if (colorPalette){
       cFactory = new ColorFactory(colorPalette);
     } else {
       // Instantiate all the colors
       cFactory = new ColorFactory('newton');
     }
-    // Retrieve al the colors
+    /** The color palette retrieved from the color Factory. By default it retrieves all the colors */
     this.colorPalette = cFactory.getAll();
     /* Sensibility is a function that represents the perceived proximity between colors from the reference point of an observer.
     If linear, the perceived proximity increases in equal steps as sorted colors distance from the reference point. If non-linear,
     the perceived proximity increases in greater steps for each sorted color, thus colors closer to the reference point appear way
     closer than distant colors. */
+
+    /** The function of color sensibility. Could be euther linear or exponential*/
+    this.sensibility;
+
     if(sensibility){
       this.sensibility = sensibility;
     }
 
-    //The number of categorical distances of this mental model.
-    // if(k){
-    //   this.k = k;
-    // } else {
-    //   this.k = this.colorPalette.length;
-    // }
-
+    /** The index of the agent's color. Each agent implements a color mental model.*/
     this.myIndex;
   }
+
   /**
   * Finds the color index in a color palette
   * @param {Number} color the color to be matched to a color palette
@@ -120,8 +122,11 @@ class ColorMentalModel{
   }
 
   /**
-  Returns the perceived distance for a given percentage of the colorpalette
-  */
+   * Returns a binary signal if a target color is between a given percentage similarity in the current colorpalette
+   * @param  {Color}  target     target color
+   * @param  {Number}  percentage percentage of "color similarity"
+   * @return {Boolean}            True if the target color is similar enough to the index of this cMentalModel
+   */
   isActionTrigger(target, percentage){
     let tarIndex = this.findColorIndex(target);
     let distEnd = (this.colorPalette.length - this.myIndex) -1;

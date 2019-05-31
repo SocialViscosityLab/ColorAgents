@@ -47,7 +47,7 @@ class Agent{
   getPairs(){
     return this.pairs;
   }
-  
+
   /**
   * Wheter or not the given element interacts with this agent
   * @param  {[Agent]}  element [description]
@@ -118,11 +118,11 @@ class Agent{
   @param  dist the magnitude of the displacement
   @param  angle the direction of this movement
   */
-  move(dist, angle){
+  move(dist, angle, stepLengthFactor){
     // Get step in x
-    var stepX = Math.cos(angle) * dist * this.stepLengthFactor;
+    var stepX = Math.cos(angle) * dist * stepLengthFactor;
     // Get step in y
-    var stepY = Math.sin(angle) * dist * this.stepLengthFactor;
+    var stepY = Math.sin(angle) * dist * stepLengthFactor;
     // move forward in x & y
     this.pos.x += stepX;
     this.pos.y += stepY;
@@ -130,14 +130,9 @@ class Agent{
 
   /**
   *Moves to the new position
-  *@param  target the new position in PVector format
+  *@param  vector the vector to be added to this agent's position
   */
-  move2(target){
-    // Calculate the angle between this and the pair agent
-    let angle = Math.atan2(target.y - this.pos.y, target.x - this.pos.x);;
-    // move forward in x & y
-    this.pos.x += Math.cos(angle)*target.mag();
-    this.pos.y += Math.sin(angle)*target.mag();
-    return angle;
+  move2(vector){
+    this.pos.add(vector);
   }
 }
