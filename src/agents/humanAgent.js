@@ -182,7 +182,7 @@ class Human extends Agent{
 				let currentDist = globalP5.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
 
 				//Calculate the difference between the spatialMagnitude and the actual spatial distance
-				let deltaDist = currentDist - spatialMag;
+				// let deltaDist = currentDist - spatialMag;
 
 				// Calculate the angle between this and the pair agent
 				let angle = Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
@@ -190,6 +190,8 @@ class Human extends Agent{
 				this.updateDistances(i.id,spatialMag, currentDist);
 
 				this.move((currentDist - spatialMag), angle);
+
+				//console.log(this.id + " interacted with: "+ i.id);
 			}
 		}
 
@@ -201,6 +203,13 @@ class Human extends Agent{
 		}
 	}
 
+/**
+ * Updates the collections of spatial magnitudes and pixel distances between this
+ * agent and other agent identified by its id
+ * @param  {String} id          Other agent's ID
+ * @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
+ * @param  {Number} currentDist Current distance between this and other agent
+ */
 	updateDistances(id,spatialMag, currentDist){
 		if (this.distances.length < 1){
 			this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
