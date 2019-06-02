@@ -11,14 +11,19 @@ class Agent{
   constructor(x, y, id){
     /** Unique {String} identifier for this agent */
     this.id = id;
+
     /** A {PVector} storing current x and y */
     this.pos = globalP5.createVector(x,y);
+
     /** The {PVector} position previously stored at this.pos before this.pos was updated*/
     this.lastPos = globalP5.createVector(x,y);
+
     /** The direction this agent is pointing towards, i.e., its bearing */
     this.bearing = globalP5.map(Math.atan2(this.pos.y - 250, this.pos.x- 250),0,Math.PI*2, -Math.PI, Math.PI);
+
     /** A map storing pairs of {agent}agent: {boolean}interactant.*/
     this.pairs=[];
+    
     /** This boolean variable defines when this agent feels "comfortable" with its current situation in the
     world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions*/
     this.iAmDone = false;
