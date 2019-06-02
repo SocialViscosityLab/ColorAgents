@@ -6,8 +6,8 @@ Human agent. Extends Agent
 @param {String} theColor the color id of this agent
 @param {String} colorPalette the color palette used by this agent
 @param {String} sensibility a function that represents the perceived proximity between colors from the reference point of this observer.
-@param {Number} shortest used by spatial mental model to determine what proximity on canvas is close
-@param {Number} farthest used by spatial mental model to determine what proximity on canvas is far away
+@param {Number} shortest scalar used by spatial mental model to determine what on canvas is close
+@param {Number} farthest scalar used by spatial mental model to determine what on canvas is far away
 */
 class Human extends Agent{
 
@@ -40,30 +40,13 @@ class Human extends Agent{
 		colors within 70% range of perceived colors trigger actions. */
 		this.colorTriggerBoundary = 1;
 
-		/** This boolean variable defines when this agent feels "comfortable" with all its interactants.
-		It is true when all interactants are within the proximity boundary. It is used to control when this agents
-		stops or resumes interactions*/
-		this.iAmDone = false;
+		// The lowest distance this agent starts perceiving something as far away. This is used in the alpha mapping
+		// function of the visualization matrix
+		this.farthest = farthest;
 
-		/** The closest distance in pixels this agent want to be from nearby agents*/
-		this.proximityPixelGap = 100;
-
-		/** The radius of interaction scope*/
+		// The amplification factor of interaction radius scope
 		this.radiusFactor = 10;
 
-	}
-
-	/**
-	* The observer notify() function renamed as updateMyWorld. Instances of this class observe an instance of the world class
-	* https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/
-	*/
-	updateMyWorld(world){
-		// The world has changed!!! Update all the references to the world
-		for(let h of world.getHumans(this)){
-			if (!this.pairsWith(h)){
-				this.addPair(h,false);
-			}
-		}
 	}
 
 	/**
@@ -168,14 +151,15 @@ class Human extends Agent{
 		// Move one step in the heading vector's direction if the vector magnitude is significant
 		let magnitudeThreshold = document.getElementById("changeMagnitude");
 
+		// Verfiy if the change is worth to execute the movement
 		if (headingVector.mag() > Number(magnitudeThreshold.value)){
 			document.getElementById('sliderChangeMagnitude').innerHTML = magnitudeThreshold.value
 			this.iAmDone = false;
+			// Move
 			this.move2(headingVector.normalize());
 		} else{
 			this.iAmDone = true;
 		}
-
 	}
 
 	/**
@@ -365,8 +349,6 @@ class Human extends Agent{
 			break;
 		}
 		//filter interactants by perception scope
-		//console.log("  upper: "+ (this.bearing + this.visualPerceptionAngle/2));
-		//console.log("  lower: "+ (this.bearing - this.visualPerceptionAngle/2));
 		for (let a of agents) {
 			if (a.interactant == true){
 				let angleBetween = Math.atan2(a.agent.pos.y - this.pos.y, a.agent.pos.x - this.pos.x);

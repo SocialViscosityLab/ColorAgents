@@ -153,11 +153,10 @@ var plotMatrix = function (p5){
 	p5.draw = function(){
 		p5.background(255);
 		// MATRICES
-	if (showIntMtrx){
-		vizMatrix1D.plot(p5.createVector(0,30));
+		if (showIntMtrx){
+			vizMatrix1D.plot(p5.createVector(0,30));
+		}
 	}
-}
-
 }
 
 var vizMatrix = new p5(plotMatrix, "PlotMatrix");

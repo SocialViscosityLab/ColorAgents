@@ -11,12 +11,14 @@ class InteractionMatrix {
   * @param {World} world An instance of the world
   */
   constructor(p5, world){
+    // The p5.js instance
     this.p5 = p5;
+    // the world instance
     this.world = world;
+    // the agents from the world
     this.agents = world.getAgents();
+    // the matrix cell size
     this.size = 15;
-    // this.humans = world.getHumans();
-    // this.nonhumans = world.getNonhumans();
   }
 
   /**
@@ -45,8 +47,8 @@ class InteractionMatrix {
         let dist = this.markInteraction(agentI, agentJ);
         // if agents interact
         if (dist){
-          let alphaMagnitude = this.p5.map(dist.spatialMag, 0, this.agents[i].proximityPixelGap, 0, 255);
-          let alphaDistance = this.p5.map(dist.currentDist,0,this.agents[i].proximityPixelGap, 0, 255);
+          let alphaMagnitude = this.p5.map(dist.spatialMag, 0, this.agents[i].farthest, 0, 255);
+          let alphaDistance = this.p5.map(dist.currentDist,0,this.agents[i].farthest, 0, 255);
           //this.p5.stroke(0,20);
           // this color represents the ideal distance between agents
           this.p5.fill(this.agents[i].colorValues._rgb[0], this.agents[i].colorValues._rgb[1], this.agents[i].colorValues._rgb[2],alphaMagnitude);

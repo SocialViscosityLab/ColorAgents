@@ -19,6 +19,9 @@ class Agent{
     this.bearing = globalP5.map(Math.atan2(this.pos.y - 250, this.pos.x- 250),0,Math.PI*2, -Math.PI, Math.PI);
     /** A map storing pairs of {agent}agent: {boolean}interactant.*/
     this.pairs=[];
+    /** This boolean variable defines when this agent feels "comfortable" with its current situation in the
+    world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions*/
+    this.iAmDone = false;
   }
 
   /**
@@ -112,6 +115,19 @@ class Agent{
     }
     return false;
   }
+
+  /**
+	* The observer notify() function renamed as updateMyWorld. Instances of this class observe an instance of the world class
+	* https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/
+	*/
+	updateMyWorld(world){
+		// The world has changed!!! Update all the references to the world
+		for(let h of world.getHumans(this)){
+			if (!this.pairsWith(h)){
+				this.addPair(h,false);
+			}
+		}
+	}
 
   /**
   Moves closer or away from the position of the other agent

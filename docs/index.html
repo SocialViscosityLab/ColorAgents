@@ -68,6 +68,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#agentiamdone'
+                        class='regular pre-open'>
+                        #iAmDone
+                      </a></li>
+                      
+                      <li><a
                         href='#agentaddpair'
                         class='regular pre-open'>
                         #addPair
@@ -125,6 +131,12 @@
                         href='#agentpairswith'
                         class='regular pre-open'>
                         #pairsWith
+                      </a></li>
+                      
+                      <li><a
+                        href='#agentupdatemyworld'
+                        class='regular pre-open'>
+                        #updateMyWorld
                       </a></li>
                       
                       <li><a
@@ -201,30 +213,6 @@
                         href='#humancolortriggerboundary'
                         class='regular pre-open'>
                         #colorTriggerBoundary
-                      </a></li>
-                      
-                      <li><a
-                        href='#humaniamdone'
-                        class='regular pre-open'>
-                        #iAmDone
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanproximitypixelgap'
-                        class='regular pre-open'>
-                        #proximityPixelGap
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanradiusfactor'
-                        class='regular pre-open'>
-                        #radiusFactor
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanupdatemyworld'
-                        class='regular pre-open'>
-                        #updateMyWorld
                       </a></li>
                       
                       <li><a
@@ -837,6 +825,55 @@
  
   
     <div class='pre p1 fill-light mt0'>pairs</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='agentiamdone'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>iAmDone</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>This boolean variable defines when this agent feels "comfortable" with its current situation in the
+world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>iAmDone</div>
    
   
   
@@ -1491,6 +1528,68 @@
       </div>
     </div>
   
+    <div class='border-bottom' id='agentupdatemyworld'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>updateMyWorld(world)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The observer notify() function renamed as updateMyWorld. Instances of this class observe an instance of the world class
+<a href="https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/">https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/</a></p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>updateMyWorld(world: any)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>world</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='agentmove'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -1738,7 +1837,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>shortest</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    used by spatial mental model to determine what proximity on canvas is close
+	    scalar used by spatial mental model to determine what on canvas is close
 
           </div>
           
@@ -1747,7 +1846,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>farthest</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    used by spatial mental model to determine what proximity on canvas is far away
+	    scalar used by spatial mental model to determine what on canvas is far away
 
           </div>
           
@@ -2088,214 +2187,6 @@ colors within 70% range of perceived colors trigger actions.</p>
   
   
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humaniamdone'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>iAmDone</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>This boolean variable defines when this agent feels "comfortable" with all its interactants.
-It is true when all interactants are within the proximity boundary. It is used to control when this agents
-stops or resumes interactions</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>iAmDone</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanproximitypixelgap'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>proximityPixelGap</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>The closest distance in pixels this agent want to be from nearby agents</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>proximityPixelGap</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanradiusfactor'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>radiusFactor</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>The radius of interaction scope</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>radiusFactor</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanupdatemyworld'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>updateMyWorld(world)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>The observer notify() function renamed as updateMyWorld. Instances of this class observe an instance of the world class
-<a href="https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/">https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/</a></p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>updateMyWorld(world: any)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>world</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
   
 
   
