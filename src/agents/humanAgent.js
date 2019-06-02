@@ -17,12 +17,6 @@ class Human extends Agent{
 		/**  A color defined as {name, chroma} */
 		this.colorValues = theColor;
 
-		/** Array with all the locations where this agent has been */
-		this.locations=[];
-
-		/** Array with all the latest distances to all other agents */
-		this.distances=[];
-
 		/** This agents' color Mental Model. This represents the unique way this agent perceives colors in the world*/
 		this.cMentalModel = new ColorMentalModel(colorPalette, document.getElementById("sensibility").value);
 
@@ -131,11 +125,9 @@ class Human extends Agent{
 	* Call one interaction with other agents stored in its own collection of pairs. It is usually used in recursive structures
 	*/
 	interact (){
-		// Define with whom to interact
-		let interactants = this.getPairs();
 
-		// filter pairs
-		interactants = this.filterInteractants(interactants);
+		// Define with whom to interact. Filter pairs
+		let interactants = this.retrieveInteractants(this.getPairs());
 
 		// Store my current position
 		this.locations.push({x:this.pos.x, y:this.pos.y});
@@ -196,7 +188,7 @@ class Human extends Agent{
 			let deltaDist = currentDist - spatialMag;
 
 			// Update distances. This could be done somewhere else, but here it saves the cost of iterating oiver all the interactants
-			this.updateDistances(i.id,spatialMag, currentDist);
+			this.updateSpatialDistances(i.id,spatialMag, currentDist);
 
 			// for the first interactant
 			if (!vector){
@@ -217,40 +209,12 @@ class Human extends Agent{
 	}
 
 	/**
-	* Updates the collections of spatial magnitudes and pixel distances between this
-	* agent and other agent identified by its id
-	* @param  {String} id          Other agent's ID
-	* @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
-	* @param  {Number} currentDist Current distance between this and other agent
-	*/
-	updateDistances(id, spatialMag, currentDist){
-		if (this.distances.length < 1){
-			this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-		} else {
-			let index = -1;
-			for (var i = 0; i < this.distances.length; i++) {
-				if (this.distances[i].id == id){
-					index = i;
-					break;
-				}
-			}
-
-			if(index != -1){
-				this.distances[index].spatialMag = spatialMag;
-				this.distances[index].currentDist = currentDist;
-			} else {
-				this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-			}
-		}
-	}
-
-	/**
-	* Asign the subset of pairs to interact with. By default it assigns all of them
+	* Retrieves a filtered subset of agents from the total set of pairs. By default it retrieves all of them
 	*  @param {Array} agents The list of agents with whom this agent will interact. Agents in this list will be matched with
 	*  this agent's list of pairs and set their {boolean} interactant parameter to TRUE.
 	*  @return {Array} The list of "TRUE" interactants
 	*/
-	filterInteractants(agents){
+	retrieveInteractants(agents){
 		// read the user choice
 		let tmp = document.getElementById('rule').value;
 		let val = document.getElementById("range");
@@ -285,7 +249,7 @@ class Human extends Agent{
 		let tempCollection = [];
 		// calculate distance to all the pairs
 		for(let i of agents){
-			let proximity = this.sMentalModel.euclideanDist(this, i.agent);
+			let proximity = Utils.euclideanDist(this, i.agent);
 			tempCollection.push({agent:i,prox:proximity});
 		}
 		// sort them by proximity
@@ -320,7 +284,7 @@ class Human extends Agent{
 	chooseByRadius(agents, r){
 		// calculate distance to all the pairs
 		for(let i of agents){
-			let proximity = this.sMentalModel.euclideanDist(this, i.agent);
+			let proximity = Utils.euclideanDist(this, i.agent);
 			if (proximity <= r){
 				i.interactant = true;
 			} else {

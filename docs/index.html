@@ -50,6 +50,18 @@
                       </a></li>
                       
                       <li><a
+                        href='#agentlocations'
+                        class='regular pre-open'>
+                        #locations
+                      </a></li>
+                      
+                      <li><a
+                        href='#agentdistances'
+                        class='regular pre-open'>
+                        #distances
+                      </a></li>
+                      
+                      <li><a
                         href='#agentlastpos'
                         class='regular pre-open'>
                         #lastPos
@@ -151,6 +163,12 @@
                         #move2
                       </a></li>
                       
+                      <li><a
+                        href='#agentupdatespatialdistances'
+                        class='regular pre-open'>
+                        #updateSpatialDistances
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -177,18 +195,6 @@
                         href='#humancolorvalues'
                         class='regular pre-open'>
                         #colorValues
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanlocations'
-                        class='regular pre-open'>
-                        #locations
-                      </a></li>
-                      
-                      <li><a
-                        href='#humandistances'
-                        class='regular pre-open'>
-                        #distances
                       </a></li>
                       
                       <li><a
@@ -249,12 +255,6 @@
                         href='#humanestimatebearing'
                         class='regular pre-open'>
                         #estimateBearing
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanupdatedistances'
-                        class='regular pre-open'>
-                        #updateDistances
                       </a></li>
                       
                       <li><a
@@ -681,6 +681,102 @@
  
   
     <div class='pre p1 fill-light mt0'>pos</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='agentlocations'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>locations</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Array with all the locations where this agent has been</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>locations</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='agentdistances'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>distances</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Array with all the latest distances to all other agents</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>distances</div>
    
   
   
@@ -1731,6 +1827,87 @@ world in relation to ALL its interactants. It is used to control when this agent
       </div>
     </div>
   
+    <div class='border-bottom' id='agentupdatespatialdistances'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>updateSpatialDistances(id, spatialMag, currentDist)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Updates the collections of spatial magnitudes and pixel distances between this
+agent and other agent identified by its id</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>updateSpatialDistances(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, spatialMag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, currentDist: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Other agent's ID
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>spatialMag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    This agent's percived spatial magnitud to other's agent
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>currentDist</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    Current distance between this and other agent
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
   
@@ -1886,102 +2063,6 @@ world in relation to ALL its interactants. It is used to control when this agent
  
   
     <div class='pre p1 fill-light mt0'>colorValues</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanlocations'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>locations</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Array with all the locations where this agent has been</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>locations</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humandistances'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>distances</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Array with all the latest distances to all other agents</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>distances</div>
    
   
   
@@ -2556,87 +2637,6 @@ colors within 70% range of perceived colors trigger actions.</p>
 
       
     
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanupdatedistances'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>updateDistances(id, spatialMag, currentDist)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Updates the collections of spatial magnitudes and pixel distances between this
-agent and other agent identified by its id</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>updateDistances(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, spatialMag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, currentDist: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-	    Other agent's ID
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>spatialMag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    This agent's percived spatial magnitud to other's agent
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>currentDist</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    Current distance between this and other agent
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
   
 
   

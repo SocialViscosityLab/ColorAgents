@@ -15,6 +15,12 @@ class Agent{
     /** A {PVector} storing current x and y */
     this.pos = globalP5.createVector(x,y);
 
+    /** Array with all the locations where this agent has been */
+    this.locations=[];
+
+    /** Array with all the latest distances to all other agents */
+    this.distances=[];
+
     /** The {PVector} position previously stored at this.pos before this.pos was updated*/
     this.lastPos = globalP5.createVector(x,y);
 
@@ -23,7 +29,7 @@ class Agent{
 
     /** A map storing pairs of {agent}agent: {boolean}interactant.*/
     this.pairs=[];
-    
+
     /** This boolean variable defines when this agent feels "comfortable" with its current situation in the
     world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions*/
     this.iAmDone = false;
@@ -156,4 +162,36 @@ class Agent{
   move2(vector){
     this.pos.add(vector);
   }
+
+  /**
+  * Updates the collections of spatial magnitudes and pixel distances between this
+  * agent and other agent identified by its id
+  * @param  {String} id          Other agent's ID
+  * @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
+  * @param  {Number} currentDist Current distance between this and other agent
+  */
+  updateSpatialDistances(id, spatialMag, currentDist){
+    // The first update
+    if (this.distances.length < 1){
+      this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+    } else {
+      // Find the interactants's index in the collection of distances
+      let index = -1;
+      for (var i = 0; i < this.distances.length; i++) {
+        if (this.distances[i].id == id){
+          index = i;
+          break;
+        }
+      }
+      // if the interactants is in the collection update the distances
+      if(index != -1){
+        this.distances[index].spatialMag = spatialMag;
+        this.distances[index].currentDist = currentDist;
+      } else {
+        // else, create a new record
+        this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+      }
+    }
+  }
+  
 }
