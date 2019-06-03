@@ -14,7 +14,6 @@ class Human extends Agent{
 	constructor (x, y, index, theColor, colorPalette, sensibility, shortest, farthest){
 		super(x, y, index);
 
-		/**  A color defined as {name, chroma} */
 		this.colorValues = theColor;
 
 		/** This agents' color Mental Model. This represents the unique way this agent perceives colors in the world*/
@@ -40,94 +39,20 @@ class Human extends Agent{
 
 		// The amplification factor of interaction radius scope
 		this.radiusFactor = 10;
-
 	}
 
 	/**
-	* Display visual elements of this agent on screen
-	*/
-	show (p5){
-		p5.fill(this.colorValues.rgb(),10);
-		// If my task is not completed to a satisfactory degree
-		if (!this.iAmDone){ // this.calcProgress() > this.iAmDoneThreshold
-			// thin stroke
-			p5.noStroke();
-		}else{
-			// thick stroke
-			p5.stroke(this.colorValues.rgb());
-		}
-		// draw ellipse
-		p5.ellipse(this.pos.x,this.pos.y, 4);
-		// black text
-		p5.fill(0,50);
-		// print agent ID
-		p5.text(this.id, this.pos.x - 2,this.pos.y - 11);
-		p5.noFill();
-
-		p5.stroke(this.colorValues.rgb());
-		p5.line(this.pos.x, this.pos.y, this.pos.x + Math.cos(this.bearing)*10, this.pos.y + Math.sin(this.bearing)*10);
-	}
-
-	/**
-	* Shows the perception fields of agents
-	* @param  {P5} p5 An instance of P5.js
-	*/
-	showPerceptionField(p5){
-		// stroke color
-		p5.stroke(this.colorValues.rgb()[0],this.colorValues.rgb()[1],this.colorValues.rgb()[2],50);
-		// for radius
-		if (document.getElementById('rule').value == 'radius'){
-			p5.ellipse(this.pos.x,this.pos.y, (2*document.getElementById("range").value*this.radiusFactor));
-		}
-		// for arcs
-		if (document.getElementById('rule').value == 'byField'){
-			let radius = Number(document.getElementById("range").value) * this.radiusFactor;
-			let nX = Math.cos(this.bearing) * radius;
-			let nY = Math.sin(this.bearing) * radius;
-			p5.fill(100,5);
-			p5.line(this.lastPos.x, this.lastPos.y , this.pos.x + nX, this.pos.y + nY);
-			p5.arc(this.lastPos.x, this.lastPos.y, radius*2, radius*2, this.bearing - this.visualPerceptionAngle/2, this.bearing + this.visualPerceptionAngle/2, p5.PIE);
-			p5.noFill();
-		}
-	}
-
-	/**
-	* Show links between this and other agents with whom it interacts
-	* @param  {P5} p5 An instance of P5.js
-	*/
-	visualizeInteractions(p5){
-		// for each pair
-		for (let pair of this.getHumanInteractants()) {
-			// grey stroke
-			p5.stroke(0,20);
-			// draw an edge connecting this agent and its pair
-			p5.line(pair.agent.pos.x + 2,pair.agent.pos.y + 2,this.pos.x,this.pos.y);
-		}
-	}
-
-	/**
-	* Shows the trajectory
-	* @param  {P5} p5 An instance of P5.js
-	*/
-	showTrajectory(p5){
-		p5.stroke(this.colorValues.rgb()[0],this.colorValues.rgb()[1],this.colorValues.rgb()[2],100);
-		p5.noFill();
-		p5.beginShape();
-		for(let l of this.locations){
-			p5.vertex(l.x, l.y);
-		}
-		p5.endShape();
-	}
-
-
-
-	/**
-	* Call one interaction with other agents stored in its own collection of pairs. It is usually used in recursive structures
+	* Call one interaction with other agents stored in its own collection of pairs.
+	* It is usually used in recursive structures. In this case interact follows these
+	* steps: 1) Filter pairs with whom to interact according to user settings, 2)Store
+	* agent's current position, 3) store agent's last position before moving, 4) estimate
+	* the magnitude and direction of next step, 4) Verfiy if the change is worth to
+	* execute the movement, 5) move or set done status to true.
 	*/
 	interact (){
 
 		// Define with whom to interact. Filter pairs
-		let interactants = this.retrieveInteractants(this.getPairs());
+		let interactants = this.retrieveInteractants();
 
 		// Store my current position
 		this.locations.push({x:this.pos.x, y:this.pos.y});
@@ -140,7 +65,7 @@ class Human extends Agent{
 
 		this.bearing = headingVector.heading();
 
-		// Move one step in the heading vector's direction if the vector magnitude is significant
+		// Get change magnitude threshold from user settings
 		let magnitudeThreshold = document.getElementById("changeMagnitude");
 
 		// Verfiy if the change is worth to execute the movement
@@ -214,7 +139,15 @@ class Human extends Agent{
 	*  this agent's list of pairs and set their {boolean} interactant parameter to TRUE.
 	*  @return {Array} The list of "TRUE" interactants
 	*/
-	retrieveInteractants(agents){
+	retrieveInteractants(otherAgents){
+
+		let agents;
+		if (!otherAgents){
+			agents = this.getPairs();
+		} else {
+			agents = otherAgents;
+		}
+
 		// read the user choice
 		let tmp = document.getElementById('rule').value;
 		let val = document.getElementById("range");
@@ -222,107 +155,20 @@ class Human extends Agent{
 		switch(tmp){
 			case 'nClosest':
 			document.getElementById('sliderValue').innerHTML = val.value;
-			interactants = this.chooseNClosest(agents, Number(val.value));
+			interactants = Utils.chooseNClosest(this, Number(val.value),agents);
 			break;
 			case 'radius':
 			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
-			interactants = this.chooseByRadius(agents, val.value * this.radiusFactor);
+			interactants = Utils.chooseByRadius(this, Number(val.value) * this.radiusFactor, agents);
 			break;
 			case 'byField':
 			document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
-			interactants = this.chooseByField(agents,'radius', val.value * this.radiusFactor);
+			interactants = Utils.chooseByField(this, Number(val.value) * this.radiusFactor, 'radius', agents);
 			break;
 			case 'all':
 			interactants = this.resetInteractants();
 			break;
 		}
 		return interactants.filter(this.isInteractant);
-	}
-
-	/**
-	* Selects the euclidean closest q agents and sets them as the new interactants
-	* @param {Array} agents the agents to validate proximity gap
-	* @param {Number} n the amount of agents to be retrieved
-	* @return {Array} The top 'n' closest interactants
-	*/
-	chooseNClosest(agents, n){
-		let tempCollection = [];
-		// calculate distance to all the pairs
-		for(let i of agents){
-			let proximity = Utils.euclideanDist(this, i.agent);
-			tempCollection.push({agent:i,prox:proximity});
-		}
-		// sort them by proximity
-		tempCollection.sort(function(a,b){
-			return a.prox-b.prox;
-		});
-		// sets the upper limit of n
-		if (n > agents.length){
-			n = agents.length;
-		}
-		// reset all the agents
-		for (let a of agents) {
-			a.interactant = false;
-		}
-		// enable the top N
-		for (var i = 0; i < n; i++) {
-			for (let a of agents) {
-				if(_.isEqual(a, tempCollection[i].agent)){
-					a.interactant = true;
-				}
-			}
-		}
-		return agents;
-	}
-
-	/**
-	* Choose the ones inside a given radius
-	* @param {Array} agents the agents to validate if they fall within the radius scope
-	* @param r the lenght of the radius (scope) around this agent
-	* @return {Array} The agents within the radius
-	*/
-	chooseByRadius(agents, r){
-		// calculate distance to all the pairs
-		for(let i of agents){
-			let proximity = Utils.euclideanDist(this, i.agent);
-			if (proximity <= r){
-				i.interactant = true;
-			} else {
-				i.interactant = false;
-			}
-		}
-		return agents;
-	}
-
-	/**
-	* Choose the agents in front of this agent. 'In front' is defined by the bearing of this agent
-	* @param {Array} agents the agents to validate if they are in front of this agent
-	* @param {String} modality the method used to retrieve interactants
-	* @param {Number} k the lenght of the radius scope or the amount of nearby agents to be retrieved
-	* @return {Array} The agents within the perception field
-	*/
-	chooseByField(agents, modality, k){
-		switch (modality){
-			case 'radius':
-			// get them by radius
-			agents = this.chooseByRadius(agents, k);
-			break;
-			case 'nCloser':
-			// get them by proximity
-			agents = this.chooseNClosest(agents, k);
-			break;
-		}
-		//filter interactants by perception scope
-		for (let a of agents) {
-			if (a.interactant == true){
-				let angleBetween = Math.atan2(a.agent.pos.y - this.pos.y, a.agent.pos.x - this.pos.x);
-				if ((this.bearing - (this.visualPerceptionAngle/2)) < angleBetween && angleBetween < (this.bearing + (this.visualPerceptionAngle/2))){
-					a.interactant = true;
-				} else{
-					a.interactant = false;
-				}
-			}
-		}
-		return agents;
 	}
 }

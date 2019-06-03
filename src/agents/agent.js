@@ -15,6 +15,9 @@ class Agent{
     /** A {PVector} storing current x and y */
     this.pos = globalP5.createVector(x,y);
 
+    /**  A color defined as {name, chroma} */
+    this.colorValues = undefined;
+
     /** Array with all the locations where this agent has been */
     this.locations=[];
 
@@ -193,5 +196,5 @@ class Agent{
       }
     }
   }
-  
+
 }

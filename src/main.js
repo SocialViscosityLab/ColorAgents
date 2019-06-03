@@ -6,7 +6,10 @@ var colorAgents = function(p5){
 	var running;
 	// Booleans for buttons
 	let showAgents, showTrajectory, showInteractions, showPerField;
+	// This variable controls the simulation pace
 	let intervalInstance;
+	// The visual elements representing agents from the world
+	let vAgents = [];
 
 	// ***** Setup ******
 	p5.setup = function(){
@@ -41,13 +44,16 @@ var colorAgents = function(p5){
 		var colors = cFactory.getAll();
 		// clear agents
 		world.reset();
+		vAgents = [];
 		// create instances
 		for(var i=0; i< colors.length; i++){
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
-			var a = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,document.getElementById("sensibility").value, 20, 100);
-			//	agents.push(a);
-			world.subscribe(a);
+			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,document.getElementById("sensibility").value, 20, 100);
+			//	agents.push(agent);
+			world.subscribe(agent);
+			//for each agent instantiate one vAgent
+			vAgents.push(new VAgent(p5,agent));
 		}
 		let nObservers = world.observers.length;
 
@@ -62,24 +68,24 @@ var colorAgents = function(p5){
 	// ***** DRAW ******
 	p5.draw = function (){
 		p5.background(255,255,255);
-		let agents = world.getAgents();
+
 		// go over all the agents
-		for (var a = 0; a< agents.length; a++){
+		for (var a = 0; a < vAgents.length; a++){
 			//show agent
 			if (showAgents){
-				agents[a].show(p5);
+				vAgents[a].show();
 			}
 			// show network
 			if (showInteractions){
-				agents[a].visualizeInteractions(p5);
+				vAgents[a].visualizeInteractions();
 			}
 			//
 			if (showPerField){
-				agents[a].showPerceptionField(p5);
+				vAgents[a].showPerceptionField();
 			}
 			// animate agents
 			if (showTrajectories){
-				agents[a].showTrajectory(p5);
+				vAgents[a].showTrajectory();
 			}
 		}
 	}

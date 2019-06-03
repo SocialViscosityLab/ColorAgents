@@ -50,6 +50,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#agentcolorvalues'
+                        class='regular pre-open'>
+                        #colorValues
+                      </a></li>
+                      
+                      <li><a
                         href='#agentlocations'
                         class='regular pre-open'>
                         #locations
@@ -192,12 +198,6 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#humancolorvalues'
-                        class='regular pre-open'>
-                        #colorValues
-                      </a></li>
-                      
-                      <li><a
                         href='#humancmentalmodel'
                         class='regular pre-open'>
                         #cMentalModel
@@ -222,30 +222,6 @@
                       </a></li>
                       
                       <li><a
-                        href='#humanshow'
-                        class='regular pre-open'>
-                        #show
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanshowperceptionfield'
-                        class='regular pre-open'>
-                        #showPerceptionField
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanvisualizeinteractions'
-                        class='regular pre-open'>
-                        #visualizeInteractions
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanshowtrajectory'
-                        class='regular pre-open'>
-                        #showTrajectory
-                      </a></li>
-                      
-                      <li><a
                         href='#humaninteract'
                         class='regular pre-open'>
                         #interact
@@ -258,27 +234,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#humanfilterinteractants'
+                        href='#humanretrieveinteractants'
                         class='regular pre-open'>
-                        #filterInteractants
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanchoosenclosest'
-                        class='regular pre-open'>
-                        #chooseNClosest
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanchoosebyradius'
-                        class='regular pre-open'>
-                        #chooseByRadius
-                      </a></li>
-                      
-                      <li><a
-                        href='#humanchoosebyfield'
-                        class='regular pre-open'>
-                        #chooseByField
+                        #retrieveInteractants
                       </a></li>
                       
                     </ul>
@@ -439,16 +397,102 @@
                         #mapMagnitude
                       </a></li>
                       
+                    </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#utils'
+                  class=" toggle-sibling">
+                  Utils
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
                       <li><a
-                        href='#spatialmentalmodeleuclideandist'
+                        href='#utilseuclideandist'
                         class='regular pre-open'>
-                        #euclideanDist
+                        .euclideanDist
+                      </a></li>
+                    
+                      <li><a
+                        href='#utilsdist'
+                        class='regular pre-open'>
+                        .dist
+                      </a></li>
+                    
+                      <li><a
+                        href='#utilschoosenclosest'
+                        class='regular pre-open'>
+                        .chooseNClosest
+                      </a></li>
+                    
+                      <li><a
+                        href='#utilschoosebyradius'
+                        class='regular pre-open'>
+                        .chooseByRadius
+                      </a></li>
+                    
+                      <li><a
+                        href='#utilschoosebyfield'
+                        class='regular pre-open'>
+                        .chooseByField
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#vagent'
+                  class=" toggle-sibling">
+                  VAgent
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#vagentshow'
+                        class='regular pre-open'>
+                        #show
                       </a></li>
                       
                       <li><a
-                        href='#spatialmentalmodeldist'
+                        href='#vagentshowperceptionfield'
                         class='regular pre-open'>
-                        #dist
+                        #showPerceptionField
+                      </a></li>
+                      
+                      <li><a
+                        href='#vagentvisualizeinteractions'
+                        class='regular pre-open'>
+                        #visualizeInteractions
+                      </a></li>
+                      
+                      <li><a
+                        href='#vagentshowtrajectory'
+                        class='regular pre-open'>
+                        #showTrajectory
                       </a></li>
                       
                     </ul>
@@ -681,6 +725,54 @@
  
   
     <div class='pre p1 fill-light mt0'>pos</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='agentcolorvalues'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>colorValues</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>A color defined as {name, chroma}</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>colorValues</div>
    
   
   
@@ -2046,54 +2138,6 @@ agent and other agent identified by its id</p>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='humancolorvalues'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>colorValues</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>A color defined as {name, chroma}</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>colorValues</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='humancmentalmodel'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -2288,253 +2332,6 @@ colors within 70% range of perceived colors trigger actions.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='humanshow'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>show(p5)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Display visual elements of this agent on screen</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>show(p5: any)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>p5</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanshowperceptionfield'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showPerceptionField(p5)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Shows the perception fields of agents</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>showPerceptionField(p5: P5)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>p5</span> <code class='quiet'>(P5)</code>
-	    An instance of P5.js
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanvisualizeinteractions'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>visualizeInteractions(p5)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Show links between this and other agents with whom it interacts</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>visualizeInteractions(p5: P5)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>p5</span> <code class='quiet'>(P5)</code>
-	    An instance of P5.js
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanshowtrajectory'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>showTrajectory(p5)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Shows the trajectory</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>showTrajectory(p5: P5)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>p5</span> <code class='quiet'>(P5)</code>
-	    An instance of P5.js
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='humaninteract'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -2547,7 +2344,12 @@ colors within 70% range of perceived colors trigger actions.</p>
 
   
 
-  <p>Call one interaction with other agents stored in its own collection of pairs. It is usually used in recursive structures</p>
+  <p>Call one interaction with other agents stored in its own collection of pairs.
+It is usually used in recursive structures. In this case interact follows these
+steps: 1) Filter pairs with whom to interact according to user settings, 2)Store
+agent's current position, 3) store agent's last position before moving, 4) estimate
+the magnitude and direction of next step, 4) Verfiy if the change is worth to
+execute the movement, 5) move or set done status to true.</p>
 
  
   
@@ -2653,11 +2455,11 @@ colors within 70% range of perceived colors trigger actions.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='humanfilterinteractants'>
+    <div class='border-bottom' id='humanretrieveinteractants'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>filterInteractants(agents)</span>
+            <span class='code strong strong truncate'>retrieveInteractants(otherAgents, agents)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2665,11 +2467,11 @@ colors within 70% range of perceived colors trigger actions.</p>
 
   
 
-  <p>Asign the subset of pairs to interact with. By default it assigns all of them</p>
+  <p>Retrieves a filtered subset of agents from the total set of pairs. By default it retrieves all of them</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>filterInteractants(agents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+    <div class='pre p1 fill-light mt0'>retrieveInteractants(otherAgents: any, agents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
    
   
   
@@ -2684,6 +2486,14 @@ colors within 70% range of perceived colors trigger actions.</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>otherAgents</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -2705,252 +2515,6 @@ this agent's list of pairs and set their {boolean} interactant parameter to TRUE
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
         The list of "TRUE" interactants
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanchoosenclosest'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>chooseNClosest(agents, n)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Selects the euclidean closest q agents and sets them as the new interactants</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>chooseNClosest(agents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>, n: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>agents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
-	    the agents to validate proximity gap
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>n</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    the amount of agents to be retrieved
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
-        The top 'n' closest interactants
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanchoosebyradius'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>chooseByRadius(agents, r)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Choose the ones inside a given radius</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>chooseByRadius(agents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>, r: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>agents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
-	    the agents to validate if they fall within the radius scope
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>r</span> <code class='quiet'>(any)</code>
-	    the lenght of the radius (scope) around this agent
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
-        The agents within the radius
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='humanchoosebyfield'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>chooseByField(agents, modality, k)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Choose the agents in front of this agent. 'In front' is defined by the bearing of this agent</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>chooseByField(agents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>, modality: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, k: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>agents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
-	    the agents to validate if they are in front of this agent
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>modality</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-	    the method used to retrieve interactants
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>k</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    the lenght of the radius scope or the amount of nearby agents to be retrieved
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
-        The agents within the perception field
 
       
     
@@ -4123,7 +3687,59 @@ of this.shortest and this.farthest</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='spatialmentalmodeleuclideandist'>
+</div>
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='utils'>
+      Utils
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Abstract class with utility functions</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>new Utils()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='utilseuclideandist'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4192,7 +3808,7 @@ of this.shortest and this.farthest</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='spatialmentalmodeldist'>
+    <div class='border-bottom' id='utilsdist'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4204,8 +3820,7 @@ of this.shortest and this.farthest</p>
 
   
 
-  <p>Adapted from Processing's map() if either the second or third parameter are omited, the function uses current values
-of this.shortest and this.farthest</p>
+  <p>Adapted from Processing's map()</p>
 
  
   
@@ -4258,6 +3873,550 @@ of this.shortest and this.farthest</p>
         </div>
       
     </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='utilschoosenclosest'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>chooseNClosest(thisAgent, n, otherAgents)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Selects the euclidean closest n agents to this agent</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>chooseNClosest(thisAgent: <a href="#agent">Agent</a>, n: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, otherAgents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>thisAgent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    the reference agent to which this function is applied
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>n</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    the amount of agents to be retrieved
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>otherAgents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
+	    the agents to validate if they are in front of this agent. If omited, the pairs of thisAgent are used
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        The top 'n' closest interactants
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='utilschoosebyradius'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>chooseByRadius(thisAgent, r, otherAgents)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Choose the agents within a given radius around this agent</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>chooseByRadius(thisAgent: <a href="#agent">Agent</a>, r: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, otherAgents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>thisAgent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    the reference agent to which this function is applied
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>r</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    the lenght of the radius (scope) around this agent
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>otherAgents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
+	    the agents to validate if they are in front of this agent. If omited, the pairs of thisAgent are used
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        The agents within the radius
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='utilschoosebyfield'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>chooseByField(thisAgent, k, modality, otherAgents)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Choose the agents in front of this agent. 'In front' is defined by the bearing of this agent</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>chooseByField(thisAgent: <a href="#agent">Agent</a>, k: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, modality: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, otherAgents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>thisAgent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    the reference agent to which this function is applied
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>k</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    the lenght of the radius scope or the amount of nearby agents to be retrieved
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>modality</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    the method used to retrieve interactants
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>otherAgents</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
+	    the agents to validate if they are in front of this agent. If omited, the pairs of thisAgent are used
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        The agents within the perception field
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='vagent'>
+      VAgent
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>General class to plot agents on a p5.js canvas</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>new VAgent(p5: p5, agent: <a href="#agent">Agent</a>)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>p5</span> <code class='quiet'>(p5)</code>
+	    An instance of p5.js
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>agent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    An instance of Agent
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='vagentshow'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>show()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Renders visual elements of this agent on screen</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>show()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='vagentshowperceptionfield'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showPerceptionField()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Shows the perception fields of agents</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>showPerceptionField()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='vagentvisualizeinteractions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>visualizeInteractions()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Show links between this and other agents with whom it interacts</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>visualizeInteractions()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='vagentshowtrajectory'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>showTrajectory()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Shows the trajectory</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>showTrajectory()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
   
 
   
