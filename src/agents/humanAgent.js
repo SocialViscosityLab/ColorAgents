@@ -39,6 +39,8 @@ class Human extends Agent{
 
 		// The amplification factor of interaction radius scope
 		this.radiusFactor = 10;
+
+		this.intendedDistancesToInteractants = [];
 	}
 
 	/**
@@ -60,31 +62,34 @@ class Human extends Agent{
 		// store the last position before moving
 		this.lastPos.set(this.pos);
 
-		// estimate the magnitude and direction of next step
-		let headingVector = this.estimateBearing(interactants);
+		// estimate the magnitude and direction of next step.
+		// WARNING: This function internally updates spatial distances.
+		// See function definition below
+		let nextPos = this.calculateStep(interactants);
 
-		this.bearing = headingVector.heading();
+		this.bearing = nextPos.heading();
 
 		// Get change magnitude threshold from user settings
 		let magnitudeThreshold = document.getElementById("changeMagnitude");
 
 		// Verfiy if the change is worth to execute the movement
-		if (headingVector.mag() > Number(magnitudeThreshold.value)){
+		if (nextPos.mag() > Number(magnitudeThreshold.value)){
 			document.getElementById('sliderChangeMagnitude').innerHTML = magnitudeThreshold.value
 			this.iAmDone = false;
 			// Move
-			this.move2(headingVector.normalize());
+			this.move2(nextPos.normalize());
 		} else{
 			this.iAmDone = true;
 		}
 	}
 
 	/**
-	* Estimate direction of next step adding the vectors towards each interactant
+	* Estimate direction and magnitude of a step by adding the vectors towards each interactant
 	* @param {Array} interactants the collection of interactans of this agent.
 	* @return {p5.Vector} the vector
 	*/
-	estimateBearing(interactants){
+	calculateStep(interactants){
+
 		let vector;
 
 		for (let i of interactants) {
@@ -97,8 +102,8 @@ class Human extends Agent{
 
 			/*
 			There are spatial distances between this agent's location and the interactants' locations. Such distances may not correspond to
-			this agent's perceived color distance when converted into spatial distances. The reult of mapping of the perceived color
-			distance into a spatial distance is named spatial magnitude. If the difference between the spatial magnitude and the spatial
+			this agent's perceived color distance when converted into spatial distances. The result of mapping of the perceived color
+			distance into a spatial distance is the spatial magnitude. If the difference between the spatial magnitude and the spatial
 			distance is negative, this agent should get closer to the other agent, and viceversa.
 
 			This means that this agent should have a mechanism to transduce perceived color distance into the spatial distances. That is why we need
@@ -106,13 +111,15 @@ class Human extends Agent{
 			*/
 			let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
 
+			intendedDistancesToInteractants.push({agent:i, spatialMagnitude:spatialMag});
+
 			//Calculate the current spatial distance
 			let currentDist = globalP5.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
 
 			//Calculate the difference between the spatialMagnitude and the actual spatial distance
 			let deltaDist = currentDist - spatialMag;
 
-			// Update distances. This could be done somewhere else, but here it saves the cost of iterating oiver all the interactants
+			// Update distances. This could be done somewhere else, but here it saves the cost of iterating over all the interactants
 			this.updateSpatialDistances(i.id,spatialMag, currentDist);
 
 			// for the first interactant
@@ -132,6 +139,7 @@ class Human extends Agent{
 			return vector;
 		}
 	}
+
 
 	/**
 	* Retrieves a filtered subset of agents from the total set of pairs. By default it retrieves all of them

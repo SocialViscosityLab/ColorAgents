@@ -12,7 +12,7 @@ class Agent{
     /** Unique {String} identifier for this agent */
     this.id = id;
 
-    /** A {PVector} storing current x and y */
+    /** A {p5.Vector} storing current x and y */
     this.pos = globalP5.createVector(x,y);
 
     /**  A color defined as {name, chroma} */
@@ -24,11 +24,11 @@ class Agent{
     /** Array with all the latest distances to all other agents */
     this.distances=[];
 
-    /** The {PVector} position previously stored at this.pos before this.pos was updated*/
+    /** The {p5.Vector} position previously stored at this.pos before this.pos was updated*/
     this.lastPos = globalP5.createVector(x,y);
 
     /** The direction this agent is pointing towards, i.e., its bearing */
-    this.bearing = globalP5.map(Math.atan2(this.pos.y - 250, this.pos.x- 250),0,Math.PI*2, -Math.PI, Math.PI);
+    this.bearing;
 
     /** A map storing pairs of {agent}agent: {boolean}interactant.*/
     this.pairs=[];
@@ -174,7 +174,7 @@ class Agent{
   * @param  {Number} currentDist Current distance between this and other agent
   */
   updateSpatialDistances(id, spatialMag, currentDist){
-    // The first update
+    // The very first time
     if (this.distances.length < 1){
       this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
     } else {
@@ -186,7 +186,7 @@ class Agent{
           break;
         }
       }
-      // if the interactants is in the collection update the distances
+      // if the interactants is in the collection, update the distances to that interactant
       if(index != -1){
         this.distances[index].spatialMag = spatialMag;
         this.distances[index].currentDist = currentDist;
