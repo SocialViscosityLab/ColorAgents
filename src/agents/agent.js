@@ -21,8 +21,9 @@ class Agent{
     /** Array with all the locations where this agent has been */
     this.locations=[];
 
-    /** Array with all the latest distances to all other agents */
-    this.distances=[];
+    /** Map with key: interactant id, and value: an object with spatialMag:the
+    latest spatialmagnitude , and currentDist:the current distance to all other agents */
+    this.distancesMap = new Map();
 
     /** The {p5.Vector} position previously stored at this.pos before this.pos was updated*/
     this.lastPos = globalP5.createVector(x,y);
@@ -36,6 +37,9 @@ class Agent{
     /** This boolean variable defines when this agent feels "comfortable" with its current situation in the
     world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions*/
     this.iAmDone = false;
+
+    /** The history of viscosity metrics of this agent*/
+    this.viscosity = new Map(); //[counter, viscosity]
   }
 
   /**
@@ -172,7 +176,8 @@ class Agent{
   * @param  {String} id          Other agent's ID
   * @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
   * @param  {Number} currentDist Current distance between this and other agent
-  */
+  * @deprecated
+  *
   updateSpatialDistances(id, spatialMag, currentDist){
     // The very first time
     if (this.distances.length < 1){
@@ -195,6 +200,17 @@ class Agent{
         this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
       }
     }
-  }
+  }*/
 
+    /**
+    * Updates the map of spatial magnitudes and pixel distances between this
+    * agent and other agent identified by its id
+    * @param  {String} id          Other agent's ID
+    * @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
+    * @param  {Number} currentDist Current distance between this and other agent
+    * @deprecated
+    */
+  updateDistanceMap(id,spatialMag, currentDist){
+    this.distancesMap.set(id, {spatialMag: spatialMag, currentDist:currentDist});
+  }
 }

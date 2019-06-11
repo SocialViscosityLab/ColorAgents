@@ -74,12 +74,6 @@
                       </a></li>
                       
                       <li><a
-                        href='#agentbearing'
-                        class='regular pre-open'>
-                        #bearing
-                      </a></li>
-                      
-                      <li><a
                         href='#agentpairs'
                         class='regular pre-open'>
                         #pairs
@@ -185,6 +179,16 @@
               
                 
                 <li><a
+                  href='#bearing'
+                  class="">
+                  bearing
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#human'
                   class=" toggle-sibling">
                   Human
@@ -228,9 +232,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#humanestimatebearing'
+                        href='#humancalculatestep'
                         class='regular pre-open'>
-                        #estimateBearing
+                        #calculateStep
                       </a></li>
                       
                       <li><a
@@ -407,6 +411,16 @@
               
                 
                 <li><a
+                  href='#metrics'
+                  class="">
+                  Metrics
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#utils'
                   class=" toggle-sibling">
                   Utils
@@ -470,6 +484,18 @@
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#vagentp5'
+                        class='regular pre-open'>
+                        #p5
+                      </a></li>
+                      
+                      <li><a
+                        href='#vagentagent'
+                        class='regular pre-open'>
+                        #agent
+                      </a></li>
                       
                       <li><a
                         href='#vagentshow'
@@ -720,7 +746,7 @@
 
   
 
-  <p>A {PVector} storing current x and y</p>
+  <p>A {p5.Vector} storing current x and y</p>
 
  
   
@@ -912,59 +938,11 @@
 
   
 
-  <p>The {PVector} position previously stored at this.pos before this.pos was updated</p>
+  <p>The {p5.Vector} position previously stored at this.pos before this.pos was updated</p>
 
  
   
     <div class='pre p1 fill-light mt0'>lastPos</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='agentbearing'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>bearing</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>The direction this agent is pointing towards, i.e., its bearing</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>bearing</div>
    
   
   
@@ -2014,6 +1992,54 @@ agent and other agent identified by its id</p>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='bearing'>
+      bearing
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>The direction this agent is pointing towards, i.e., its bearing</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>bearing</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='human'>
       Human
     </h3>
@@ -2385,11 +2411,11 @@ execute the movement, 5) move or set done status to true.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='humanestimatebearing'>
+    <div class='border-bottom' id='humancalculatestep'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>estimateBearing(interactants)</span>
+            <span class='code strong strong truncate'>calculateStep(interactants)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2397,11 +2423,11 @@ execute the movement, 5) move or set done status to true.</p>
 
   
 
-  <p>Estimate direction of next step adding the vectors towards each interactant</p>
+  <p>Estimate direction and magnitude of a step by adding the vectors towards each interactant</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>estimateBearing(interactants: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): p5.Vector</div>
+    <div class='pre p1 fill-light mt0'>calculateStep(interactants: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): p5.Vector</div>
    
   
   
@@ -3701,6 +3727,81 @@ of this.shortest and this.farthest</p>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='metrics'>
+      Metrics
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Notes:
+Urbana, May 2019
+1. Social viscosity measures the evolution of where I am in contrast to where
+I want to be in relation to all my interactants</p>
+<p>2.Social viscosity measures the contrast between where I am and where I want
+to be in relation to all my interactants over a period of time (the execution
+of a task or practice)</p>
+<p>Santa Marta, June 2019
+3. Social viscosity is estimated by contrasting "where I am" with "where I intend
+to be" in relation to all my interactants over the execution of a task or practice.</p>
+<p>The same could also be reframed:
+4. The viscosity of a social practice is estimated by contrasting where
+agents "intended to be" with where they "ended" after the execution of social actions.
+The meaning of "where" includes the interactions with all their interactants
+and the world.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>new Metrics(world: any)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>world</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='utils'>
       Utils
     </h3>
@@ -4190,7 +4291,7 @@ of this.shortest and this.farthest</p>
   </div>
   
 
-  <p>General class to plot agents on a p5.js canvas</p>
+  <p>General class to plot agents on a p5.js canvas. This follows the  model view-controller pattern</p>
 
  
   
@@ -4244,6 +4345,102 @@ of this.shortest and this.farthest</p>
   
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
+  
+    <div class='border-bottom' id='vagentp5'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>p5</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The p5.js instance</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>p5</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='vagentagent'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>agent</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The agent instance</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>agent</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
   
     <div class='border-bottom' id='vagentshow'>
       <div class="clearfix small pointer toggle-sibling">
@@ -4690,7 +4887,7 @@ Observations could be self referenced, meaning that one agent can have a reflexi
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getAgents(agent)</span>
+            <span class='code strong strong truncate'>getAgents(exceptAgent)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -4698,11 +4895,11 @@ Observations could be self referenced, meaning that one agent can have a reflexi
 
   
 
-  <p>Returns the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent</p>
+  <p>Returns the collection of agents in the world. If 'exceptAgent' is provided, it returns the collection of agents except that agent</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>getAgents(agent: <a href="#agent">Agent</a>): any</div>
+    <div class='pre p1 fill-light mt0'>getAgents(exceptAgent: <a href="#agent">Agent</a>): any</div>
    
   
   
@@ -4720,8 +4917,8 @@ Observations could be self referenced, meaning that one agent can have a reflexi
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>agent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
-	    If agent is not undefined returns the collection of agents except this agent
+            <span class='code bold'>exceptAgent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    If not undefined returns the collection of agents except this agent
 
           </div>
           

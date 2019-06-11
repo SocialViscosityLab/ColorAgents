@@ -83,9 +83,7 @@ class InteractionMatrix {
       // Check if the given agent is in the list of interactants
       if (interactants[i].agent.id === agentJ.id){
         // return the distances
-        let index = agentI.distances.findIndex(element => {
-          return (element.id == agentJ.id)});
-          return agentI.distances[index];
+        return agentI.distancesMap.get(agentJ.id);
         }
       }
     }

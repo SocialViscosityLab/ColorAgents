@@ -134,4 +134,19 @@ class Utils{
     return pairs;
   }
 
+  static startTime;
+
+  static setStartTime(){
+    this.startTime = new Date();
+  }
+
+  static getExecutionTime(){
+    var currentTime = new Date();
+    var timeDiff = currentTime - this.startTime; //in ms
+    // strip the ms
+    timeDiff /= 1000;
+    // get seconds
+    var seconds = Math.round(timeDiff);
+    return seconds;
+  }
 }

@@ -40,7 +40,6 @@ class Human extends Agent{
 		// The amplification factor of interaction radius scope
 		this.radiusFactor = 10;
 
-		this.intendedDistancesToInteractants = [];
 	}
 
 	/**
@@ -111,16 +110,14 @@ class Human extends Agent{
 			*/
 			let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
 
-			intendedDistancesToInteractants.push({agent:i, spatialMagnitude:spatialMag});
-
 			//Calculate the current spatial distance
-			let currentDist = globalP5.dist(this.pos.x, this.pos.y, i.pos.x, i.pos.y);
+			let currentDist = Utils.euclideanDist(this, i);
 
 			//Calculate the difference between the spatialMagnitude and the actual spatial distance
 			let deltaDist = currentDist - spatialMag;
 
 			// Update distances. This could be done somewhere else, but here it saves the cost of iterating over all the interactants
-			this.updateSpatialDistances(i.id,spatialMag, currentDist);
+			this.updateDistanceMap(i.id, spatialMag, currentDist);
 
 			// for the first interactant
 			if (!vector){

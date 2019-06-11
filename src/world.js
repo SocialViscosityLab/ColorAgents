@@ -9,6 +9,7 @@ class World{
  */
   constructor(){
     this.observers = [];
+    this.tics = 0;
   }
 
   /**
@@ -44,13 +45,13 @@ class World{
   }
 
   /**
-  * Returns the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent
-  * @param {Agent} agent If agent is not undefined returns the collection of agents except this agent
+  * Returns the collection of agents in the world. If 'exceptAgent' is provided, it returns the collection of agents except that agent
+  * @param {Agent} exceptAgent If not undefined returns the collection of agents except this agent
   * @return the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent
   */
-  getAgents(agent){
-    if (agent){
-      return this.observers.filter(subscriber => subscriber !== agent);
+  getAgents(exceptAgent){
+    if (exceptAgent){
+      return this.observers.filter(subscriber => subscriber !== exceptAgent);
     } else {
       return this.observers;
     }
@@ -83,12 +84,14 @@ class World{
   }
 
 /**
- * Calls interact() funciton on all world observers
+ * Calls interact() function on all world observers. It should be timed by a
+ * Window setInterval() Method from the browser or the server.
  */
   runAgents(){
     for (var a = 0; a < this.observers.length; a++){
       this.observers[a].interact();
     }
+    this.tics ++;
   }
 
 /**
@@ -96,5 +99,10 @@ class World{
  */
   reset(){
     this.observers = [];
+    this.tics = 0;
+  }
+
+  getTics(){
+    return this.tics;
   }
 }
