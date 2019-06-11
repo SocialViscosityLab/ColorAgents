@@ -52,19 +52,19 @@ class Human extends Agent{
 	*/
 	interact (){
 
-		// Define with whom to interact. Filter pairs
-		let interactants = this.retrieveInteractants();
+
+
 
 		// Store my current position
 		this.locations.push({x:this.pos.x, y:this.pos.y});
 
-		// store the last position before moving
+		// Store the last position before moving
 		this.lastPos.set(this.pos);
 
-		// estimate the magnitude and direction of next step.
+		// Estimate the magnitude and direction of next step with all the current interactants
 		// WARNING: This function internally updates spatial distances.
 		// See function definition below
-		let nextPos = this.calculateStep(interactants);
+		let nextPos = this.calculateStep(this.retrieveInteractants());
 
 		this.bearing = nextPos.heading();
 

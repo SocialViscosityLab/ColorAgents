@@ -4,7 +4,7 @@
 * lower triangle shows the target distance estimated by the agent in the row. The
 * lightness of upper triangle shows the current distance.
 */
-class InteractionMatrix {
+class VisualInteractionMatrix {
   /**
   * Constructor
   * @param {P5} p5    An instance of P5.js
@@ -47,16 +47,16 @@ class InteractionMatrix {
         let dist = this.markInteraction(agentI, agentJ);
         // if agents interact
         if (dist){
-          let alphaMagnitude = this.p5.map(dist.spatialMag, 0, this.agents[i].farthest, 0, 255);
-          let alphaDistance = this.p5.map(dist.currentDist,0,this.agents[i].farthest, 0, 255);
+          let alphaMagnitude = this.p5.map(dist.spatialMag, 0, agentI.farthest, 0, 255);
+          let alphaDistance = this.p5.map(dist.currentDist,0,agentI.farthest, 0, 255);
           //this.p5.stroke(0,20);
           // this color represents the ideal distance between agents
-          this.p5.fill(this.agents[i].colorValues._rgb[0], this.agents[i].colorValues._rgb[1], this.agents[i].colorValues._rgb[2],alphaMagnitude);
+          this.p5.fill(agentI.colorValues._rgb[0], agentI.colorValues._rgb[1], agentI.colorValues._rgb[2],alphaMagnitude);
           this.p5.fill(80,alphaMagnitude);
           // Triangle below for desired distance
           this.p5.triangle(xTemp, yTemp, xTemp, yTemp + this.size, xTemp + this.size, yTemp + this.size);
           // this color represents the current distance between agents. The saturated the farther
-          this.p5.fill(this.agents[i].colorValues._rgb[0], this.agents[i].colorValues._rgb[1], this.agents[i].colorValues._rgb[2],alphaDistance);
+          this.p5.fill(agentI.colorValues._rgb[0], agentI.colorValues._rgb[1], agentI.colorValues._rgb[2],alphaDistance);
           this.p5.fill(80,alphaDistance);
           // Triangle above for current distance
           this.p5.triangle(xTemp, yTemp, xTemp + this.size, yTemp, xTemp + this.size, yTemp + this.size);

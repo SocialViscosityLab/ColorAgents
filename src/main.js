@@ -79,7 +79,7 @@ var colorAgents = function(p5){
 		metrics = new Metrics(world);
 
 		// Reset matrix visualizer
-		vizMatrix1D = new InteractionMatrix(p5, world, world.getAgents()[4]);
+		vizMatrix1D = new VisualInteractionMatrix(p5, world, world.getAgents()[4]);
 
 		document.getElementById("agentsInWorld").innerHTML = nObservers;
 		document.getElementById("humansInWorld").innerHTML = world.getHumans().length;
@@ -184,7 +184,7 @@ var plotMatrix = function (p5){
 
 	function initialize(){
 		// Reset matrix visualizer
-		vizMatrix1D = new InteractionMatrix(p5, world);
+		vizMatrix1D = new VisualInteractionMatrix(p5, world);
 	}
 
 	p5.draw = function(){

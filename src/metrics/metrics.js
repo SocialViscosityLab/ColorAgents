@@ -50,7 +50,7 @@ class Metrics{
     this.metricsMap.set(world.getTics(), innerMap);
 
   //  console.log("viscosity at 1 for RED: " + this.viscosityAtFor(1,this.agents[0]));
-    console.log("global viscosity at current time : " + this.calcViscosityAt(world.getTics()));
+  //  console.log("global viscosity at current time : " + this.calcViscosityAt(world.getTics()));
   //  console.log(this.metricsMap);
   }
 
@@ -96,7 +96,7 @@ class Metrics{
       }
 
       // Timetag it and record interaction
-      interactions.push({interactant:interactant.agent.id, weightedDifference:weightedDeltaDist});
+      interactions.push({interactant:interactant.agent.id, spatialMag:intendedDist, currentDist:currentDist, weightedDifference:weightedDeltaDist});
     }
 
     //  store the interactions with each agent
