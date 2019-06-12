@@ -23,7 +23,7 @@ class Metrics{
   constructor(world){
     this.world = world;
     /** The metricsMap is a nested structure of key-value pairs. At the top of the
-    structure there is a Map whose keys are timeStamps provided by the world. For
+    structure there is a Map whose keys are timeStamps retrieved from the world's ticker. For
     each timeStamp there is a collection of all the interactions occurred at that
     moment organized by agents. Such inner collection is also a map of key-value
     pairs where the key is the agent and the pair is an array of interactions of that
@@ -31,14 +31,15 @@ class Metrics{
     */
     this.metricsMap = new Map();
     this.agents = world.getHumans();
-    this.collection = [];
   }
 
   /**
-  * [calcMetrics description]
-  * @return {[type]} [description]
+  * This function stores the data from agents interaction in the main map named
+  * metricsMap. It is recursively called from a browser's setInterval function controlled
+  * in the main.js file.
   */
   getMetricsData(){
+
     let innerMap = new Map();
 
     // Get interactions for each agent in current time
@@ -49,16 +50,17 @@ class Metrics{
     //save interactions for the current tick time.
     this.metricsMap.set(world.getTics(), innerMap);
 
-  //  console.log("viscosity at 1 for RED: " + this.viscosityAtFor(1,this.agents[0]));
-  //  console.log("global viscosity at current time : " + this.calcViscosityAt(world.getTics()));
-  //  console.log(this.metricsMap);
+    //  console.log("viscosity at 1 for RED: " + this.viscosityAtFor(1,this.agents[0]));
+    //  console.log("global viscosity at current time : " + this.viscosityAt(world.getTics()));
+    //  console.log(this.metricsMap);
+    console.log("result:")
+    console.log(this.getMatrixAt(15));
   }
 
   /**
-  * [getInteractions description]
-  * @param  {[type]} innerMap [description]
-  * @param  {[type]} agent    [description]
-  * @return {[type]}          [description]
+  * Gets the interactions from the distancesMap of a given agent.
+  * @param  {Map} innerMap The temporal innerMap storing the interactions occurred in a time tick
+  * @param  {Agent} agent    The agent to which interactions want to be retrieved.
   */
   getInteractions(innerMap, agent){
     // retrieve agent's interactants
@@ -104,56 +106,55 @@ class Metrics{
   }
 
   /**
-  * Retrieves the array of interactions stored in an innerMap. The key (time) retrieves
-  * the corresponding innerMap, the agent key retrieves the corresponding array.
-  * @param  {Number]} time  The tick number from the sequence of stored interactions
+  * Retrieves the array of interactions stored in an innerMap, which in turn is
+  * stored inside the metricsMap. The time is a key used to retrieve the corresponding
+  * innerMap, agent is a key used to retrieve the corresponding array from the innerMap.
+  * @param  {Number} time  The tick number from the sequence of stored interactions
   * @param  {Agent} agent The agent from which the interactions are retrieve.
   * @return {Array} The array of interactions stored for a given agent.
   */
   retrieveInteractionsAtFor(time, agent){
-      return this.metricsMap.get(time).get(agent);
+    return this.metricsMap.get(time).get(agent);
   }
 
   /**
   * Retrieves the innerMap stored in the given key (time) from the metricsMap.
-  * @param  {Number]} time  The time tick of the sequence of stored interactions
+  * @param  {Number} time  The time tick of the sequence of stored interactions
   * @return {Map} The array of interactions stored for a given agent. If agent
   * is undefined it returns the innerMap corresponding to the given time
   */
   retrieveInteractionsAt(time){
-      return this.metricsMap.get(time);
+    return this.metricsMap.get(time);
   }
 
   /**
-  * [calcViscosityAt description]
-  * @param  {[type]} time [description]
-  * @return {[type]}      [description]
+  * Calculates the viscosity at a given moment in time
+  * @param  {Number} time The tick counter value representing the moment in time from which viscosity wants to be calculated
+  * @return {Number}      The viscosity value at time tick
   */
-  calcViscosityAt(time){
+  viscosityAt(time){
     // Get the innerMap of interactions at given time
     let interactions = this.retrieveInteractionsAt(time);
 
-    let globalAccumulate = 0;
+    let accumulated = 0;
 
     // iterate over each agent
     interactions.forEach((key,agent)=>{
-
-      globalAccumulate += this.viscosityAtFor(time, agent);
-
+      accumulated += this.viscosityAtFor(time, agent);
     });
 
     // average by agents
-    globalAccumulate = globalAccumulate/interactions.size;
+    accumulated = accumulated/interactions.size;
 
     // return averaged result
-    return globalAccumulate;
+    return accumulate;
   }
 
   /**
-  * [calcViscosityForAgentAt description]
-  * @param  {[type]} time [description]
-  * @param  {[type]} agent  [description]
-  * @return {[type]}       [description]
+  * Calculates the agent's viscosity at a given moment in time
+  * @param  {Number} time The tick counter value representing the moment in time from which viscosity wants to be calculated
+  * @param  {Agent} agent  The agent whose viscosity wants to be calculated
+  * @return {Number}       The agent's viscosity value at tick time
   */
   viscosityAtFor(time, agent){
 
@@ -174,5 +175,22 @@ class Metrics{
 
     // return averaged result
     return innerAccumulate;
+  }
+
+  /**
+  * Gets an array with the all the interactions at time tick.
+  * Each entry has two pairs (id:agent.id, interactions:interactions) Interactions
+  * is an array which entries are the interactions with these attributes:
+  * currentDist, interactant, spatialMag, weightedDifference
+  * @param  {Number} time The tick counter value representing the moment in time from which the matrix is composed
+  * @return {Array}      The array of id:agent.id, interactions:interactions
+  */
+  getMatrixAt(time){
+    let innerMap = this.retrieveInteractionsAt(time);
+    let rtn = [];
+    innerMap.forEach((interactions,agent)=>{
+      rtn.push({id:agent.id, interactions:interactions});
+    });
+    return rtn;
   }
 }

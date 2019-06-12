@@ -37,9 +37,6 @@ class Agent{
     /** This boolean variable defines when this agent feels "comfortable" with its current situation in the
     world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions*/
     this.iAmDone = false;
-
-    /** The history of viscosity metrics of this agent*/
-    this.viscosity = new Map(); //[counter, viscosity]
   }
 
   /**

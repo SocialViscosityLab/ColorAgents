@@ -62,9 +62,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#agentdistances'
+                        href='#agentdistancesmap'
                         class='regular pre-open'>
-                        #distances
+                        #distancesMap
                       </a></li>
                       
                       <li><a
@@ -164,9 +164,15 @@
                       </a></li>
                       
                       <li><a
-                        href='#agentupdatespatialdistances'
+                        href='#agentupdatedistancemap'
                         class='regular pre-open'>
-                        #updateSpatialDistances
+                        #updateDistanceMap
+                      </a></li>
+                      
+                      <li><a
+                        href='#agentupdatedistancemap'
+                        class='regular pre-open'>
+                        #updateDistanceMap
                       </a></li>
                       
                     </ul>
@@ -291,9 +297,9 @@
               
                 
                 <li><a
-                  href='#interactionmatrix'
+                  href='#visualinteractionmatrix'
                   class=" toggle-sibling">
-                  InteractionMatrix
+                  VisualInteractionMatrix
                   <span class='icon'>▸</span>
                 </a>
                 
@@ -304,19 +310,19 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#interactionmatrixplot'
+                        href='#visualinteractionmatrixplot'
                         class='regular pre-open'>
                         #plot
                       </a></li>
                       
                       <li><a
-                        href='#interactionmatrixmarkinteraction'
+                        href='#visualinteractionmatrixmarkinteraction'
                         class='regular pre-open'>
                         #markInteraction
                       </a></li>
                       
                       <li><a
-                        href='#interactionmatrixlabels'
+                        href='#visualinteractionmatrixlabels'
                         class='regular pre-open'>
                         #labels
                       </a></li>
@@ -412,10 +418,70 @@
                 
                 <li><a
                   href='#metrics'
-                  class="">
+                  class=" toggle-sibling">
                   Metrics
-                  
+                  <span class='icon'>▸</span>
                 </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#metricsmetricsmap'
+                        class='regular pre-open'>
+                        #metricsMap
+                      </a></li>
+                      
+                      <li><a
+                        href='#metricsgetmetricsdata'
+                        class='regular pre-open'>
+                        #getMetricsData
+                      </a></li>
+                      
+                      <li><a
+                        href='#metricsgetinteractions'
+                        class='regular pre-open'>
+                        #getInteractions
+                      </a></li>
+                      
+                      <li><a
+                        href='#metricsretrieveinteractionsatfor'
+                        class='regular pre-open'>
+                        #retrieveInteractionsAtFor
+                      </a></li>
+                      
+                      <li><a
+                        href='#metricsretrieveinteractionsat'
+                        class='regular pre-open'>
+                        #retrieveInteractionsAt
+                      </a></li>
+                      
+                      <li><a
+                        href='#metricsviscosityat'
+                        class='regular pre-open'>
+                        #viscosityAt
+                      </a></li>
+                      
+                      <li><a
+                        href='#metricsviscosityatfor'
+                        class='regular pre-open'>
+                        #viscosityAtFor
+                      </a></li>
+                      
+                      <li><a
+                        href='#metricsgetmatrixat'
+                        class='regular pre-open'>
+                        #getMatrixAt
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
                 
                 </li>
               
@@ -878,11 +944,11 @@
       </div>
     </div>
   
-    <div class='border-bottom' id='agentdistances'>
+    <div class='border-bottom' id='agentdistancesmap'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>distances</span>
+            <span class='code strong strong truncate'>distancesMap</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -890,11 +956,12 @@
 
   
 
-  <p>Array with all the latest distances to all other agents</p>
+  <p>Map with key: interactant id, and value: an object with spatialMag:the
+latest spatialmagnitude , and currentDist:the current distance to all other agents</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>distances</div>
+    <div class='pre p1 fill-light mt0'>distancesMap</div>
    
   
   
@@ -1897,11 +1964,11 @@ world in relation to ALL its interactants. It is used to control when this agent
       </div>
     </div>
   
-    <div class='border-bottom' id='agentupdatespatialdistances'>
+    <div class='border-bottom' id='agentupdatedistancemap'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>updateSpatialDistances(id, spatialMag, currentDist)</span>
+            <span class='code strong strong truncate'>updateDistanceMap(id, spatialMag, currentDist)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1914,12 +1981,123 @@ agent and other agent identified by its id</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>updateSpatialDistances(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, spatialMag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, currentDist: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
+    <div class='pre p1 fill-light mt0'>updateDistanceMap(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, spatialMag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, currentDist: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
    
   
   
 
+  <div>Deprecated: updateSpatialDistances(id, spatialMag, currentDist){
+// The very first time
+if (this.distances.length &#x3C; 1){
+this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+} else {
+// Find the interactants's index in the collection of distances
+let index = -1;
+for (var i = 0; i &#x3C; this.distances.length; i++) {
+if (this.distances
+[i]
+.id == id){
+index = i;
+break;
+}
+}
+// if the interactants is in the collection, update the distances to that interactant
+if(index != -1){
+this.distances
+[index]
+.spatialMag = spatialMag;
+this.distances
+[index]
+.currentDist = currentDist;
+} else {
+// else, create a new record
+this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+}
+}
+}
+</div>
   
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
+	    Other agent's ID
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>spatialMag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    This agent's percived spatial magnitud to other's agent
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>currentDist</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    Current distance between this and other agent
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='agentupdatedistancemap'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>updateDistanceMap(id, spatialMag, currentDist)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Updates the map of spatial magnitudes and pixel distances between this
+agent and other agent identified by its id</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>updateDistanceMap(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, spatialMag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, currentDist: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
+   
+  
+  
+
+  <div>Deprecated: This is deprecated.
+</div>
   
   
   
@@ -2808,8 +2986,8 @@ this agent's list of pairs and set their {boolean} interactant parameter to TRUE
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='interactionmatrix'>
-      InteractionMatrix
+    <h3 class='fl m0' id='visualinteractionmatrix'>
+      VisualInteractionMatrix
     </h3>
     
     
@@ -2823,7 +3001,7 @@ lightness of upper triangle shows the current distance.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>new InteractionMatrix(p5: P5, world: <a href="#world">World</a>)</div>
+    <div class='pre p1 fill-light mt0'>new VisualInteractionMatrix(p5: P5, world: <a href="#world">World</a>)</div>
    
   
   
@@ -2874,7 +3052,7 @@ lightness of upper triangle shows the current distance.</p>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='interactionmatrixplot'>
+    <div class='border-bottom' id='visualinteractionmatrixplot'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2954,7 +3132,7 @@ lightness of upper triangle shows the current distance.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='interactionmatrixmarkinteraction'>
+    <div class='border-bottom' id='visualinteractionmatrixmarkinteraction'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3034,7 +3212,7 @@ is returned</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='interactionmatrixlabels'>
+    <div class='border-bottom' id='visualinteractionmatrixlabels'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3740,11 +3918,11 @@ Urbana, May 2019
 1. Social viscosity measures the evolution of where I am in contrast to where
 I want to be in relation to all my interactants</p>
 <p>2.Social viscosity measures the contrast between where I am and where I want
-to be in relation to all my interactants over a period of time (the execution
-of a task or practice)</p>
+to be in relation to all my interactants over a period of time, i.e., the execution
+of a task or a practice.</p>
 <p>Santa Marta, June 2019
 3. Social viscosity is estimated by contrasting "where I am" with "where I intend
-to be" in relation to all my interactants over the execution of a task or practice.</p>
+to be" in relation to all my interactants over the duration of an action, task or practice.</p>
 <p>The same could also be reframed:
 4. The viscosity of a social practice is estimated by contrasting where
 agents "intended to be" with where they "ended" after the execution of social actions.
@@ -3789,6 +3967,560 @@ and the world.</p>
   
 
   
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='metricsmetricsmap'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>metricsMap</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The metricsMap is a nested structure of key-value pairs. At the top of the
+structure there is a Map whose keys are timeStamps retrieved from the world's ticker. For
+each timeStamp there is a collection of all the interactions occurred at that
+moment organized by agents. Such inner collection is also a map of key-value
+pairs where the key is the agent and the pair is an array of interactions of that
+agent with all the others.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>metricsMap</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='metricsgetmetricsdata'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getMetricsData()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>This function stores the data from agents interaction in the main map named
+metricsMap. It is recursively called from a browser's setInterval function controlled
+in the main.js file.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getMetricsData()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='metricsgetinteractions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getInteractions(innerMap, agent)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Gets the interactions from the distancesMap of a given agent.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getInteractions(innerMap: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>, agent: <a href="#agent">Agent</a>)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>innerMap</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>)</code>
+	    The temporal innerMap storing the interactions occurred in a time tick
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>agent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    The agent to which interactions want to be retrieved.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='metricsretrieveinteractionsatfor'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>retrieveInteractionsAtFor(time, agent)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Retrieves the array of interactions stored in an innerMap, which in turn is
+stored inside the metricsMap. The time is a key used to retrieve the corresponding
+innerMap, agent is a key used to retrieve the corresponding array from the innerMap.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>retrieveInteractionsAtFor(time: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, agent: <a href="#agent">Agent</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>time</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    The tick number from the sequence of stored interactions
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>agent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    The agent from which the interactions are retrieve.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        The array of interactions stored for a given agent.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='metricsretrieveinteractionsat'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>retrieveInteractionsAt(time)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Retrieves the innerMap stored in the given key (time) from the metricsMap.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>retrieveInteractionsAt(time: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>time</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    The time tick of the sequence of stored interactions
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></code>:
+        The array of interactions stored for a given agent. If agent
+is undefined it returns the innerMap corresponding to the given time
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='metricsviscosityat'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>viscosityAt(time)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Calculates the viscosity at a given moment in time</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>viscosityAt(time: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>time</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    The tick counter value representing the moment in time from which viscosity wants to be calculated
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></code>:
+        The viscosity value at time tick
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='metricsviscosityatfor'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>viscosityAtFor(time, agent)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Calculates the agent's viscosity at a given moment in time</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>viscosityAtFor(time: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, agent: <a href="#agent">Agent</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>time</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    The tick counter value representing the moment in time from which viscosity wants to be calculated
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>agent</span> <code class='quiet'>(<a href="#agent">Agent</a>)</code>
+	    The agent whose viscosity wants to be calculated
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></code>:
+        The agent's viscosity value at tick time
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='metricsgetmatrixat'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getMatrixAt(time)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Gets an Array with the all the interactions at time tick.
+Each entry has two pairs (id:agent.id, interactions:interactions) Interactions
+is an array which entries are the interactions with these attributes:
+currentDist, interactant, spatialMag, weightedDifference</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getMatrixAt(time: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>time</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    The tick counter value representing the moment in time from which the magtrix is composed
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        The array of id:agent.id, interactions:interactions
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
 
   
 
@@ -5105,7 +5837,8 @@ Observations could be self referenced, meaning that one agent can have a reflexi
 
   
 
-  <p>Calls interact() funciton on all world observers</p>
+  <p>Calls interact() function on all world observers. It should be timed by a
+Window setInterval() Method from the browser or the server.</p>
 
  
   
