@@ -53,8 +53,8 @@ class Metrics{
     //  console.log("viscosity at 1 for RED: " + this.viscosityAtFor(1,this.agents[0]));
     //  console.log("global viscosity at current time : " + this.viscosityAt(world.getTics()));
     //  console.log(this.metricsMap);
-    console.log("result:")
-    console.log(this.getMatrixAt(15));
+    // console.log("result:")
+    // console.log(this.getMatrixAt(15));
   }
 
   /**
@@ -128,7 +128,7 @@ class Metrics{
   }
 
   /**
-  * Calculates the viscosity at a given moment in time
+  * Calculates the viscosity for all agents at a given moment in time
   * @param  {Number} time The tick counter value representing the moment in time from which viscosity wants to be calculated
   * @return {Number}      The viscosity value at time tick
   */
@@ -147,7 +147,7 @@ class Metrics{
     accumulated = accumulated/interactions.size;
 
     // return averaged result
-    return accumulate;
+    return accumulated;
   }
 
   /**
@@ -188,9 +188,13 @@ class Metrics{
   getMatrixAt(time){
     let innerMap = this.retrieveInteractionsAt(time);
     let rtn = [];
-    innerMap.forEach((interactions,agent)=>{
-      rtn.push({id:agent.id, interactions:interactions});
-    });
+    try{
+      innerMap.forEach((interactions,agent)=>{
+        rtn.push({id:agent.id, interactions:interactions});
+      });
+    }catch(error){
+      //console.error("map collections not initialized yet");
+    }
     return rtn;
   }
 }

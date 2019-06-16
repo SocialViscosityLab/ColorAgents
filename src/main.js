@@ -1,6 +1,9 @@
 // The global variable world
 var world;
 
+// The metrics
+var metrics;
+
 var colorAgents = function(p5){
 	// Boolean variable to control the animation
 	let running;
@@ -14,8 +17,7 @@ var colorAgents = function(p5){
 	let interval = 100;
 	// The visual elements representing agents from the world
 	let vAgents = [];
-	// The metrics
-	let metrics;
+
 
 	// ***** Setup ******
 	p5.setup = function(){
@@ -73,7 +75,7 @@ var colorAgents = function(p5){
 		}
 		let nObservers = world.observers.length;
 
-	Utils.setStartTime();
+		Utils.setStartTime();
 
 		// setup metrics
 		metrics = new Metrics(world);
@@ -192,9 +194,47 @@ var plotMatrix = function (p5){
 
 		// MATRICES
 		if (showIntMtrx){
-			vizMatrix1D.plot(p5.createVector(0,30));
+			//	vizMatrix1D.plot(p5.createVector(0,30));
+			vizMatrix1D.plot2(p5.createVector(0,30), metrics.getMatrixAt(world.getTics()));
 		}
 	}
 }
 
 var vizMatrix = new p5(plotMatrix, "PlotMatrix");
+
+
+
+/// THIRD P5 INSTANCE
+var timeSeries = function (p5){
+
+	let series;
+	let data;
+	let showSeries = true;
+
+	p5.setup = function(){
+		p5.createCanvas(500,500);
+		series = new ScatterPlot(this, p5.createVector(50,250), 400, 200, 1, 1 );
+		// GUI Elements
+		document.getElementById("showSeries").onclick = showSeries;
+	}
+
+	showSeries = function(){
+		showSeries = !showSeries;
+	}
+
+	p5.draw = function(){
+		p5.background(255);
+
+		if (showSeries){
+			if (world.getTics() >=1){
+				data = metrics.viscosityAt(world.getTics());
+			}
+			series.canvas();
+			if (data){
+			series.plot(world.getTics(),data,data.toFixed(2));
+		}
+		}
+	}
+}
+
+var viscositySeries = new p5(timeSeries, "TimeSeries");

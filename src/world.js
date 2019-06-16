@@ -102,6 +102,11 @@ class World{
     this.tics = 0;
   }
 
+/**
+ * Gets the elapsed number of ticks ran while the main interval function has been enabled
+ *
+ * @return {Number} The ellapsed number of ticks
+ */
   getTics(){
     return this.tics;
   }

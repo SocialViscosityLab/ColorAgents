@@ -322,9 +322,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#visualinteractionmatrixlabels'
+                        href='#visualinteractionmatrixlattice'
                         class='regular pre-open'>
-                        #labels
+                        #lattice
                       </a></li>
                       
                     </ul>
@@ -332,6 +332,16 @@
                   
                   
                 </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#visualtimeseries'
+                  class="">
+                  VisualTimeSeries
+                  
+                </a>
                 
                 </li>
               
@@ -655,6 +665,12 @@
                         href='#worldreset'
                         class='regular pre-open'>
                         #reset
+                      </a></li>
+                      
+                      <li><a
+                        href='#worldgettics'
+                        class='regular pre-open'>
+                        #getTics
                       </a></li>
                       
                     </ul>
@@ -1976,7 +1992,7 @@ world in relation to ALL its interactants. It is used to control when this agent
 
   
 
-  <p>Updates the collections of spatial magnitudes and pixel distances between this
+  <p>Updates the map of spatial magnitudes and pixel distances between this
 agent and other agent identified by its id</p>
 
  
@@ -1986,35 +2002,7 @@ agent and other agent identified by its id</p>
   
   
 
-  <div>Deprecated: updateSpatialDistances(id, spatialMag, currentDist){
-// The very first time
-if (this.distances.length &#x3C; 1){
-this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-} else {
-// Find the interactants's index in the collection of distances
-let index = -1;
-for (var i = 0; i &#x3C; this.distances.length; i++) {
-if (this.distances
-[i]
-.id == id){
-index = i;
-break;
-}
-}
-// if the interactants is in the collection, update the distances to that interactant
-if(index != -1){
-this.distances
-[index]
-.spatialMag = spatialMag;
-this.distances
-[index]
-.currentDist = currentDist;
-} else {
-// else, create a new record
-this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-}
-}
-}
+  <div>Deprecated: This is deprecated.
 </div>
   
   
@@ -2086,7 +2074,7 @@ this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
 
   
 
-  <p>Updates the map of spatial magnitudes and pixel distances between this
+  <p>Updates the collections of spatial magnitudes and pixel distances between this
 agent and other agent identified by its id</p>
 
  
@@ -2096,7 +2084,35 @@ agent and other agent identified by its id</p>
   
   
 
-  <div>Deprecated: This is deprecated.
+  <div>Deprecated: updateSpatialDistances(id, spatialMag, currentDist){
+// The very first time
+if (this.distances.length &#x3C; 1){
+this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+} else {
+// Find the interactants's index in the collection of distances
+let index = -1;
+for (var i = 0; i &#x3C; this.distances.length; i++) {
+if (this.distances
+[i]
+.id == id){
+index = i;
+break;
+}
+}
+// if the interactants is in the collection, update the distances to that interactant
+if(index != -1){
+this.distances
+[index]
+.spatialMag = spatialMag;
+this.distances
+[index]
+.currentDist = currentDist;
+} else {
+// else, create a new record
+this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
+}
+}
+}
 </div>
   
   
@@ -3001,7 +3017,7 @@ lightness of upper triangle shows the current distance.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>new VisualInteractionMatrix(p5: P5, world: <a href="#world">World</a>)</div>
+    <div class='pre p1 fill-light mt0'>new VisualInteractionMatrix(p5: P5, world: <a href="#world">World</a>, metrics: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>)</div>
    
   
   
@@ -3030,6 +3046,15 @@ lightness of upper triangle shows the current distance.</p>
           <div>
             <span class='code bold'>world</span> <code class='quiet'>(<a href="#world">World</a>)</code>
 	    An instance of the world
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>metrics</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>)</code>
+	    The metrics of interactions
 
           </div>
           
@@ -3212,11 +3237,11 @@ is returned</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='visualinteractionmatrixlabels'>
+    <div class='border-bottom' id='visualinteractionmatrixlattice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>labels(pos, rows, cols)</span>
+            <span class='code strong strong truncate'>lattice(pos, rows, cols)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3228,7 +3253,7 @@ is returned</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>labels(pos: PVector, rows: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>, cols: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</div>
+    <div class='pre p1 fill-light mt0'>lattice(pos: PVector, rows: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>, cols: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</div>
    
   
   
@@ -3293,6 +3318,86 @@ is returned</p>
     </div>
   
 </div>
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='visualtimeseries'>
+      VisualTimeSeries
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>TBD</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>new VisualTimeSeries(p5: P5, world: <a href="#world">World</a>, metrics: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>p5</span> <code class='quiet'>(P5)</code>
+	    An instance of P5.js
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>world</span> <code class='quiet'>(<a href="#world">World</a>)</code>
+	    An instance of the world
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>metrics</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>)</code>
+	    The metrics of interactions
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -4310,7 +4415,7 @@ is undefined it returns the innerMap corresponding to the given time
 
   
 
-  <p>Calculates the viscosity at a given moment in time</p>
+  <p>Calculates the viscosity for all agents at a given moment in time</p>
 
  
   
@@ -4459,7 +4564,7 @@ is undefined it returns the innerMap corresponding to the given time
 
   
 
-  <p>Gets an Array with the all the interactions at time tick.
+  <p>Gets an array with the all the interactions at time tick.
 Each entry has two pairs (id:agent.id, interactions:interactions) Interactions
 is an array which entries are the interactions with these attributes:
 currentDist, interactant, spatialMag, weightedDifference</p>
@@ -4485,7 +4590,7 @@ currentDist, interactant, spatialMag, weightedDifference</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>time</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    The tick counter value representing the moment in time from which the magtrix is composed
+	    The tick counter value representing the moment in time from which the matrix is composed
 
           </div>
           
@@ -5906,6 +6011,62 @@ Window setInterval() Method from the browser or the server.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='worldgettics'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getTics()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Gets the elapsed number of ticks ran while the main interval function has been enabled</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getTics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></code>:
+        The ellapsed number of ticks
+
+      
+    
   
 
   
