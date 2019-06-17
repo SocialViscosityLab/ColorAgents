@@ -31,6 +31,10 @@ class Metrics{
     */
     this.metricsMap = new Map();
     this.agents = world.getHumans();
+    // Map with key: agent value: anotherMap with key: time tick, value: viscosity
+    this.agentsViscosityData = new Map();
+    // Map with key: time tick, value: viscosity
+    this.globalViscosityData = new Map();
   }
 
   /**
@@ -45,16 +49,38 @@ class Metrics{
     // Get interactions for each agent in current time
     for (let agent of this.agents) {
       this.getInteractions(innerMap, agent);
+
     }
 
     //save interactions for the current tick time.
     this.metricsMap.set(world.getTics(), innerMap);
 
-    //  console.log("viscosity at 1 for RED: " + this.viscosityAtFor(1,this.agents[0]));
-    //  console.log("global viscosity at current time : " + this.viscosityAt(world.getTics()));
-    //  console.log(this.metricsMap);
-    // console.log("result:")
+    for (let agent of this.agents) {
+      this.recordAgentViscosityData(agent);
+    }
+
+    this.recordGlobalViscosityData();
+
+    // console.log("viscosity at 1 for RED: " + this.viscosityAtFor(1,this.agents[0]));
+    // console.log("global viscosity at current time : " + this.viscosityAt(world.getTics()));
+    // console.log(this.metricsMap);
+    // console.log(this.viscosityData.size)
     // console.log(this.getMatrixAt(15));
+  }
+
+  recordAgentViscosityData(agent){
+    let tmp = this.agentsViscosityData.get(agent);
+    if (!tmp){
+      let tmpInnerMap = new Map();
+      tmpInnerMap.set(world.getTics(),this.viscosityAtFor(world.getTics(),agent));
+      this.agentsViscosityData.set(agent,tmpInnerMap);
+    } else {
+      tmp.set(world.getTics(),this.viscosityAtFor(world.getTics(),agent));
+    }
+  }
+
+  recordGlobalViscosityData(){
+    this.globalViscosityData.set(world.getTics(),this.viscosityAt(world.getTics()));
   }
 
   /**
@@ -114,17 +140,24 @@ class Metrics{
   * @return {Array} The array of interactions stored for a given agent.
   */
   retrieveInteractionsAtFor(time, agent){
-    return this.metricsMap.get(time).get(agent);
+    let rtn = this.metricsMap.get(time).get(agent);
+    if (!rtn){
+      console.log("Interactions array missed at time: "+ time +" for agent "+ agent.id);
+    }
+    return rtn
   }
 
   /**
   * Retrieves the innerMap stored in the given key (time) from the metricsMap.
   * @param  {Number} time  The time tick of the sequence of stored interactions
-  * @return {Map} The array of interactions stored for a given agent. If agent
-  * is undefined it returns the innerMap corresponding to the given time
+  * @return {Map} The Map of interactions stored at the given time
   */
   retrieveInteractionsAt(time){
-    return this.metricsMap.get(time);
+    let rtn = this.metricsMap.get(time);
+    if (!rtn){
+      console.log("Interaction map missed at time: "+ time);
+    }
+    return rtn
   }
 
   /**
@@ -137,14 +170,17 @@ class Metrics{
     let interactions = this.retrieveInteractionsAt(time);
 
     let accumulated = 0;
+    try{
+      // iterate over each agent
+      interactions.forEach((key,agent)=>{
+        accumulated += this.viscosityAtFor(time, agent);
+      });
 
-    // iterate over each agent
-    interactions.forEach((key,agent)=>{
-      accumulated += this.viscosityAtFor(time, agent);
-    });
-
-    // average by agents
-    accumulated = accumulated/interactions.size;
+      // average by agents
+      accumulated = accumulated/interactions.size;
+    } catch(error){
+      console.log("Interaction undefined at time "+ time);
+    }
 
     // return averaged result
     return accumulated;
@@ -193,8 +229,9 @@ class Metrics{
         rtn.push({id:agent.id, interactions:interactions});
       });
     }catch(error){
-      //console.error("map collections not initialized yet");
+      console.log("Map collections not initialized at time " + time);
     }
     return rtn;
   }
+
 }

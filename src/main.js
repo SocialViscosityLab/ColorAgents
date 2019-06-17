@@ -193,8 +193,7 @@ var plotMatrix = function (p5){
 		p5.background(255);
 
 		// MATRICES
-		if (showIntMtrx){
-			//	vizMatrix1D.plot(p5.createVector(0,30));
+		if (showIntMtrx && world.getTics() >=1){
 			vizMatrix1D.plot2(p5.createVector(0,30), metrics.getMatrixAt(world.getTics()));
 		}
 	}
@@ -208,12 +207,11 @@ var vizMatrix = new p5(plotMatrix, "PlotMatrix");
 var timeSeries = function (p5){
 
 	let series;
-	let data;
 	let showSeries = true;
 
 	p5.setup = function(){
 		p5.createCanvas(500,500);
-		series = new ScatterPlot(this, p5.createVector(50,250), 400, 200, 1, 1 );
+		series = new Chart(this, p5.createVector(50,250), 400, 200, 1, 1 );
 		// GUI Elements
 		document.getElementById("showSeries").onclick = showSeries;
 	}
@@ -226,13 +224,14 @@ var timeSeries = function (p5){
 		p5.background(255);
 
 		if (showSeries){
-			if (world.getTics() >=1){
-				data = metrics.viscosityAt(world.getTics());
-			}
+			//go over all the keys of metrics.viscosityData
+			metrics.agentsViscosityData.forEach((value, agent)=>{
+				//	series.geomPoint(value, agent.id, agent.colorValues.rgb());
+				series.geomPath(value, "", agent.colorValues.rgb());
+
+			})
+			series.geomPath(metrics.globalViscosityData,"global",[0,0,0])
 			series.canvas();
-			if (data){
-			series.plot(world.getTics(),data,data.toFixed(2));
-		}
 		}
 	}
 }
