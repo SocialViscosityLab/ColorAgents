@@ -65,7 +65,7 @@ var colorAgents = function(p5){
 		for(var i=0; i< colors.length; i++){
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
-			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,document.getElementById("sensibility").value, 20, 100);
+			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,'linear'.value, 20, 100);
 
 			//	agents.push(agent);
 			world.subscribe(agent);
@@ -225,11 +225,11 @@ var timeSeries = function (p5){
 
 		if (showSeries){
 			//go over all the keys of metrics.viscosityData
-			metrics.agentsViscosityData.forEach((value, agent)=>{
-				//	series.geomPoint(value, agent.id, agent.colorValues.rgb());
-				series.geomPath(value, "", agent.colorValues.rgb());
-
-			})
+			// metrics.agentsViscosityData.forEach((value, agent)=>{
+			// 	//	series.geomPoint(value, agent.id, agent.colorValues.rgb());
+			// 	series.geomPath(value, "", agent.colorValues.rgb());
+			//
+			// })
 			series.geomPath(metrics.globalViscosityData,"global",[0,0,0])
 			series.canvas();
 		}

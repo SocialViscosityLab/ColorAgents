@@ -226,9 +226,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#humancolortriggerboundary'
+                        href='#humanfarthest'
                         class='regular pre-open'>
-                        #colorTriggerBoundary
+                        #farthest
                       </a></li>
                       
                       <li><a
@@ -287,6 +287,18 @@
                         #initialize
                       </a></li>
                       
+                      <li><a
+                        href='#colorfactorygetmunsell'
+                        class='regular pre-open'>
+                        #getMunsell
+                      </a></li>
+                      
+                      <li><a
+                        href='#colorfactorygetnewton'
+                        class='regular pre-open'>
+                        #getNewton
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -332,16 +344,6 @@
                   
                   
                 </div>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#visualtimeseries'
-                  class="">
-                  VisualTimeSeries
-                  
-                </a>
                 
                 </li>
               
@@ -2502,11 +2504,11 @@ this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
       </div>
     </div>
   
-    <div class='border-bottom' id='humancolortriggerboundary'>
+    <div class='border-bottom' id='humanfarthest'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>colorTriggerBoundary</span>
+            <span class='code strong strong truncate'>farthest</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2520,7 +2522,7 @@ colors within 70% range of perceived colors trigger actions.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>colorTriggerBoundary</div>
+    <div class='pre p1 fill-light mt0'>farthest</div>
    
   
   
@@ -2564,9 +2566,9 @@ colors within 70% range of perceived colors trigger actions.</p>
 
   
 
-  <p>Call one interaction with other agents stored in its own collection of pairs.
-It is usually used in recursive structures. In this case interact follows these
-steps: 1) Filter pairs with whom to interact according to user settings, 2)Store
+  <p>Calls one interaction with other agents stored in its own collection of pairs.
+It is usually used in recursive structures. In this case, this function follows these
+steps: 0) Record agent's current location, 1) Filter pairs with whom to interact according to user settings, 2)Store
 agent's current position, 3) store agent's last position before moving, 4) estimate
 the magnitude and direction of next step, 4) Verfiy if the change is worth to
 execute the movement, 5) move or set done status to true.</p>
@@ -2988,6 +2990,118 @@ this agent's list of pairs and set their {boolean} interactant parameter to TRUE
       </div>
     </div>
   
+    <div class='border-bottom' id='colorfactorygetmunsell'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getMunsell()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Gets an array of 20 ordered colors in Munsell color space</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getMunsell(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        20 ordered colors in Munsell color space
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='colorfactorygetnewton'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getNewton()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Gests and array of 20 ordered colors in Newtonean color space</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getNewton(): [type]</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>[type]</code>:
+        20 ordered colors in Newtonean color space
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
   
@@ -3331,86 +3445,6 @@ is returned</p>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='visualtimeseries'>
-      VisualTimeSeries
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>TBD</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>new VisualTimeSeries(p5: P5, world: <a href="#world">World</a>, metrics: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>p5</span> <code class='quiet'>(P5)</code>
-	    An instance of P5.js
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>world</span> <code class='quiet'>(<a href="#world">World</a>)</code>
-	    An instance of the world
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>metrics</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a>)</code>
-	    The metrics of interactions
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
     <h3 class='fl m0' id='colormentalmodel'>
       ColorMentalModel
     </h3>
@@ -3422,7 +3456,8 @@ is returned</p>
   <p>A color mental model is a ordered sequence of colors particular to each agent in
 the world. Every color mental model belongs to an agent, therefore, color mental
 models exist only in the 'mind' of each agent.
-By default this class provides the Newtonean rainbow model.</p>
+By default this class returns the Newtonean rainbow model, but other models are
+available.</p>
 
  
   
@@ -3555,7 +3590,7 @@ By default this class provides the Newtonean rainbow model.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>getPerceivedColorDistance(target: any, reference: any): any</div>
+    <div class='pre p1 fill-light mt0'>getPerceivedColorDistance(target: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, reference: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): any</div>
    
   
   
@@ -3573,7 +3608,7 @@ By default this class provides the Newtonean rainbow model.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>target</span> <code class='quiet'>(any)</code>
+            <span class='code bold'>target</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
 	    the color to be compared with must be between 0 and colorPalette.length
 
           </div>
@@ -3582,7 +3617,7 @@ By default this class provides the Newtonean rainbow model.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>reference</span> <code class='quiet'>(any)</code>
+            <span class='code bold'>reference</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
 	    the reference color`must be between 0 and colorPalette.length
 
           </div>
@@ -3630,13 +3665,14 @@ By default this class provides the Newtonean rainbow model.</p>
 
   
 
-  <p>Finds the index of a color in a given palette. If the exact color is not found, then it retrievs the closes.
-It uses lodas.js <a href="https://lodash.com/">https://lodash.com/</a> to evaluale object attributes (value equality) equality and chroma.js
-library to estimate te color proximity</p>
+  <p>Finds the index of a color in a given palette. If the exact color is not found,
+then it retrievs the closest. It uses lodas.js <a href="https://lodash.com/">https://lodash.com/</a> to evaluale
+object attributes equality (value equality) and chroma.js library to estimate
+the color proximity</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>findColorIndex(color: any, pal: any)</div>
+    <div class='pre p1 fill-light mt0'>findColorIndex(color: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, pal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): any</div>
    
   
   
@@ -3654,7 +3690,7 @@ library to estimate te color proximity</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>color</span> <code class='quiet'>(any)</code>
+            <span class='code bold'>color</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
 	    the color to be matched in the palette
 
           </div>
@@ -3663,7 +3699,7 @@ library to estimate te color proximity</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>pal</span> <code class='quiet'>(any)</code>
+            <span class='code bold'>pal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>)</code>
 	    the palette to be used. If undefined the palette of this cMentalModelis used
 
           </div>
@@ -3675,6 +3711,14 @@ library to estimate te color proximity</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>any</code>:
+        The index of the given color in the palette sequence
+
+      
+    
   
 
   
@@ -3708,7 +3752,7 @@ indexA and indexB must be between 0 and colorPalette.length</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>calcPerceivedDist(indexA: any, indexB: any)</div>
+    <div class='pre p1 fill-light mt0'>calcPerceivedDist(indexA: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, indexB: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></div>
    
   
   
@@ -3726,16 +3770,18 @@ indexA and indexB must be between 0 and colorPalette.length</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>indexA</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>indexA</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    [description]
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>indexB</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>indexB</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
+	    [description]
+
           </div>
           
         </div>
@@ -3745,6 +3791,14 @@ indexA and indexB must be between 0 and colorPalette.length</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></code>:
+        The value between 0 and 1, where 1 is the farthest perceived distance
+
+      
+    
   
 
   
@@ -4382,8 +4436,7 @@ innerMap, agent is a key used to retrieve the corresponding array from the inner
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></code>:
-        The array of interactions stored for a given agent. If agent
-is undefined it returns the innerMap corresponding to the given time
+        The Map of interactions stored at the given time
 
       
     

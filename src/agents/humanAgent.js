@@ -31,7 +31,7 @@ class Human extends Agent{
 		/** Percentage of "color similarity" that triggers this agent to act. Value between 0 and 1. Where 1 means
 		that all the colors fall within the range of colors that trigger actions. 0.7 means that only
 		colors within 70% range of perceived colors trigger actions. */
-		this.colorTriggerBoundary = 1;
+		//this.colorTriggerBoundary = 1;
 
 		// The lowest distance this agent starts perceiving something as far away. This is used in the alpha mapping
 		// function of the visualization matrix
@@ -43,17 +43,14 @@ class Human extends Agent{
 	}
 
 	/**
-	* Call one interaction with other agents stored in its own collection of pairs.
-	* It is usually used in recursive structures. In this case interact follows these
-	* steps: 1) Filter pairs with whom to interact according to user settings, 2)Store
+	* Calls one interaction with other agents stored in its own collection of pairs.
+	* It is usually used in recursive structures. In this case, this function follows these
+	* steps: 0) Record agent's current location, 1) Filter pairs with whom to interact according to user settings, 2)Store
 	* agent's current position, 3) store agent's last position before moving, 4) estimate
 	* the magnitude and direction of next step, 4) Verfiy if the change is worth to
 	* execute the movement, 5) move or set done status to true.
 	*/
 	interact (){
-
-
-
 
 		// Store my current position
 		this.locations.push({x:this.pos.x, y:this.pos.y});
@@ -100,13 +97,16 @@ class Human extends Agent{
 			let perceivedColorDistance = this.cMentalModel.getPerceivedColorDistance(i.colorValues);
 
 			/*
-			There are spatial distances between this agent's location and the interactants' locations. Such distances may not correspond to
-			this agent's perceived color distance when converted into spatial distances. The result of mapping of the perceived color
-			distance into a spatial distance is the spatial magnitude. If the difference between the spatial magnitude and the spatial
-			distance is negative, this agent should get closer to the other agent, and viceversa.
+			There are spatial distances between this agent's location and the interactants'
+			locations. Such distances may not correspond to this agent's perceived color
+			distance when converted into spatial distances. The result of mapping the
+			perceived color distance into a spatial distance is the spatial magnitude.
+			If the difference between the spatial magnitude and the spatial distance is
+			negative, this agent should get closer to the other agent, and viceversa.
 
-			This means that this agent should have a mechanism to transduce perceived color distance into the spatial distances. That is why we need
-			a Spatial Mental Model.
+			This means that this agent should have a mechanism to 'transduce' perceived
+			color distance into the spatial distances. That is why we need a Spatial Mental
+			Model.
 			*/
 			let spatialMag = this.sMentalModel.mapMagnitude(perceivedColorDistance);
 

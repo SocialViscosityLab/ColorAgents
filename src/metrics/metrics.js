@@ -60,12 +60,6 @@ class Metrics{
     }
 
     this.recordGlobalViscosityData();
-
-    // console.log("viscosity at 1 for RED: " + this.viscosityAtFor(1,this.agents[0]));
-    // console.log("global viscosity at current time : " + this.viscosityAt(world.getTics()));
-    // console.log(this.metricsMap);
-    // console.log(this.viscosityData.size)
-    // console.log(this.getMatrixAt(15));
   }
 
   recordAgentViscosityData(agent){
@@ -114,7 +108,7 @@ class Metrics{
       let currentDist = Utils.euclideanDist(agent, interactant.agent);
 
       // Calculate weighted difference
-      let weightedDeltaDist = ((currentDist - intendedDist) / intendedDist);
+      let weightedDeltaDist = Math.abs(((currentDist - intendedDist) / intendedDist));
 
       // If the intendedDist == 0 then the weightedDeltaDist will be infinite.
       // That does not make sense because it would mean that Agent estimated to
