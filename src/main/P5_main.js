@@ -4,7 +4,7 @@ var world;
 // The metrics
 var metrics;
 
-var colorAgents = function(p5){
+var main = function(p5){
 	// Boolean variable to control the animation
 	let running;
 	// Booleans for buttons
@@ -170,87 +170,4 @@ var colorAgents = function(p5){
 	}
 }
 
-var globalP5 = new p5(colorAgents, "ColorAgents");
-
-
-/// SECOND P5 INSTANCE
-var plotMatrix = function (p5){
-
-	let vizMatrix1D;
-	let showIntMtrx = true;
-
-	p5.setup = function(){
-		p5.createCanvas(500,500);
-		initialize();
-		document.getElementById("reset").addEventListener('click', () =>{initialize();})
-		document.getElementById("showMatrix").onclick = sIntMtrx;
-		document.getElementById("cFactory").addEventListener('change', ()=>{
-			initialize();
-		})
-	}
-
-	function sIntMtrx(){
-		showIntMtrx = !showIntMtrx;
-	}
-
-	function initialize(){
-		// Reset matrix visualizer
-		vizMatrix1D = new VisualInteractionMatrix(p5, world);
-	}
-
-	p5.draw = function(){
-		p5.background(255);
-
-		// MATRICES
-		if (showIntMtrx){
-			vizMatrix1D.plot2(p5.createVector(10,30), metrics.getMatrixAt(world.getTics()));
-		}
-	}
-}
-
-var vizMatrix = new p5(plotMatrix, "PlotMatrix");
-
-
-
-/// THIRD P5 INSTANCE
-var timeSeries = function (p5){
-
-	let series;
-	let showSeries = true;
-	let showIndividualSeries;
-
-	p5.setup = function(){
-		p5.createCanvas(500,300);
-		series = new Chart(this, p5.createVector(30,270), 400, 250, 1, 1 );
-		// GUI Elements
-		document.getElementById("showSeries").onclick = showSeries;
-		document.getElementById("showIndividualSeries").onclick = showIndividualSeries;
-		showIndividualSeries = false;
-	}
-
-	showSeries = function(){
-		showSeries = !showSeries;
-	}
-
-	showIndividualSeries = function(){
-		showIndividualSeries = !showIndividualSeries;
-	}
-
-	p5.draw = function(){
-		p5.background(255);
-
-		if (showIndividualSeries){
-			//go over all the keys of metrics.viscosityData
-			metrics.agentsViscosityData.forEach((value, agent)=>{
-				series.geomPath(value, "", agent.colorValues.rgb());
-			})
-		}
-
-		if (showSeries){
-			series.geomPath(metrics.globalViscosityData,"global",[0,0,0])
-		}
-		series.canvas();
-	}
-}
-
-var viscositySeries = new p5(timeSeries, "TimeSeries");
+var globalP5 = new p5(main, "ColorAgents");

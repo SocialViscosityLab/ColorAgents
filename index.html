@@ -28,7 +28,9 @@
   <script src="libs/chroma.min.js" type="text/javascript"></script>
 
   <!-- Code -->
-  <script src="src/main.js" type="text/javascript"></script>
+  <script src="src/main/P5_main.js" type="text/javascript"></script>
+  <script src="src/main/P5_heatmap.js" type="text/javascript"></script>
+  <script src="src/main/P5_viscosityChart.js" type="text/javascript"></script>
   <script src="src/world.js" type="text/javascript"></script>
   <script src="src/agents/agent.js" type="text/javascript"></script>
   <script src="src/agents/humanAgent.js" type="text/javascript"></script>
@@ -71,15 +73,13 @@
           <p style="font-size:12px; color:grey;"> <img class="img-responsive" src="images/D4SVwhite.png" width="160"> Design for social viscosity lab. <br> University of Illinois  Urbana-Champaign</p>
         </div>
         <ul class="nav navbar-nav">
-          <li><a href="#">Description</a></li>
-          <li><a href="#">Model description</a></li>
-          <li><a href="#">Simulation</a></li>
-          <li><a href="#">Charts</a></li>
-          <li><a href="#">References</a></li>
+          <li><a href="#Description">Model description</a></li>
+          <li><a href="#Simulation">Simulation</a></li>
+          <li><a href="#Charts">Charts</a></li>
+          <li><a href="#References">References</a></li>
           <li><a href="https://github.com/SocialViscosityLab/ColorAgents" target="_blank">GitHub</a></li>
         </ul>
       </div>
-
 
       <div class="row">
 
@@ -157,14 +157,14 @@
     </nav>
 
     <!-- END NAVBAR & HEADER -->
-
+    <a name="Description"></a>
     <div class="container">
       <!-- DESCRIPTION -->
+      <a name="Simulation"></a>
       <div class="row">
         <div class = "col-lg-12">
           <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
           <b>Model description</b>
-
           <p style="font-size:14px;">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
@@ -175,6 +175,7 @@
             Ipsum passages, and more recently with desktop publishing software like Aldus
             PageMaker including versions of Lorem Ipsum.
           </p>
+
         </div>
       </div>
 
@@ -213,9 +214,10 @@
         <!-- SIMULATION CANVAS -->
         <div class="col-lg-10">
           <p style = "font-size:12px">Observers in the world: <span id="agentsInWorld" > 0 </span> &nbsp | &nbsp Humans: <span id="humansInWorld" > 0 </span> &nbsp  | &nbsp Nonhumans: <span id="nonhumansInWorld" > 0 </span></p>
-          <!-- P5js canvas -->
+          <a name="Charts"></a>
           <div id="ColorAgents" align="center"></div>
         </div>
+
       </div>
 
       <hr>
@@ -234,8 +236,11 @@
           <p><input  type = "checkbox" id = "showMatrix" checked> Show interaction matrix </input></p>
           <p><input  type = "checkbox" id = "showSeries" checked> Plot global viscosity </input></p>
           <p><input  type = "checkbox" id = "showIndividualSeries"> Plot viscosity for each agent </input></p>
-        </div>
 
+          <hr>
+          <p><b>Export</b></p>
+          <p> <button  type = "button" id = "viscosities_to_JSON" > Viscosities to JSON</button> </p>
+        </div>
 
         <!-- MATRIX -->
         <div class="col-sm-5">
@@ -247,12 +252,15 @@
         <div class = "col-sm-5">
           <p style = "font-size:12px">Viscosity chart</p>
           <div id="TimeSeries"></div>
+          <p style = "font-size:12px">Tick selector chart</p>
+          <input type="range" min="0" max="300" value="0" id="ticks"></input>
+          <span id="sliderTicks" > 0 </span>
         </div>
       </div>
       <!-- END OF LAST ROW-->
 
       <hr>
-
+      <a name="References"></a>
       <!-- References -->
       <div class = "row">
         <h5 id="references">References</h5>
