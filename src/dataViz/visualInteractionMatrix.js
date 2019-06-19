@@ -141,6 +141,7 @@ class VisualInteractionMatrix {
     // rows
     this.p5.fill(0,80);
     this.p5.noStroke();
+    this.p5.textSize(10);
     for (var i = 0; i < this.agents.length; i++) {
       if (!rows){
         this.p5.text(this.agents[i].id, pos.x , pos.y + (i*this.size)+(this.size/2)+5);

@@ -15,8 +15,8 @@
 * The same could also be reframed:
 * 4. The viscosity of a social practice is estimated by contrasting where
 * agents "intended to be" with where they "ended" after the execution of social actions.
-* The meaning of "where" includes the interactions with all their interactants
-* and the world.
+* The scope of "where" encompases the interactions with all agent's interactants
+* and with the world.
 */
 
 class Metrics{
@@ -49,7 +49,6 @@ class Metrics{
     // Get interactions for each agent in current time
     for (let agent of this.agents) {
       this.getInteractions(innerMap, agent);
-
     }
 
     //save interactions for the current tick time.
@@ -62,6 +61,11 @@ class Metrics{
     this.recordGlobalViscosityData();
   }
 
+  /**
+  * [recordAgentViscosityData description]
+  * @param  {[type]} agent [description]
+  * @return {[type]}       [description]
+  */
   recordAgentViscosityData(agent){
     let tmp = this.agentsViscosityData.get(agent);
     if (!tmp){
@@ -73,6 +77,10 @@ class Metrics{
     }
   }
 
+  /**
+  * [recordGlobalViscosityData description]
+  * @return {[type]} [description]
+  */
   recordGlobalViscosityData(){
     this.globalViscosityData.set(world.getTics(),this.viscosityAt(world.getTics()));
   }
@@ -147,11 +155,13 @@ class Metrics{
   * @return {Map} The Map of interactions stored at the given time
   */
   retrieveInteractionsAt(time){
-    let rtn = this.metricsMap.get(time);
-    if (!rtn){
-      console.log("Interaction map missed at time: "+ time);
+    if (world.getTics() > 0){
+      let rtn = this.metricsMap.get(time);
+      if (!rtn){
+        console.log("Interaction map missed at time: "+ time);
+      }
+      return rtn
     }
-    return rtn
   }
 
   /**
@@ -218,12 +228,14 @@ class Metrics{
   getMatrixAt(time){
     let innerMap = this.retrieveInteractionsAt(time);
     let rtn = [];
-    try{
-      innerMap.forEach((interactions,agent)=>{
-        rtn.push({id:agent.id, interactions:interactions});
-      });
-    }catch(error){
-      console.log("Map collections not initialized at time " + time);
+    if (world.getTics() > 0){
+      try{
+        innerMap.forEach((interactions,agent)=>{
+          rtn.push({id:agent.id, interactions:interactions});
+        });
+      }catch(error){
+        console.log("Map collections not initialized at time " + time);
+      }
     }
     return rtn;
   }

@@ -73,17 +73,17 @@ class Axis{
 
   plot(p5,pos){
     if(this.isHorizontal){
-      p5.stroke(0);
+      p5.stroke(150);
       p5.line(pos.x, pos.y, pos.x+this.length, pos.y);
       p5.noStroke();
-      p5.fill(0);
+      p5.fill(150);
       p5.text(this.value.toFixed(2), pos.x+this.length, pos.y + 15);
       p5.text(this.label, pos.x+this.length/2, pos.y + 15);
     } else {
-      p5.stroke(0);
+      p5.stroke(150);
       p5.line(pos.x, pos.y, pos.x, pos.y-this.length);
       p5.noStroke();
-      p5.fill(0);
+      p5.fill(150);
       p5.text(this.value.toFixed(2), pos.x - 25, pos.y-this.length);
       p5.push();
       p5.translate(pos.x - 5, pos.y-this.length/2);

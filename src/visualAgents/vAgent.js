@@ -32,6 +32,7 @@ class VAgent{
 		// black text
 		this.p5.fill(0,50);
 		// print agent ID
+		this.p5.textSize(10);
 		this.p5.text(this.agent.id, this.agent.pos.x - 2,this.agent.pos.y - 11);
 		this.p5.noFill();
 

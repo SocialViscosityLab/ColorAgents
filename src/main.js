@@ -48,6 +48,7 @@ var colorAgents = function(p5){
 		document.getElementById("cFactory").addEventListener('change', ()=>{
 			initialize();
 		})
+		document.getElementById("trajectories_to_JSON").onclick = trajectoriesToJSON;
 	}
 
 	function initialize(){
@@ -90,7 +91,7 @@ var colorAgents = function(p5){
 
 	// ***** DRAW ******
 	p5.draw = function (){
-		p5.background(255,255,255);
+		p5.background(250,250,250);
 
 		// go over all the agents
 		for (var a = 0; a < vAgents.length; a++){
@@ -159,6 +160,14 @@ var colorAgents = function(p5){
 	function sPerField(){
 		showPerField = !showPerField;
 	}
+
+	function trajectoriesToJSON(){
+		let file = []
+		world.getAgents().forEach((agent)=>{
+			file.push({agent:agent.id, locations:agent.locations})
+		})
+		p5.saveJSON(file, 'trajectories.json');
+	}
 }
 
 var globalP5 = new p5(colorAgents, "ColorAgents");
@@ -193,8 +202,8 @@ var plotMatrix = function (p5){
 		p5.background(255);
 
 		// MATRICES
-		if (showIntMtrx && world.getTics() >=1){
-			vizMatrix1D.plot2(p5.createVector(0,30), metrics.getMatrixAt(world.getTics()));
+		if (showIntMtrx){
+			vizMatrix1D.plot2(p5.createVector(10,30), metrics.getMatrixAt(world.getTics()));
 		}
 	}
 }
@@ -208,31 +217,39 @@ var timeSeries = function (p5){
 
 	let series;
 	let showSeries = true;
+	let showIndividualSeries;
 
 	p5.setup = function(){
-		p5.createCanvas(500,500);
-		series = new Chart(this, p5.createVector(50,250), 400, 200, 1, 1 );
+		p5.createCanvas(500,300);
+		series = new Chart(this, p5.createVector(30,270), 400, 250, 1, 1 );
 		// GUI Elements
 		document.getElementById("showSeries").onclick = showSeries;
+		document.getElementById("showIndividualSeries").onclick = showIndividualSeries;
+		showIndividualSeries = false;
 	}
 
 	showSeries = function(){
 		showSeries = !showSeries;
 	}
 
+	showIndividualSeries = function(){
+		showIndividualSeries = !showIndividualSeries;
+	}
+
 	p5.draw = function(){
 		p5.background(255);
 
-		if (showSeries){
+		if (showIndividualSeries){
 			//go over all the keys of metrics.viscosityData
-			// metrics.agentsViscosityData.forEach((value, agent)=>{
-			// 	//	series.geomPoint(value, agent.id, agent.colorValues.rgb());
-			// 	series.geomPath(value, "", agent.colorValues.rgb());
-			//
-			// })
-			series.geomPath(metrics.globalViscosityData,"global",[0,0,0])
-			series.canvas();
+			metrics.agentsViscosityData.forEach((value, agent)=>{
+				series.geomPath(value, "", agent.colorValues.rgb());
+			})
 		}
+
+		if (showSeries){
+			series.geomPath(metrics.globalViscosityData,"global",[0,0,0])
+		}
+		series.canvas();
 	}
 }
 
