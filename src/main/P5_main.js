@@ -1,7 +1,10 @@
+// Global P5 instances
+var mainP5, vizMatrix, viscositySeries;
+
 // The global variable world
 var world;
 
-// The metrics
+// The global variable for metrics
 var metrics;
 
 var main = function(p5){
@@ -22,7 +25,6 @@ var main = function(p5){
 	// ***** Setup ******
 	p5.setup = function(){
 		p5.createCanvas(500,500);
-
 		// Instantiate the world
 		world = new World();
 
@@ -52,6 +54,7 @@ var main = function(p5){
 	}
 
 	function initialize(){
+
 		// Instantiate all the colors
 		var cFactory = new ColorFactory(document.getElementById("cFactory").value);
 
@@ -67,7 +70,7 @@ var main = function(p5){
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
 			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,'linear'.value, 20, 100);
-
+			
 			//	agents.push(agent);
 			world.subscribe(agent);
 
@@ -82,7 +85,11 @@ var main = function(p5){
 		metrics = new Metrics(world);
 
 		// Reset matrix visualizer
-		vizMatrix1D = new VisualInteractionMatrix(p5, world, world.getAgents()[4]);
+		try{
+			vizMatrix.resetLastMatrix();
+		}catch(error){
+			// error launched when vizMatrix is not hoisted.
+		}
 
 		document.getElementById("agentsInWorld").innerHTML = nObservers;
 		document.getElementById("humansInWorld").innerHTML = world.getHumans().length;
@@ -128,46 +135,48 @@ var main = function(p5){
 				simulationInterval = setInterval(() => {world.runAgents()}, interval);
 
 				// calculate metrics
-				metricsInterval = setInterval(() => {metrics.getMetricsData()}, interval);
-			} else {
-				clearInterval(simulationInterval);
-				clearInterval(metricsInterval);
-			}
+				metricsInterval = setInterval(() => {metrics.getMetricsData(),
+					vizMatrix.setLastMatrix(world.getTicks())},
+					interval);
+				} else {
+					clearInterval(simulationInterval);
+					clearInterval(metricsInterval);
+				}
 
-			// Update DOM element content
-			if (running){
-				document.getElementById("run").innerHTML = "Running";
-			} else {
-				document.getElementById("run").innerHTML = "On hold";
+				// Update DOM element content
+				if (running){
+					document.getElementById("run").innerHTML = "Running";
+				} else {
+					document.getElementById("run").innerHTML = "On hold";
+				}
+			}else{
+				alert('Choose interaction rule first');
 			}
-		}else{
-			alert('Choose interaction rule first');
+		}
+
+		function sAgents(){
+			showAgents = !showAgents;
+		}
+
+		function sTrajectories(){
+			showTrajectories = !showTrajectories;
+		}
+
+		function sInteractions(){
+			showInteractions = !showInteractions;
+		}
+
+		function sPerField(){
+			showPerField = !showPerField;
+		}
+
+		function trajectoriesToJSON(){
+			let file = []
+			world.getAgents().forEach((agent)=>{
+				file.push({agent:agent.id, locations:agent.locations})
+			})
+			p5.saveJSON(file, 'trajectories.json');
 		}
 	}
 
-	function sAgents(){
-		showAgents = !showAgents;
-	}
-
-	function sTrajectories(){
-		showTrajectories = !showTrajectories;
-	}
-
-	function sInteractions(){
-		showInteractions = !showInteractions;
-	}
-
-	function sPerField(){
-		showPerField = !showPerField;
-	}
-
-	function trajectoriesToJSON(){
-		let file = []
-		world.getAgents().forEach((agent)=>{
-			file.push({agent:agent.id, locations:agent.locations})
-		})
-		p5.saveJSON(file, 'trajectories.json');
-	}
-}
-
-var globalP5 = new p5(main, "ColorAgents");
+	var mainP5 = new p5(main, "ColorAgents");

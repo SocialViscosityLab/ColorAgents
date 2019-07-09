@@ -9,7 +9,7 @@ class World{
  */
   constructor(){
     this.observers = [];
-    this.tics = 0;
+    this.ticks = 0;
   }
 
   /**
@@ -17,11 +17,11 @@ class World{
   * @param {Agent} observer The agent that observes this world
   */
   subscribe(observer){
-    if (observer instanceof Human || observer instanceof Nonhuman){
+    //if (observer instanceof Human || observer instanceof Nonhuman){
       this.observers.push(observer);
       // notify
       this.notifyObservers(this);
-    }
+    //}
   }
 
   /**
@@ -91,7 +91,8 @@ class World{
     for (var a = 0; a < this.observers.length; a++){
       this.observers[a].interact();
     }
-    this.tics ++;
+    this.ticks ++;
+    document.getElementById("ticksInWorld").innerHTML = this.ticks;
   }
 
 /**
@@ -99,7 +100,7 @@ class World{
  */
   reset(){
     this.observers = [];
-    this.tics = 0;
+    this.ticks = 0;
   }
 
 /**
@@ -107,7 +108,7 @@ class World{
  *
  * @return {Number} The ellapsed number of ticks
  */
-  getTics(){
-    return this.tics;
+  getTicks(){
+    return this.ticks;
   }
 }

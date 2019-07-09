@@ -38,6 +38,35 @@ class Chart{
     this.p5.endShape();
   }
 
+  geomVLine(value, color){
+    let xCoord = this.xAxis.mapPosition(this.p5,value);
+    if (color){
+      this.p5.stroke(color[0], color[1], color[2]);
+    } else {
+      this.p5.stroke(255,0,0,100);
+    }
+    this.p5.line(this.pos.x+xCoord, this.yAxis.pos.y, this.pos.x+xCoord, this.yAxis.pos.y - this.yAxis.length);
+  }
+
+  geomTextValueAtKey(data, key){
+    let value = data.get(key);
+    let xCoord;
+    let yCoord;
+    if (value == undefined){
+      value = "No data";
+      xCoord = this.xAxis.mapPosition(this.p5,key);
+      yCoord = 0;
+    } else {
+      xCoord = this.xAxis.mapPosition(this.p5,key);
+      yCoord = this.yAxis.mapPosition(this.p5,value);
+    }
+    this.p5.noStroke();
+    this.p5.fill(255,0,0,100);
+    this.p5.textSize(10);
+    this.p5.text (Number(value).toFixed(2), this.pos.x+xCoord + 3, this.pos.y+yCoord);
+    this.p5.text (key, this.pos.x+xCoord, this.pos.y + 10);
+  }
+
 }
 
 /**** CLASS AXIS *****/
@@ -49,6 +78,7 @@ class Axis{
     this.label = label;
     this.value = value;
     this.step = length/value;
+    this.pos;
   }
 
   mapPosition(p5,val){
@@ -72,6 +102,7 @@ class Axis{
   }
 
   plot(p5,pos){
+    this.pos = pos;
     if(this.isHorizontal){
       p5.stroke(150);
       p5.line(pos.x, pos.y, pos.x+this.length, pos.y);

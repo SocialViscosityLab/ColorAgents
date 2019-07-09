@@ -13,14 +13,14 @@
 * to be" in relation to all my interactants over the duration of an action, task or practice.
 *
 * The same could also be reframed:
-* 4. The viscosity of a social practice is estimated by contrasting where
-* agents "intended to be" with where they "ended" after the execution of social actions.
-* The scope of "where" encompases the interactions with all agent's interactants
-* and with the world.
+* 4. The viscosity of a social practice is estimated by contrasting the situation
+* agents "intended to be" with the situation they "ended" after the execution of
+* social actions. The definition os "situation" encompasses the interactions with
+* each interactant and with the world.
 */
 
-class Metrics{
-  constructor(world){
+class Metrics {
+  constructor(world) {
     this.world = world;
     /** The metricsMap is a nested structure of key-value pairs. At the top of the
     structure there is a Map whose keys are timeStamps retrieved from the world's ticker. For
@@ -38,11 +38,11 @@ class Metrics{
   }
 
   /**
-  * This function stores the data from agents interaction in the main map named
+  * This function stores the data from agents interaction in the main collection named
   * metricsMap. It is recursively called from a browser's setInterval function controlled
   * in the main.js file.
   */
-  getMetricsData(){
+  getMetricsData() {
 
     let innerMap = new Map();
 
@@ -52,37 +52,40 @@ class Metrics{
     }
 
     //save interactions for the current tick time.
-    this.metricsMap.set(world.getTics(), innerMap);
+    this.metricsMap.set(world.getTicks(), innerMap);
 
     for (let agent of this.agents) {
       this.recordAgentViscosityData(agent);
     }
 
-    this.recordGlobalViscosityData();
+    let vscsty = this.recordGlobalViscosityData();
+
+    document.getElementById("viscosityInWorld").innerHTML = vscsty.toFixed(2);
   }
 
   /**
-  * [recordAgentViscosityData description]
-  * @param  {[type]} agent [description]
-  * @return {[type]}       [description]
+  * Private. Records agent viscosity data at the current tick
+  * @param  {Agent} agent The agent to record data from
   */
-  recordAgentViscosityData(agent){
+  recordAgentViscosityData(agent) {
     let tmp = this.agentsViscosityData.get(agent);
-    if (!tmp){
+    if (!tmp) {
       let tmpInnerMap = new Map();
-      tmpInnerMap.set(world.getTics(),this.viscosityAtFor(world.getTics(),agent));
-      this.agentsViscosityData.set(agent,tmpInnerMap);
+      tmpInnerMap.set(world.getTicks(), this.viscosityAtFor(world.getTicks(), agent));
+      this.agentsViscosityData.set(agent, tmpInnerMap);
     } else {
-      tmp.set(world.getTics(),this.viscosityAtFor(world.getTics(),agent));
+      tmp.set(world.getTicks(), this.viscosityAtFor(world.getTicks(), agent));
     }
   }
 
   /**
-  * [recordGlobalViscosityData description]
-  * @return {[type]} [description]
+  * Private. Records global viscosity data at the current tick
+  * @return  {Number} global Viscosity value at current tick
   */
-  recordGlobalViscosityData(){
-    this.globalViscosityData.set(world.getTics(),this.viscosityAt(world.getTics()));
+  recordGlobalViscosityData() {
+    let tmp = this.viscosityAt(world.getTicks());
+    this.globalViscosityData.set(world.getTicks(), tmp);
+    return tmp;
   }
 
   /**
@@ -90,22 +93,22 @@ class Metrics{
   * @param  {Map} innerMap The temporal innerMap storing the interactions occurred in a time tick
   * @param  {Agent} agent    The agent to which interactions want to be retrieved.
   */
-  getInteractions(innerMap, agent){
+  getInteractions(innerMap, agent) {
     // retrieve agent's interactants
     let interactants = agent.retrieveInteractants();
 
     let interactions = [];
 
     // Iterate over its interactants 'i' at the previous time step
-    for(let interactant of interactants){
+    for (let interactant of interactants) {
 
       let intendedDist;
 
-      try{
+      try {
         // Take the intendend distances in the previous time step to each interactant
         intendedDist = agent.distancesMap.get(interactant.agent.id).spatialMag;
       }
-      catch(error){
+      catch (error) {
         // It might be the case that at the current time these agents start an
         // inteaction. Therefore there is no stored spatialMag in the previuos
         // time tick. In that case the intendedDist is set to 0.
@@ -121,16 +124,16 @@ class Metrics{
       // If the intendedDist == 0 then the weightedDeltaDist will be infinite.
       // That does not make sense because it would mean that Agent estimated to
       // be ininitely far away from the interactant. Thus, weightedDeltaDist is set to 0
-      if (!isFinite(weightedDeltaDist)){
+      if (!isFinite(weightedDeltaDist)) {
         weightedDeltaDist = 0;
       }
 
       // Timetag it and record interaction
-      interactions.push({interactant:interactant.agent.id, spatialMag:intendedDist, currentDist:currentDist, weightedDifference:weightedDeltaDist});
+      interactions.push({ interactant: interactant.agent.id, spatialMag: intendedDist, currentDist: currentDist, weightedDifference: weightedDeltaDist });
     }
 
     //  store the interactions with each agent
-    innerMap.set(agent,interactions);
+    innerMap.set(agent, interactions);
   }
 
   /**
@@ -141,10 +144,10 @@ class Metrics{
   * @param  {Agent} agent The agent from which the interactions are retrieve.
   * @return {Array} The array of interactions stored for a given agent.
   */
-  retrieveInteractionsAtFor(time, agent){
+  retrieveInteractionsAtFor(time, agent) {
     let rtn = this.metricsMap.get(time).get(agent);
-    if (!rtn){
-      console.log("Interactions array missed at time: "+ time +" for agent "+ agent.id);
+    if (!rtn) {
+      console.log("Interactions array missed at time: " + time + " for agent " + agent.id);
     }
     return rtn
   }
@@ -154,11 +157,11 @@ class Metrics{
   * @param  {Number} time  The time tick of the sequence of stored interactions
   * @return {Map} The Map of interactions stored at the given time
   */
-  retrieveInteractionsAt(time){
-    if (world.getTics() > 0){
+  retrieveInteractionsAt(time) {
+    if (world.getTicks() > 0) {
       let rtn = this.metricsMap.get(time);
-      if (!rtn){
-        console.log("Interaction map missed at time: "+ time);
+      if (!rtn) {
+        console.log("Interaction map missed at time: " + time);
       }
       return rtn
     }
@@ -169,21 +172,21 @@ class Metrics{
   * @param  {Number} time The tick counter value representing the moment in time from which viscosity wants to be calculated
   * @return {Number}      The viscosity value at time tick
   */
-  viscosityAt(time){
+  viscosityAt(time) {
     // Get the innerMap of interactions at given time
     let interactions = this.retrieveInteractionsAt(time);
 
     let accumulated = 0;
-    try{
+    try {
       // iterate over each agent
-      interactions.forEach((key,agent)=>{
+      interactions.forEach((key, agent) => {
         accumulated += this.viscosityAtFor(time, agent);
       });
 
       // average by agents
-      accumulated = accumulated/interactions.size;
-    } catch(error){
-      console.log("Interaction undefined at time "+ time);
+      accumulated = accumulated / interactions.size;
+    } catch (error) {
+      console.log("Interaction undefined at time " + time);
     }
 
     // return averaged result
@@ -196,7 +199,7 @@ class Metrics{
   * @param  {Agent} agent  The agent whose viscosity wants to be calculated
   * @return {Number}       The agent's viscosity value at tick time
   */
-  viscosityAtFor(time, agent){
+  viscosityAtFor(time, agent) {
 
     // Get the array of interactions at given time
     let interactions = this.retrieveInteractionsAtFor(time, agent);
@@ -211,7 +214,7 @@ class Metrics{
     };
 
     // average by getInteractants
-    innerAccumulate = innerAccumulate /interactions.length;
+    innerAccumulate = innerAccumulate / interactions.length;
 
     // return averaged result
     return innerAccumulate;
@@ -225,15 +228,15 @@ class Metrics{
   * @param  {Number} time The tick counter value representing the moment in time from which the matrix is composed
   * @return {Array}      The array of id:agent.id, interactions:interactions
   */
-  getMatrixAt(time){
+  getMatrixAt(time) {
     let innerMap = this.retrieveInteractionsAt(time);
     let rtn = [];
-    if (world.getTics() > 0){
-      try{
-        innerMap.forEach((interactions,agent)=>{
-          rtn.push({id:agent.id, interactions:interactions});
+    if (world.getTicks() > 0) {
+      try {
+        innerMap.forEach((interactions, agent) => {
+          rtn.push({ id: agent.id, interactions: interactions });
         });
-      }catch(error){
+      } catch (error) {
         console.log("Map collections not initialized at time " + time);
       }
     }

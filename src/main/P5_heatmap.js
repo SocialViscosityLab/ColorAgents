@@ -1,35 +1,49 @@
 var heatMap = function (p5){
 
-	let vizMatrix1D;
-	let showIntMtrx = true;
+  let vizMatrixCanvas;
+  let showIntlastMatrix = true;
+  let lastMatrix;
+  let lastMatrixTick = -1;
 
-	p5.setup = function(){
-		p5.createCanvas(500,500);
-		initialize();
-		document.getElementById("reset").addEventListener('click', () =>{initialize();})
-		document.getElementById("showMatrix").onclick = sIntMtrx;
-		document.getElementById("cFactory").addEventListener('change', ()=>{
-			initialize();
-		})
-	}
+  p5.setup = function(){
+    p5.createCanvas(500,500);
+    tickSlider = document.getElementById("ticks");
+    initialize();
+    document.getElementById("reset").addEventListener('click', () =>{initialize();})
+    document.getElementById("showMatrix").onclick = sIntlastMatrix;
+    document.getElementById("cFactory").addEventListener('change', ()=>{
+      initialize();
+    })
+  }
 
-	function sIntMtrx(){
-		showIntMtrx = !showIntMtrx;
-	}
+  sIntlastMatrix = function(){
+    showIntlastMatrix = !showIntlastMatrix;
+  }
 
-	function initialize(){
-		// Reset matrix visualizer
-		vizMatrix1D = new VisualInteractionMatrix(p5, world);
-	}
+  initialize = function(){
+    // Reset matrix visualizer
+    vizMatrixCanvas = new InteractionMatrixCanvas(p5, world);
+  }
 
-	p5.draw = function(){
-		p5.background(255);
+  p5.setLastMatrix = function(time){
+    if (time != lastMatrixTick){
+      lastMatrix = metrics.getMatrixAt(time);
+      lastMatrixTick = time;
+    }
+  }
 
-		// MATRICES
-		if (showIntMtrx){
-			vizMatrix1D.plot2(p5.createVector(10,30), metrics.getMatrixAt(world.getTics()));
-		}
-	}
+  p5.resetLastMatrix = function(){
+    lastMatrix = undefined;
+  }
+
+  p5.draw = function(){
+    p5.background(255);
+
+    // MATRICES
+    if (showIntlastMatrix && lastMatrix != undefined){
+      vizMatrixCanvas.plot2(p5.createVector(10,30), lastMatrix);
+    }
+  }
 }
 
-var vizMatrix = new p5(heatMap, "PlotMatrix");
+vizMatrix = new p5(heatMap, "PlotMatrix");

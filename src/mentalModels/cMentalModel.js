@@ -50,6 +50,14 @@ class ColorMentalModel{
   }
 
   /**
+  * Sets the color palette to this color mental model
+  * @param {Array} palette the new color palette
+  */
+  setColorPalette(paletteName){
+    this.cFactory = new ColorFactory(paletteName);
+  }
+
+  /**
   * Finds the color index in a color palette
   * @param {Number} color the color to be matched to a color palette
   */

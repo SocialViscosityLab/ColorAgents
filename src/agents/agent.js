@@ -13,7 +13,7 @@ class Agent{
     this.id = id;
 
     /** A {p5.Vector} storing current x and y */
-    this.pos = globalP5.createVector(x,y);
+    this.pos = mainP5.createVector(x,y);
 
     /**  A color defined as {name, chroma} */
     this.colorValues = undefined;
@@ -26,10 +26,10 @@ class Agent{
     this.distancesMap = new Map();
 
     /** The {p5.Vector} position previously stored at this.pos before this.pos was updated*/
-    this.lastPos = globalP5.createVector(x,y);
+    this.lastPos = mainP5.createVector(x,y);
 
-    /** The direction this agent is pointing towards, i.e., its bearing */
-    this.bearing;
+    /** The direction this agent is pointing towards, i.e., its bearing*/
+    this.bearing = 0;
 
     /** A map storing pairs of {agent}agent: {boolean}interactant.*/
     this.pairs=[];

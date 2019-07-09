@@ -64,7 +64,6 @@
 
 
 <body>
-
   <!-- NAVBAR & HEADER -->
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -75,14 +74,13 @@
         <ul class="nav navbar-nav">
           <li><a href="#Description">Model description</a></li>
           <li><a href="#Simulation">Simulation</a></li>
-          <li><a href="#Charts">Charts</a></li>
+          <li><a href="#Viscosity">Viscosity</a></li>
           <li><a href="#References">References</a></li>
           <li><a href="https://github.com/SocialViscosityLab/ColorAgents" target="_blank">GitHub</a></li>
         </ul>
       </div>
 
       <div class="row">
-
         <div class = "col-sm-12">
           <h4 style="color:white;">Agent-based model of color proximity </h4>
         </div>
@@ -98,6 +96,10 @@
               <option value="secondary">Secondary</option>
               <option value="newton">Newton</option>
               <option value='munsell' selected>Munsell</option>
+              <option value="testInverted">Triad Inverted</option>
+              <option value="secondaryInverted">Secondary Inverted</option>
+              <option value="newtonInverted">Newton Inverted</option>
+              <option value='munsellInverted'>Munsell Inverted</option>
             </select>
           </p>
         </div>
@@ -119,7 +121,7 @@
 
             <div class="row">
               <!-- Slider radius -->
-              <div class='col-lg-12'>
+              <div class='col-sm-12'>
                 <p style="font-size:12px; color:grey;">
                   Set N closest, radius or visual perception field <br>
                   <input type="range" min="0" max="29" value="1" id="range"></input>
@@ -160,122 +162,164 @@
     <a name="Description"></a>
     <div class="container">
       <!-- DESCRIPTION -->
-      <a name="Simulation"></a>
       <div class="row">
-        <div class = "col-lg-12">
+
           <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-          <b>Model description</b>
-          <p style="font-size:14px;">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-            when an unknown printer took a galley of type and scrambled it to make a
-            type specimen book. It has survived not only five centuries, but also the
-            leap into electronic typesetting, remaining essentially unchanged. It was
-            popularised in the 1960s with the release of Letraset sheets containing Lorem
-            Ipsum passages, and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
 
-        </div>
+          <div class = "col-sm-6">
+            <b>Model description</b>
+            <p style="font-size:14px;">
+              The visual spectrum of light is commonly represented as a linear sequence
+              of hues that resembles the rainbow, starting at red and ending at purple.
+              <a name="Simulation"></a>
+              Newton’s generally accepted model for additive color theory --as well
+              as Munsell's model-- connects both ends of the spectrum in a circular color model.
+              This means that purple and red are perceptually closer to each other than
+              to intermediate hues such as green.
+              <br><br>
+              Shepard and Cooper (1992) demonstrated that normally sighted people organize
+              primary hues mirroring such circular model. The agent-based model (ABM)
+              herein is the result of an experiment inspired
+              by Shepard and Cooper methods.
+            </p>
+          </div>
+          <div class = "col-sm-6">
+            <p style="font-size:14px;">
+              <br>
+              Eighteen participants were asked
+              to impersonate one out of 18 hues picked from the Munsell's color wheel and
+              choose a random spot in a square room. Their task was to find the location
+              where they feel their hue was near to other's and far away from those with
+              distant hues.<br><br>
+              After a couple of minutes moving around the room participants organized
+              themselves in the same circular shape observed by Shepard and Cooper's.
+              This ABM model recreates the participants behavior in such experiment
+              and studies the social viscosity mutually exerted as participants tried
+              to accomplish the task.
+            </p>
+          </div>
+
       </div>
 
-      <hr>
+    <hr>
 
-      <!-- SIMULATION -->
-      <div class="row">
-        <div class = "col-lg-12">
+    <!-- SIMULATION -->
+    <div class="row">
+      <div class = "col-sm-12">
+        <p style="font-size:16px;">
           <b>Simulation</b>
-        </div>
-      </div>
-
-      <div class='row'>
-
-        <!-- Control simulation buttons -->
-        <div class="col-lg-2">
-          <p>
-            <br>
-            <button  type = "button" id = "run" > Run Simulation </button>
-            <button  type = "button" id = "reset" > Reset </button>
-            <br>
-          </p>
-
-          <!-- Visibility Buttons -->
-          <p><br><b>Visibility controls</b></p>
-          <p><input  type = "checkbox" id = "showAgents" checked> Show agents </input></p>
-          <p><input  type = "checkbox" id = "showTrajectories" > Show trajectories </input></p>
-          <p><input  type = "checkbox" id = "showInteractions" checked> Show interactions </input></p>
-          <p><input  type = "checkbox" id = "showPerceptionField" checked> Show perception field </input></p>
-          <hr>
-          <p><b>Export</b></p>
-          <p> <button  type = "button" id = "trajectories_to_JSON" > Trajectories to JSON</button> </p>
-
-        </div>
-
-        <!-- SIMULATION CANVAS -->
-        <div class="col-lg-10">
-          <p style = "font-size:12px">Observers in the world: <span id="agentsInWorld" > 0 </span> &nbsp | &nbsp Humans: <span id="humansInWorld" > 0 </span> &nbsp  | &nbsp Nonhumans: <span id="nonhumansInWorld" > 0 </span></p>
-          <a name="Charts"></a>
-          <div id="ColorAgents" align="center"></div>
-        </div>
-
-      </div>
-
-      <hr>
-
-      <!-- CHARTS -->
-      <div class="row">
-        <div class = "col-lg-12">
-          <b>Charts</b>
-        </div>
-      </div>
-
-      <br>
-
-      <div class = "row">
-        <div class = "col-sm-2">
-          <p><input  type = "checkbox" id = "showMatrix" checked> Show interaction matrix </input></p>
-          <p><input  type = "checkbox" id = "showSeries" checked> Plot global viscosity </input></p>
-          <p><input  type = "checkbox" id = "showIndividualSeries"> Plot viscosity for each agent </input></p>
-
-          <hr>
-          <p><b>Export</b></p>
-          <p> <button  type = "button" id = "viscosities_to_JSON" > Viscosities to JSON</button> </p>
-        </div>
-
-        <!-- MATRIX -->
-        <div class="col-sm-5">
-          <p style = "font-size:12px">Interaction matrix</p>
-          <div id="PlotMatrix"></div>
-        </div>
-
-        <!-- VISCOSITY CHART -->
-        <div class = "col-sm-5">
-          <p style = "font-size:12px">Viscosity chart</p>
-          <div id="TimeSeries"></div>
-          <p style = "font-size:12px">Tick selector chart</p>
-          <input type="range" min="0" max="300" value="0" id="ticks"></input>
-          <span id="sliderTicks" > 0 </span>
-        </div>
-      </div>
-      <!-- END OF LAST ROW-->
-
-      <hr>
-      <a name="References"></a>
-      <!-- References -->
-      <div class = "row">
-        <h5 id="references">References</h5>
-
-        <p>
-          <a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue </a>,
-          <a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js </a>,
-          <a href="http://p5js.org" target="_blank">P5.js</a>,
-          <a href="http://colormine.org/color-converter" target="_blank">Color converter</a>,
-          <a href="http://handprint.com/LS/CVS/color.html" target="_blank">Color vision theory</a>,
-          <a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a>
         </p>
-
-        <p style="font-size:11px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self"> P5.js</a></p>
       </div>
     </div>
-  </body>
-  </html>
+
+    <div class='row'>
+      <!-- Control simulation buttons -->
+      <div class="col-sm-2">
+        <p>
+          <br>
+          <button  type = "button" id = "run" > Run Simulation </button>
+          <button  type = "button" id = "reset" > Reset </button>
+          <br>
+        </p>
+
+        <!-- Visibility Buttons -->
+        <p><br><b>Visibility controls</b></p>
+        <p><input  type = "checkbox" id = "showAgents" checked> Show agents </input></p>
+        <p><input  type = "checkbox" id = "showTrajectories" > Show trajectories </input></p>
+        <p><input  type = "checkbox" id = "showInteractions" checked> Show interactions </input></p>
+        <p><input  type = "checkbox" id = "showPerceptionField" checked> Show perception field </input></p>
+        <hr>
+        <p><b>Export</b></p>
+        <p> <button  type = "button" id = "trajectories_to_JSON" > Trajectories to JSON</button> </p>
+
+      </div>
+
+      <!-- SIMULATION CANVAS -->
+      <div class="col-sm-10">
+        <p style = "font-size:12px">Observers in the world: <span id="agentsInWorld" > 0 </span> 
+          &nbsp | &nbsp Humans: <span id="humansInWorld" > 0 </span> 
+          &nbsp  | &nbsp Nonhumans: <span id="nonhumansInWorld" > 0 </span>
+          &nbsp  | &nbsp Ticks: <span id="ticksInWorld" > 0 </span>
+          &nbsp  | &nbsp Viscosity: <span id="viscosityInWorld" > 0 </span>
+        </p>
+        <a name="Viscosity"></a>
+        <div id="ColorAgents" align="center"></div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- CHARTS -->
+    <div class="row">
+      <div class = "col-sm-12">
+        <p style="font-size:16px;">
+          <b>Interaction viscosity</b>
+        </p>
+
+        <p style="font-size:14px;">
+          The viscosity of a social practice is estimated by contrasting
+          the situation each agent "intended to be" with the situation they "ended"
+          after the concurrent execution of actions. The meaning of "situation"
+          encompasses the interactions with the world and its dwellers.
+        </p>
+      </div>
+    </div>
+
+    <br>
+
+    <div class = "row">
+      <div class = "col-sm-2">
+        <p><input  type = "checkbox" id = "showMatrix" checked> Show interaction matrix </input></p>
+        <p><input  type = "checkbox" id = "showSeries" checked> Plot global viscosity </input></p>
+        <p><input  type = "checkbox" id = "showIndividualSeries"> Plot viscosity for each agent </input></p>
+
+        <hr>
+
+        <p><b>Export to JSON</b></p>
+        <p> <button  type = "button" id = "viscosities_to_JSON" > All viscosities</button> </p>
+        <p> <button  type = "button" id = "globalViscosity_to_JSON" > Global viscosity</button> </p>
+      </div>
+
+      <!-- MATRIX -->
+      <div class="col-sm-5">
+        <p style = "font-size:12px">Interaction matrix</p>
+        <div id="PlotMatrix"></div>
+      </div>
+
+      <!-- VISCOSITY CHART -->
+      <div class = "col-sm-5">
+        <p style = "font-size:12px">Viscosity chart</p>
+        <div id="TimeSeries"></div>
+        <p style = "font-size:12px">Viewing charts at tick <span id="sliderChart" > 0 </span></p>
+        <input type="range" min="0" max="0" value="0" id="ticks" 
+          oninput="vizMatrix.setLastMatrix(Number(this.value));
+          viscositySeries.showViscosityValueAt(Number(this.value))"></input>
+      </div>
+    </div>
+    <!-- END OF LAST ROW-->
+
+
+    <hr>
+
+    <a name="References"></a>
+    <!-- References -->
+    <div class = "row">
+      <p style="font-size:16px;">
+        <b>References</b>
+      </p>
+
+      <p>
+        <a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue </a>,
+        <a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js </a>,
+        <a href="http://p5js.org" target="_blank">P5.js</a>,
+        <a href="http://colormine.org/color-converter" target="_blank">Color converter</a>,
+        <a href="http://handprint.com/LS/CVS/color.html" target="_blank">Color vision theory</a>,
+        <a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a>
+      </p>
+
+      <p style="font-size:11px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self"> P5.js</a></p>
+    </div>
+
+  </div>
+</body>
+</html>

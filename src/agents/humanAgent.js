@@ -5,7 +5,7 @@ Human agent. Extends Agent
 @param {String} index the id of this agent
 @param {String} theColor the color id of this agent
 @param {String} colorPalette the color palette used by this agent
-@param {String} sensibility a function that represents the perceived proximity between colors from the reference point of this observer.
+@param {String} sensibility a function (linear, exponential...) that represents the perceived proximity between colors from the reference point of this observer.
 @param {Number} shortest scalar used by spatial mental model to determine what on canvas is close
 @param {Number} farthest scalar used by spatial mental model to determine what on canvas is far away
 */
@@ -123,15 +123,15 @@ class Human extends Agent{
 			if (!vector){
 				// Calculate the angle between this and the pair agent
 				let tmp =  Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
-				vector = new globalP5.createVector(Math.cos(tmp)*deltaDist, Math.sin(tmp)*deltaDist);
+				vector = new mainP5.createVector(Math.cos(tmp)*deltaDist, Math.sin(tmp)*deltaDist);
 			} else {
 				let tmp =  Math.atan2(i.pos.y - this.pos.y, i.pos.x - this.pos.x);
-				let tmpV = new globalP5.createVector(Math.cos(tmp)*deltaDist, Math.sin(tmp)*deltaDist)
+				let tmpV = new mainP5.createVector(Math.cos(tmp)*deltaDist, Math.sin(tmp)*deltaDist)
 				vector.add(tmpV);
 			}
 		}
 		if (vector == undefined){
-			return new globalP5.createVector(0,0);
+			return new mainP5.createVector(0,0);
 		} else {
 			return vector;
 		}

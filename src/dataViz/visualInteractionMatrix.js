@@ -4,7 +4,7 @@
 * lower triangle shows the target distance estimated by the agent in the row. The
 * lightness of upper triangle shows the current distance.
 */
-class VisualInteractionMatrix {
+class InteractionMatrixCanvas {
   /**
   * Constructor
   * @param {P5} p5    An instance of P5.js
