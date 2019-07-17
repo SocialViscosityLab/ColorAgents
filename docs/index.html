@@ -2582,10 +2582,13 @@ colors within 70% range of perceived colors trigger actions.</p>
 
   <p>Calls one interaction with other agents stored in its own collection of pairs.
 It is usually used in recursive structures. In this case, this function follows these
-steps: 0) Record agent's current location, 1) Filter pairs with whom to interact according to user settings, 2)Store
-agent's current position, 3) store agent's last position before moving, 4) estimate
-the magnitude and direction of next step, 4) Verfiy if the change is worth to
-execute the movement, 5) move or set done status to true.</p>
+steps:
+1) Record agent's current location,
+2) Store agent's last position before moving,
+3) Filter pairs with whom to interact according to user settings,
+4) Estimate the magnitude and direction of next step using this.calculateStep(),
+5) Verfiy if the change is worth to execute the movement. Threshold in user settings,
+6) move or set done status to true.</p>
 
  
   

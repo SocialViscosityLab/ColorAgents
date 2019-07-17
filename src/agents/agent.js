@@ -29,7 +29,9 @@ class Agent{
     this.lastPos = mainP5.createVector(x,y);
 
     /** The direction this agent is pointing towards, i.e., its bearing*/
-    this.bearing = 0;
+    //this.bearing = 0;
+    // By default agents bearing points towards the center of the world
+    this.bearing = mainP5.createVector(mainP5.width/2 - x, mainP5.height/2 - y).heading();
 
     /** A map storing pairs of {agent}agent: {boolean}interactant.*/
     this.pairs=[];

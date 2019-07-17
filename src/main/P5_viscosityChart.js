@@ -29,10 +29,6 @@ var viscosityChart = function (p5){
     showIndividualSeries = !showIndividualSeries;
   }
 
-  p5.showViscosityValueAt = function(value){
-    document.getElementById('sliderChart').innerHTML = value;
-  }
-
   p5.draw = function(){
     p5.background(255);
 

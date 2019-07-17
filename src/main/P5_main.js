@@ -51,6 +51,8 @@ var main = function(p5){
 			initialize();
 		})
 		document.getElementById("trajectories_to_JSON").onclick = trajectoriesToJSON;
+		document.getElementById("trajectories_to_JSON2").onclick = trajectoriesToJSON2;
+		document.getElementById("trajectories_to_CSV").onclick = trajectoriesToCSV;
 	}
 
 	function initialize(){
@@ -69,7 +71,7 @@ var main = function(p5){
 		for(var i=0; i< colors.length; i++){
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
-			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,'linear'.value, 20, 100);
+			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,'linear'.value, 0, 100);
 			
 			//	agents.push(agent);
 			world.subscribe(agent);
@@ -177,6 +179,18 @@ var main = function(p5){
 			})
 			p5.saveJSON(file, 'trajectories.json');
 		}
+
+		function trajectoriesToJSON2(){
+			p5.saveJSON(Utils.getRecording(), 'trajectoriesV2.json', true);
+		}
+
+		function trajectoriesToCSV(){
+			p5.save(Utils.getRecording(), 'trajectoriesCSV.csv', true);
+		}
+
+		p5.updateSliderValue = function(sliderName, value){
+			document.getElementById(sliderName).innerHTML = value;
+		  }
 	}
 
 	var mainP5 = new p5(main, "ColorAgents");

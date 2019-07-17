@@ -88,9 +88,13 @@ class World{
  * Window setInterval() Method from the browser or the server.
  */
   runAgents(){
+    Utils.startRecording(world.getTicks());
     for (var a = 0; a < this.observers.length; a++){
+      Utils.recordData(this.observers[a]);
       this.observers[a].interact();
     }
+    Utils.endRecording();
+    Utils.clearRecorder();
     this.ticks ++;
     document.getElementById("ticksInWorld").innerHTML = this.ticks;
   }

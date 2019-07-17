@@ -115,7 +115,7 @@
                 <option value="all">all</option>
                 <option value="nClosest" selected>N closest</option>
                 <option value="radius">by radius</option>
-                <option value='byField'>by visual perception field</option>
+                <option value='byField'>by visual perception field (Warning!: Glitcy)</option>
               </select>
             </p>
 
@@ -124,8 +124,10 @@
               <div class='col-sm-12'>
                 <p style="font-size:12px; color:grey;">
                   Set N closest, radius or visual perception field <br>
-                  <input type="range" min="0" max="29" value="1" id="range"></input>
-                  <span id="sliderValue" > 1 </span>
+                  <input type="range" min="0" max="20" value="5" id="range" step ="5"
+                    oninput= "mainP5.updateSliderValue ('sliderValue',Number(this.value))"
+                  ></input>
+                  <span id="sliderValue" > 5 </span>
                 </p>
               </div>
             </div>
@@ -150,8 +152,10 @@
           <div class="col-sm-3">
             <p style="font-size:12px; color:grey;">
               <b>Tolerance: </b> The agents' conformity to displacement from expected distances to interactants<br>
-              <input type="range" min="0" max="20" value="8" id="changeMagnitude"></input>
-              <span id="sliderChangeMagnitude" > 8 </span>
+              <input type="range" min="0" max="1" value="0.2" id="changeMagnitude" step="0.2"
+                oninput= "mainP5.updateSliderValue ('sliderChangeMagnitude',Number(this.value))">
+              </input>
+              <span id="sliderChangeMagnitude" > 0.2 </span>
             </p>
           </div>
         </div>
@@ -231,6 +235,8 @@
         <hr>
         <p><b>Export</b></p>
         <p> <button  type = "button" id = "trajectories_to_JSON" > Trajectories to JSON</button> </p>
+        <p> <button  type = "button" id = "trajectories_to_JSON2" > Trajectories to JSON 2</button> </p>
+        <p> <button  type = "button" id = "trajectories_to_CSV" > Trajectories to CSV</button> </p>
 
       </div>
 
@@ -293,7 +299,7 @@
         <p style = "font-size:12px">Viewing charts at tick <span id="sliderChart" > 0 </span></p>
         <input type="range" min="0" max="0" value="0" id="ticks" 
           oninput="vizMatrix.setLastMatrix(Number(this.value));
-          viscositySeries.showViscosityValueAt(Number(this.value))"></input>
+          mainP5.updateSliderValue('sliderChart', Number(this.value))"></input>
       </div>
     </div>
     <!-- END OF LAST ROW-->

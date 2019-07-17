@@ -84,6 +84,7 @@ class Metrics {
   */
   recordGlobalViscosityData() {
     let tmp = this.viscosityAt(world.getTicks());
+
     this.globalViscosityData.set(world.getTicks(), tmp);
     return tmp;
   }
@@ -214,8 +215,9 @@ class Metrics {
     };
 
     // average by getInteractants
-    innerAccumulate = innerAccumulate / interactions.length;
-
+    if (innerAccumulate != 0 && interactions.length > 0){
+      innerAccumulate = innerAccumulate / interactions.length;
+    }
     // return averaged result
     return innerAccumulate;
   }

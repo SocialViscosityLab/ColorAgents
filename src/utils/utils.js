@@ -104,6 +104,7 @@ class Utils{
   static chooseByField(thisAgent, k, modality, otherAgents){
 
     let pairs;
+    
     if (!otherAgents){
       pairs = thisAgent.getPairs();
     } else {
@@ -148,5 +149,37 @@ class Utils{
     // get seconds
     var seconds = Math.round(timeDiff);
     return seconds;
+  }
+
+  // DATA RECORDER
+
+  static tmpLabels = [];
+  static tmpValues = [];
+  static returnValues = [] //new Map();
+
+  static startRecording(val){
+    this.tmpLabels.push('tick');
+    this.tmpValues.push(val);
+  }
+
+  static recordData(val){
+    this.tmpLabels.push(val.id+'_x');
+    this.tmpLabels.push(val.id+'_y');
+    this.tmpValues.push(val.pos.x);
+    this.tmpValues.push(val.pos.y);
+  }
+
+  static endRecording(){
+    this.returnValues.splice(0,1,this.tmpLabels);
+    this.returnValues.push(this.tmpValues);
+  }
+
+  static getRecording(){
+    return Array.from(this.returnValues);
+  }
+
+  static clearRecorder(){
+    this.tmpLabels = [];
+    this.tmpValues = [];
   }
 }
