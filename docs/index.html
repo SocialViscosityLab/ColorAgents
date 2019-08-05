@@ -204,9 +204,9 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#humancmentalmodel'
+                        href='#humansensibility'
                         class='regular pre-open'>
-                        #cMentalModel
+                        #sensibility
                       </a></li>
                       
                       <li><a
@@ -2262,7 +2262,7 @@ agent and other agent identified by its id</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>new Human(x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, index: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, theColor: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, colorPalette: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, sensibility: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, shortest: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, farthest: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
+    <div class='pre p1 fill-light mt0'>new Human(x: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, y: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, index: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, theColor: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, colorPalette: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, shortest: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, farthest: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
    
   
   
@@ -2332,17 +2332,8 @@ agent and other agent identified by its id</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>sensibility</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-	    a function (linear, exponential...) that represents the perceived proximity between colors from the reference point of this observer.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
             <span class='code bold'>shortest</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    scalar used by spatial mental model to determine what on canvas is close
+	    scalar used by spatial mental model to determine what on canvas how near an agent wants to be from the most similar agent
 
           </div>
           
@@ -2351,7 +2342,7 @@ agent and other agent identified by its id</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>farthest</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    scalar used by spatial mental model to determine what on canvas is far away
+	    scalar used by spatial mental model to determine what on canvas how far away an agent was to be from the most dissimilar agent
 
           </div>
           
@@ -2374,11 +2365,11 @@ agent and other agent identified by its id</p>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='humancmentalmodel'>
+    <div class='border-bottom' id='humansensibility'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>cMentalModel</span>
+            <span class='code strong strong truncate'>sensibility</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2390,7 +2381,7 @@ agent and other agent identified by its id</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>cMentalModel</div>
+    <div class='pre p1 fill-light mt0'>sensibility</div>
    
   
   
@@ -2586,9 +2577,13 @@ steps:
 1) Record agent's current location,
 2) Store agent's last position before moving,
 3) Filter pairs with whom to interact according to user settings,
-4) Estimate the magnitude and direction of next step using this.calculateStep(),
-5) Verfiy if the change is worth to execute the movement. Threshold in user settings,
-6) move or set done status to true.</p>
+4) If there is any interactant
+4.1) Estimate the magnitude of next step using this.calculateStep(),
+4.2) Verfiy if the change is worth to execute the movement. Threshold in user settings,
+4.3 Set the new bearing
+4.4) move or set done status to true.
+5) If no interactants
+5.1) Set done status to true.</p>
 
  
   
@@ -3506,7 +3501,7 @@ available.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>sensibility</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-	    The name of the Sensibility function, either linear or exponential
+	    The name of the Sensibility function, either linear, circular or exponential
 
           </div>
           
@@ -3858,7 +3853,7 @@ indexA and indexB must be between 0 and colorPalette.length</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>indexA</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    [description]
+	    index of reference color in the colorPalette
 
           </div>
           
@@ -3867,7 +3862,7 @@ indexA and indexB must be between 0 and colorPalette.length</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>indexB</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    [description]
+	    index of target color in the colorPalette.
 
           </div>
           
@@ -4004,7 +3999,7 @@ indexA and indexB must be between 0 and colorPalette.length</p>
   
 
   <p>Spatial Mental Model
-This mental model is a mechanism to transduce values from other mental models into spatial distances.
+This mental model is a mechanism to convert values from other mental models into spatial distances.
 For example, it serves to map the perceived proximity between two colors into a spatial proximity</p>
 
  
@@ -4094,7 +4089,7 @@ of this.shortest and this.farthest</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>val</span> <code class='quiet'>(any)</code>
-	    a value between 0 and 1. ! corresponds to the farthest perception
+	    a value between 0 and 1. 1 corresponds to the farthest perception
 
           </div>
           
@@ -5269,7 +5264,7 @@ currentDist, interactant, spatialMag, weightedDifference</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>chooseByField(thisAgent, k, modality, otherAgents)</span>
+            <span class='code strong strong truncate'>chooseByField(thisAgent, k, otherAgents)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5281,7 +5276,7 @@ currentDist, interactant, spatialMag, weightedDifference</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>chooseByField(thisAgent: <a href="#agent">Agent</a>, k: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, modality: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, otherAgents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+    <div class='pre p1 fill-light mt0'>chooseByField(thisAgent: <a href="#agent">Agent</a>, k: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, otherAgents: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
    
   
   
@@ -5310,15 +5305,6 @@ currentDist, interactant, spatialMag, weightedDifference</p>
           <div>
             <span class='code bold'>k</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
 	    the lenght of the radius scope or the amount of nearby agents to be retrieved
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>modality</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-	    the method used to retrieve interactants
 
           </div>
           

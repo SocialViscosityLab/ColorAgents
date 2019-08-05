@@ -16,7 +16,9 @@
 
   <!-- CSS -->
   <style>
-  p{font-size:11px;}
+    p {
+      font-size: 11px;
+    }
   </style>
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -39,7 +41,7 @@
   <script src="src/colorFactory.js" type="text/javascript"></script>
 
   <!-- Visualization code -->
-  <script src="src/dataViz/visualInteractionMatrix.js" type="text/javascript"></script>
+  <script src="src/dataViz/interactionMatrixCanvas.js" type="text/javascript"></script>
   <script src="src/dataViz/lattice.js" type="text/javascript"></script>
   <script src='src/dataViz/chart.js' type="text/javascript"></script>
 
@@ -65,41 +67,49 @@
 
 <body>
   <!-- NAVBAR & HEADER -->
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="row">
+  <div class="container" style="background-color: rgb(31, 31, 31)">
+    <div class="row">
+      <div class="col-sm-3">
         <div class="navbar-header" style="margin-top:10px">
-          <p style="font-size:12px; color:grey;"> <img class="img-responsive" src="images/D4SVwhite.png" width="160"> Design for social viscosity lab. <br> University of Illinois  Urbana-Champaign</p>
-        </div>
-        <ul class="nav navbar-nav">
-          <li><a href="#Description">Model description</a></li>
-          <li><a href="#Simulation">Simulation</a></li>
-          <li><a href="#Viscosity">Viscosity</a></li>
-          <li><a href="#References">References</a></li>
-          <li><a href="https://github.com/SocialViscosityLab/ColorAgents" target="_blank">GitHub</a></li>
-        </ul>
-      </div>
-
-      <div class="row">
-        <div class = "col-sm-12">
-          <h4 style="color:white;">Agent-based model of color proximity </h4>
+          <p style="font-size:12px; color:grey;"> <img class="img-responsive" src="images/D4SVwhite.png" width="160">
+            Design for social viscosity lab. <br> University of Illinois Urbana-Champaign</p>
         </div>
       </div>
+      <div class="col-sm-9">
+        <div class="row">
+          <ul class="nav navbar-nav" style="font-size:12px; color:grey;">
+            <li><a href="#Simulation">Simulation</a></li>
+            <li><a href="#Viscosity">Viscosity</a></li>
+            <li><a href="#References">References</a></li>
+            <li><a href="docs/index.html" target="_blank">Documentation</a></li>
+            <li><a href="https://github.com/SocialViscosityLab/ColorAgents" target="_blank">GitHub</a></li>
+          </ul>
+        </div>
+        <div class="row">
+          <h4 style="color:rgb(255, 255, 255);">Agent-based model of color proximity </h4>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </div>
 
+  <!-- FIXED MENU-->
+  <div class="container"
+    style="position: sticky; top: 0px; margin-top: 0px; height: 125px; background-color: rgb(31, 31, 31); z-index: 100">
+    <div id="toolbar">
       <div class="row">
+        <!-- Empty first column -->
+        <div class="col-sm-1"></div>
         <!-- Color Factory -->
-        <div class="col-sm-3">
-          <p style="font-size:12px; color:grey;"><b>Color factory:</b> A factory of predifined color palettes to be asigned to human agents' mental models</p>
-          <p style="font-size:12px; color:grey;">
+        <div class="col-sm-2">
+          <p style="font-size:10px; color:grey;"><b>Color factory:</b> A factory of predifined color palettes to be
+            asigned to human agents' mental models</p>
+          <p style="font-size:10px; color:grey;">
             <select id="cFactory">
               <option value="test">Triad</option>
               <option value="secondary">Secondary</option>
               <option value="newton">Newton</option>
               <option value='munsell' selected>Munsell</option>
-              <option value="testInverted">Triad Inverted</option>
-              <option value="secondaryInverted">Secondary Inverted</option>
-              <option value="newtonInverted">Newton Inverted</option>
-              <option value='munsellInverted'>Munsell Inverted</option>
             </select>
           </p>
         </div>
@@ -107,109 +117,112 @@
 
         <!-- Interaction rule -->
         <div class="col-sm-3">
-          <p style="font-size:12px; color:grey;">
+          <p style="font-size:10px; color:grey;">
             <b>Interaction rule:</b> How agents choose their interactants from the world</p>
-            <p style="font-size:12px; color:grey;">
-              <select id="rule">
-                <option value =""> Interaction rule</option>
-                <option value="all">all</option>
-                <option value="nClosest" selected>N closest</option>
-                <option value="radius">by radius</option>
-                <option value='byField'>by visual perception field (Warning!: Glitcy)</option>
-              </select>
-            </p>
+          <p style="font-size:10px; color:grey;">
+            <select id="rule">
+              <option value=""> Interaction rule</option>
+              <option value="all">all</option>
+              <option value="nClosest" selected>N closest</option>
+              <option value="radius">by radius</option>
+              <option value='byField'>by visual perception field</option>
+            </select>
+          </p>
 
-            <div class="row">
-              <!-- Slider radius -->
-              <div class='col-sm-12'>
-                <p style="font-size:12px; color:grey;">
-                  Set N closest, radius or visual perception field <br>
-                  <input type="range" min="0" max="20" value="5" id="range" step ="5"
-                    oninput= "mainP5.updateSliderValue ('sliderValue',Number(this.value))"
-                  ></input>
-                  <span id="sliderValue" > 5 </span>
-                </p>
+          <div class="row">
+            <!-- Slider radius -->
+            <div class='col-sm-12'>
+              <p style="font-size:10px; color:grey;">
+                Set N closest, radius or visual perception field <br>
+              </p>
+              <div class="row">
+                <div class="col-sm-8">
+                  <input type="range" min="0" max="20" value="5" id="range" step="5"
+                    oninput="mainP5.updateSliderValue ('sliderValue',Number(this.value))"></input>
+                </div>
+                <p style="font-size:10px; color:grey;"> <span id="sliderValue"> 5 </span></p>
+
               </div>
             </div>
           </div>
+        </div>
 
 
-          <!-- sensibility -->
-          <div class="col-sm-3">
-            <p style="font-size:12px; color:grey;">
-              <b>Sensibility: </b> How agents estimate their proximity to their interactants based on their color mental model. Inspired by
-              Stevens' psychophysics (1975).
-            </p>
-            <p style="font-size:12px; color:grey;">
-              <select id="sensibility">
-                <option value="linear">Linear function</option>
-                <option value="exponential">Exponential function</option>
-              </select>
-            </p>
-          </div>
+        <!-- sensibility -->
+        <div class="col-sm-3">
+          <p style="font-size:10px; color:grey;">
+            <b>Sensibility: </b> How agents estimate their proximity to their interactants based on their color mental
+            model. Inspired by Stevens' psychophysics (1957).
+          </p>
+          <p style="font-size:10px; color:grey;">
+            <select id="sensibility">
+              <option value="linear">Linear proximity</option>
+              <option value="chordal" selected>Chordal proximity</option>
+              <option value="exponential">Exponential proximity</option>
+            </select>
+          </p>
+        </div>
 
-          <!-- Slider change threshold magnitude -->
-          <div class="col-sm-3">
-            <p style="font-size:12px; color:grey;">
-              <b>Tolerance: </b> The agents' conformity to displacement from expected distances to interactants<br>
-              <input type="range" min="0" max="1" value="0.2" id="changeMagnitude" step="0.2"
-                oninput= "mainP5.updateSliderValue ('sliderChangeMagnitude',Number(this.value))">
-              </input>
-              <span id="sliderChangeMagnitude" > 0.2 </span>
-            </p>
-          </div>
+        <!-- Slider change threshold magnitude -->
+        <div class="col-sm-2">
+          <p style="font-size:10px; color:grey;">
+            <b>Tolerance: </b> The agents' conformity to displacement from expected distances to interactants<br>
+            <input type="range" min="0" max="1" value="0.2" id="changeMagnitude" step="0.2"
+              oninput="mainP5.updateSliderValue ('sliderChangeMagnitude',Number(this.value))">
+            </input>
+            <span id="sliderChangeMagnitude"> 0.2 </span>
+          </p>
         </div>
       </div>
-    </nav>
+    </div>
+  </div>
+  <!-- END NAVBAR & HEADER -->
 
-    <!-- END NAVBAR & HEADER -->
-    <a name="Description"></a>
-    <div class="container">
-      <!-- DESCRIPTION -->
-      <div class="row">
-
-          <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-          <div class = "col-sm-6">
-            <b>Model description</b>
-            <p style="font-size:14px;">
-              The visual spectrum of light is commonly represented as a linear sequence
-              of hues that resembles the rainbow, starting at red and ending at purple.
-              <a name="Simulation"></a>
-              Newton’s generally accepted model for additive color theory --as well
-              as Munsell's model-- connects both ends of the spectrum in a circular color model.
-              This means that purple and red are perceptually closer to each other than
-              to intermediate hues such as green.
-              <br><br>
-              Shepard and Cooper (1992) demonstrated that normally sighted people organize
-              primary hues mirroring such circular model. The agent-based model (ABM)
-              herein is the result of an experiment inspired
-              by Shepard and Cooper methods.
-            </p>
-          </div>
-          <div class = "col-sm-6">
-            <p style="font-size:14px;">
-              <br>
-              Eighteen participants were asked
-              to impersonate one out of 18 hues picked from the Munsell's color wheel and
-              choose a random spot in a square room. Their task was to find the location
-              where they feel their hue was near to other's and far away from those with
-              distant hues.<br><br>
-              After a couple of minutes moving around the room participants organized
-              themselves in the same circular shape observed by Shepard and Cooper's.
-              This ABM model recreates the participants behavior in such experiment
-              and studies the social viscosity mutually exerted as participants tried
-              to accomplish the task.
-            </p>
-          </div>
-
+  <!-- BEGIN CONTENT -->
+  <div class="container">
+    <!-- DESCRIPTION -->
+    <div class="row">
+      <br>
+      <div class="col-sm-6">
+        <b>Model description</b>
+        <p style="font-size:14px;">
+          The visual spectrum of light is commonly represented as a linear sequence
+          of hues that resembles the rainbow, starting at red and ending at purple.
+          <a name="Simulation"></a>
+          Newton’s generally accepted model for additive color theory --as well
+          as Munsell's model-- connects both ends of the spectrum in a circular color model.
+          This means that purple and red are perceptually closer to each other than
+          to intermediate hues such as green.
+          <br><br>
+          Shepard and Cooper (1992) demonstrated that normally sighted people organize
+          primary hues mirroring such circular model. The agent-based model (ABM)
+          herein is the result of an experiment inspired
+          by Shepard and Cooper methods.
+        </p>
       </div>
+      <div class="col-sm-6">
+        <p style="font-size:14px;">
+          <br>
+          Eighteen participants were asked
+          to impersonate one out of 18 hues picked from the Munsell's color wheel and
+          choose a random spot in a square room. Their task was to find the location
+          where they feel their hue was near to other's and far away from those with
+          distant hues. After a couple of minutes moving around the room participants organized
+          themselves in the same circular shape observed by Shepard and Cooper's.
+          This ABM model recreates the participants behavior in such experiment
+          and studies the social viscosity mutually exerted as participants tried
+          to accomplish the task.<br><br>
+          See a detailed description of the model <a href="odd/odd.pdf" target="_blank">here in ODD protocol</a>.
+        </p>
+      </div>
+
+    </div>
 
     <hr>
 
     <!-- SIMULATION -->
     <div class="row">
-      <div class = "col-sm-12">
+      <div class="col-sm-12">
         <p style="font-size:16px;">
           <b>Simulation</b>
         </p>
@@ -221,43 +234,44 @@
       <div class="col-sm-2">
         <p>
           <br>
-          <button  type = "button" id = "run" > Run Simulation </button>
-          <button  type = "button" id = "reset" > Reset </button>
+          <button type="button" id="run"> Run Simulation </button>
+          <button type="button" id="reset"> Reset </button>
           <br>
         </p>
 
         <!-- Visibility Buttons -->
         <p><br><b>Visibility controls</b></p>
-        <p><input  type = "checkbox" id = "showAgents" checked> Show agents </input></p>
-        <p><input  type = "checkbox" id = "showTrajectories" > Show trajectories </input></p>
-        <p><input  type = "checkbox" id = "showInteractions" checked> Show interactions </input></p>
-        <p><input  type = "checkbox" id = "showPerceptionField" checked> Show perception field </input></p>
+        <p><input type="checkbox" id="showAgents" checked> Show agents </input></p>
+        <p><input type="checkbox" id="showTrajectories"> Show trajectories </input></p>
+        <p><input type="checkbox" id="showInteractions" checked> Show interactions </input></p>
+        <p><input type="checkbox" id="showPerceptionField" checked> Show perception field </input></p>
         <hr>
         <p><b>Export</b></p>
-        <p> <button  type = "button" id = "trajectories_to_JSON" > Trajectories to JSON</button> </p>
-        <p> <button  type = "button" id = "trajectories_to_JSON2" > Trajectories to JSON 2</button> </p>
-        <p> <button  type = "button" id = "trajectories_to_CSV" > Trajectories to CSV</button> </p>
+        <p> <button type="button" id="trajectories_to_JSON"> Trajectories to JSON</button> </p>
+        <p> <button type="button" id="trajectories_to_JSON2"> Trajectories to JSON 2</button> </p>
+        <p> <button type="button" id="trajectories_to_CSV"> Trajectories to CSV</button> </p>
 
       </div>
 
       <!-- SIMULATION CANVAS -->
       <div class="col-sm-10">
-        <p style = "font-size:12px">Observers in the world: <span id="agentsInWorld" > 0 </span> 
-          &nbsp | &nbsp Humans: <span id="humansInWorld" > 0 </span> 
-          &nbsp  | &nbsp Nonhumans: <span id="nonhumansInWorld" > 0 </span>
-          &nbsp  | &nbsp Ticks: <span id="ticksInWorld" > 0 </span>
-          &nbsp  | &nbsp Viscosity: <span id="viscosityInWorld" > 0 </span>
+        <p style="font-size:12px">Observers in the world: <span id="agentsInWorld"> 0 </span>
+          &nbsp | &nbsp Humans: <span id="humansInWorld"> 0 </span>
+          &nbsp | &nbsp Nonhumans: <span id="nonhumansInWorld"> 0 </span>
+          &nbsp | &nbsp Ticks: <span id="ticksInWorld"> 0 </span>
+          &nbsp | &nbsp Inverse viscosity: <span id="viscosityInWorld"> 0 </span>
         </p>
-        <a name="Viscosity"></a>
         <div id="ColorAgents" align="center"></div>
+        <a name="Viscosity"></a>
       </div>
     </div>
 
     <hr>
 
     <!-- CHARTS -->
+
     <div class="row">
-      <div class = "col-sm-12">
+      <div class="col-sm-12">
         <p style="font-size:16px;">
           <b>Interaction viscosity</b>
         </p>
@@ -273,32 +287,32 @@
 
     <br>
 
-    <div class = "row">
-      <div class = "col-sm-2">
-        <p><input  type = "checkbox" id = "showMatrix" checked> Show interaction matrix </input></p>
-        <p><input  type = "checkbox" id = "showSeries" checked> Plot global viscosity </input></p>
-        <p><input  type = "checkbox" id = "showIndividualSeries"> Plot viscosity for each agent </input></p>
+    <div class="row">
+      <div class="col-sm-2">
+        <p><input type="checkbox" id="showMatrix" checked> Show interaction matrix </input></p>
+        <p><input type="checkbox" id="showSeries" checked> Plot global viscosity </input></p>
+        <p><input type="checkbox" id="showIndividualSeries"> Plot viscosity for each agent </input></p>
 
         <hr>
 
         <p><b>Export to JSON</b></p>
-        <p> <button  type = "button" id = "viscosities_to_JSON" > All viscosities</button> </p>
-        <p> <button  type = "button" id = "globalViscosity_to_JSON" > Global viscosity</button> </p>
+        <p> <button type="button" id="viscosities_to_JSON"> All viscosities</button> </p>
+        <p> <button type="button" id="globalViscosity_to_JSON"> Global viscosity</button> </p>
+        <p> <button type="button" id="globalViscosity_to_CSV"> Global viscosity to CSV</button> </p>
       </div>
 
       <!-- MATRIX -->
       <div class="col-sm-5">
-        <p style = "font-size:12px">Interaction matrix</p>
+        <p style="font-size:12px">Interaction matrix</p>
         <div id="PlotMatrix"></div>
       </div>
 
       <!-- VISCOSITY CHART -->
-      <div class = "col-sm-5">
-        <p style = "font-size:12px">Viscosity chart</p>
+      <div class="col-sm-5">
+        <p style="font-size:12px">Viscosity chart</p>
         <div id="TimeSeries"></div>
-        <p style = "font-size:12px">Viewing charts at tick <span id="sliderChart" > 0 </span></p>
-        <input type="range" min="0" max="0" value="0" id="ticks" 
-          oninput="vizMatrix.setLastMatrix(Number(this.value));
+        <p style="font-size:12px">Viewing charts at tick <span id="sliderChart"> 0 </span></p>
+        <input type="range" min="0" max="0" value="0" id="ticks" oninput="vizMatrix.setLastMatrix(Number(this.value));
           mainP5.updateSliderValue('sliderChart', Number(this.value))"></input>
       </div>
     </div>
@@ -309,11 +323,14 @@
 
     <a name="References"></a>
     <!-- References -->
-    <div class = "row">
+    <div class="row">
       <p style="font-size:16px;">
         <b>References</b>
       </p>
-
+      <p>Shepard, R., & Cooper, L. (1992). The representation of colors in the blind, color-blind, and normally sighted.
+        Psychological Science, 3(2), 97-113. </p>
+      <p>Stevens, S. S. (1957). On the psychophysical law. Psychological Review, 64(3), 153-181. doi:10.1037/h0046162
+      </p>
       <p>
         <a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue </a>,
         <a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js </a>,
@@ -323,9 +340,11 @@
         <a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a>
       </p>
 
-      <p style="font-size:11px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self"> P5.js</a></p>
+      <p style="font-size:11px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self">
+          P5.js</a></p>
     </div>
 
   </div>
 </body>
+
 </html>

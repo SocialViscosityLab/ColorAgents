@@ -16,6 +16,7 @@ var viscosityChart = function (p5){
     document.getElementById("showIndividualSeries").onclick = showIndividualSeries;
     document.getElementById("viscosities_to_JSON").onclick = viscositiesToJSON;
     document.getElementById("globalViscosity_to_JSON").onclick = globalViscosityToJSON;
+    document.getElementById("globalViscosity_to_CSV").onclick = globalViscosityToCSV;
     showSeries = true;
     showIndividualSeries = false;
     tickSlider = document.getElementById("ticks");
@@ -40,7 +41,7 @@ var viscosityChart = function (p5){
     }
 
     if (showSeries){
-      series.geomPath(metrics.globalViscosityData,"global",[0,0,0])
+      series.geomPath(metrics.globalViscosityData,"global",[0,0,0]);
     }
 
     // Plot the chart canvas
@@ -77,7 +78,7 @@ var viscosityChart = function (p5){
 
   // Exports global viscosity to JSON. The file is saved in user's download folder
   function globalViscosityToJSON(){
-    let file = []
+    let file = [];
     // first iterator
     let itr = metrics.globalViscosityData.entries();
     let item = itr.next();
@@ -87,6 +88,20 @@ var viscosityChart = function (p5){
     }
     p5.saveJSON(file, 'globalViscosity.json');
   }
+
+    // Exports global viscosity to CSV. The file is saved in user's download folder
+    function globalViscosityToCSV(){
+      let file = [];
+      // first iterator
+      let itr = metrics.globalViscosityData.entries();
+      let item = itr.next();
+      while(!item.done){
+        file.push([item.value[0],item.value[1]]);
+        item = itr.next();
+      }
+      p5.save(file, 'globalViscosityCSV.csv');
+      console.log("Viscosity CSV file saved");
+    }
 }
 
 viscositySeries = new p5(viscosityChart, "TimeSeries");

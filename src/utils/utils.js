@@ -2,6 +2,12 @@
 * Abstract class with utility functions
 */
 
+var startTime;
+
+var tmpLabels = [];
+var tmpValues = [];
+var returnValues = [];
+
 class Utils{
 
   /**
@@ -97,11 +103,10 @@ class Utils{
   * Choose the agents in front of this agent. 'In front' is defined by the bearing of this agent
   * @param {Agent} thisAgent the reference agent to which this function is applied
   * @param {Number} k the lenght of the radius scope or the amount of nearby agents to be retrieved
-  * @param {String} modality the method used to retrieve interactants
   * @param {Array} otherAgents the agents to validate if they are in front of this agent. If omited, the pairs of thisAgent are used
   * @return {Array} The agents within the perception field
   */
-  static chooseByField(thisAgent, k, modality, otherAgents){
+  static chooseByField(thisAgent, k, otherAgents){
 
     let pairs;
     
@@ -110,35 +115,28 @@ class Utils{
     } else {
       pairs = otherAgents;
     }
-
-    switch (modality){
-      case 'radius':
-      // get them by radius
-      pairs = this.chooseByRadius(thisAgent, k, pairs);
-      break;
-      case 'nCloser':
-      // get them by proximity
-      pairs = this.chooseNClosest(thisAgent, k, pairs);
-      break;
-    }
+ 
     //filter interactants by perception scope
-    for (let a of pairs) {
-      if (a.interactant == true){
-        let angleBetween = Math.atan2(a.agent.pos.y - thisAgent.pos.y, a.agent.pos.x - thisAgent.pos.x);
-        if ((thisAgent.bearing - (thisAgent.visualPerceptionAngle/2)) < angleBetween && angleBetween < (thisAgent.bearing + (thisAgent.visualPerceptionAngle/2))){
-          a.interactant = true;
-        } else{
-          a.interactant = false;
-        }
-      }
-    }
+    pairs = this.chooseByRadius(thisAgent, k, pairs);
+ 
+       for (let a of pairs) {
+        if (a.interactant == true){
+           let angleBetween = Math.atan2(a.agent.pos.y - thisAgent.pos.y, a.agent.pos.x - thisAgent.pos.x);
+           if (thisAgent.bearing - thisAgent.visualPerceptionAngle/2 < angleBetween && angleBetween < thisAgent.bearing + thisAgent.visualPerceptionAngle/2){
+             a.interactant = true;
+           } else{
+             a.interactant = false;
+           }
+         }
+       }
+
     return pairs;
   }
 
-  static startTime;
+ 
 
   static setStartTime(){
-    this.startTime = new Date();
+    return startTime = new Date();
   }
 
   static getExecutionTime(){
@@ -153,9 +151,7 @@ class Utils{
 
   // DATA RECORDER
 
-  static tmpLabels = [];
-  static tmpValues = [];
-  static returnValues = [] //new Map();
+
 
   static startRecording(val){
     this.tmpLabels.push('tick');
@@ -181,5 +177,10 @@ class Utils{
   static clearRecorder(){
     this.tmpLabels = [];
     this.tmpValues = [];
+  }
+
+  static resetRecorder(){
+    this.clearRecorder();
+    this.returnValues = [];
   }
 }

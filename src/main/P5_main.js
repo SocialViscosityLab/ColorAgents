@@ -71,7 +71,7 @@ var main = function(p5){
 		for(var i=0; i< colors.length; i++){
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
-			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value,'linear'.value, 0, 100);
+			var agent = new Human(x, y, colors[i].name, colors[i].chroma, document.getElementById("cFactory").value, 0, 100);
 			
 			//	agents.push(agent);
 			world.subscribe(agent);
@@ -92,6 +92,9 @@ var main = function(p5){
 		}catch(error){
 			// error launched when vizMatrix is not hoisted.
 		}
+
+		//
+		Utils.resetRecorder();
 
 		document.getElementById("agentsInWorld").innerHTML = nObservers;
 		document.getElementById("humansInWorld").innerHTML = world.getHumans().length;
@@ -185,7 +188,8 @@ var main = function(p5){
 		}
 
 		function trajectoriesToCSV(){
-			p5.save(Utils.getRecording(), 'trajectoriesCSV.csv', true);
+			p5.save(Utils.getRecording(), 'trajectoriesCSV.csv');
+			console.log("Trajectories CSV File saved");
 		}
 
 		p5.updateSliderValue = function(sliderName, value){

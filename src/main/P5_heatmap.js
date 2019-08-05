@@ -6,7 +6,7 @@ var heatMap = function (p5){
   let lastMatrixTick = -1;
 
   p5.setup = function(){
-    p5.createCanvas(500,500);
+    p5.createCanvas(350,350);
     tickSlider = document.getElementById("ticks");
     initialize();
     document.getElementById("reset").addEventListener('click', () =>{initialize();})
@@ -37,11 +37,11 @@ var heatMap = function (p5){
   }
 
   p5.draw = function(){
-    p5.background(255);
+    p5.background(250);
 
     // MATRICES
     if (showIntlastMatrix && lastMatrix != undefined){
-      vizMatrixCanvas.plot2(p5.createVector(10,30), lastMatrix);
+      vizMatrixCanvas.plot2(p5.createVector(25,30), lastMatrix);
     }
   }
 }

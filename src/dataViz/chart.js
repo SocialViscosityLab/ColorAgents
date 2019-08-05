@@ -2,7 +2,7 @@ class Chart{
   constructor(p5, pos, lengthX, lengthY, valX, valY){
     this.p5 = p5;
     this.xAxis = new Axis(true, lengthX, valX, "ticks");
-    this.yAxis = new Axis(false, lengthY, valY, "viscosity");
+    this.yAxis = new Axis(false, lengthY, valY, "Inverse viscosity");
     this.pos =pos;
   }
 

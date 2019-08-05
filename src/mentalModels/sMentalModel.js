@@ -29,7 +29,7 @@ class SpatialMentalModel{
   /**
   * Adapted from Processing's map() if either the second or third parameter are omited, the function uses current values
   * of this.shortest and this.farthest
-  * @param val a value between 0 and 1. ! corresponds to the farthest perception
+  * @param val a value between 0 and 1. 1 corresponds to the farthest perception
   */
   mapMagnitude(val,shortest,farthest){
     if (shortest && farthest){

@@ -57,7 +57,7 @@ class VAgent{
 		}
 		// for arcs
 		if (document.getElementById('rule').value == 'byField'){
-			let radius = Number(document.getElementById("range").value) * this.agent.radiusFactor;
+			let radius = Number(document.getElementById("range").value) * this.agent.radiusFactor*2;
 			let nX = Math.cos(this.agent.bearing) * radius;
 			let nY = Math.sin(this.agent.bearing) * radius;
 			this.p5.fill(100,5);

@@ -21,9 +21,9 @@ class InteractionMatrixCanvas {
     // the metrics
     this.metrics = metrics;
     // the matrix cell size
-    this.size = 15;
+    this.size = (p5.width-30)/this.agents.length;
     // lattice second version
-    this.lattice2 = new Lattice (this.getAgentlabels(world.getAgents()), this.getAgentlabels(world.getAgents()), 15);
+    this.lattice2 = new Lattice (this.getAgentlabels(world.getAgents()), this.getAgentlabels(world.getAgents()), this.size);
   }
 
   /**
@@ -93,7 +93,7 @@ class InteractionMatrixCanvas {
         let interaction = matrix[i].interactions[j];
         let agentJ = interaction.interactant;
         // x coordinate
-        let xTemp = pos.x + this.lattice2.getXFor(agentJ) + this.size + 10;
+        let xTemp = pos.x + this.lattice2.getXFor(agentJ);
 
         let alphaMagnitude = this.p5.map(interaction.spatialMag, 0, 100, 0, 255);
         let alphaDistance = this.p5.map(interaction.currentDist,0, 100, 0, 255);
@@ -141,17 +141,19 @@ class InteractionMatrixCanvas {
     // rows
     this.p5.fill(0,80);
     this.p5.noStroke();
-    this.p5.textSize(10);
+    this.p5.textSize(9);
     for (var i = 0; i < this.agents.length; i++) {
       if (!rows){
-        this.p5.text(this.agents[i].id, pos.x , pos.y + (i*this.size)+(this.size/2)+5);
+        this.p5.textAlign(this.p5.RIGHT, this.p5.CENTER);
+        this.p5.text(this.agents[i].id, pos.x - 2, pos.y + (i * this.size) + (this.size/2));
       }
     }
     // columns
+    this.p5.textAlign(this.p5.LEFT);
     for (var i = 0; i < this.agents.length; i++) {
       if (!cols){
         this.p5.push();
-        this.p5.translate(pos.x + (i*this.size)+ (this.size*2) + 7, pos.y - 5);
+        this.p5.translate(pos.x + (i * this.size) + (this.size/2), pos.y - 2);
         this.p5.rotate(-Math.PI/2);
         this.p5.text(this.agents[i].id, 0,0);
         this.p5.pop();

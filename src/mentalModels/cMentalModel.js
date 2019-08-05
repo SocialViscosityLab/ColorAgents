@@ -10,7 +10,7 @@ class ColorMentalModel{
   /**
   * Constructor
   * @param {String} colorPalette The name of the color palette to be used
-  * @param {String} sensibility  The name of the Sensibility function, either linear or exponential
+  * @param {String} sensibility  The name of the Sensibility function, either linear, circular or exponential
   */
   constructor(colorPalette, sensibility){
     // The array of colors used by this mental model. For instance a warm color set, a cold color set, a rainbow color set.
@@ -27,8 +27,10 @@ class ColorMentalModel{
 
     /* Sensibility is a function that determines the perceived proximity from
     the reference color of an observer to any other color in the mental model.
-    There are two flavors: linear and exponential. If LINEAR, the perceived proximity
+    There are three flavors: linear, circular and exponential. If LINEAR, the perceived proximity
     increases in equal steps as sorted colors are from the reference point.
+    If circular, the values are arranged in a circular fashion, thus the greatest distance is 
+    between elements placed diametrically opposed.
     If exponential, the perceived proximity increases in greater steps for each sorted
     color, thus colors closer to the reference point appear way closer than distant colors.
 
@@ -38,12 +40,12 @@ class ColorMentalModel{
     defined by Stevens (1975) in Psychophysics: introduction to its perceptual, neural,
     and social prospects. Wiley*/
 
-    // The function of color sensibility. Could be euther linear or exponential
+    // The function of color sensibility. Could be linear, circular or exponential
     this.sensibility;
 
-    if(sensibility){
-      this.sensibility = sensibility;
-    }
+     if(sensibility){
+       this.sensibility = sensibility;
+     }
 
     // The index of the agent's color. Each agent implements a color mental model.
     this.myIndex;
@@ -126,8 +128,8 @@ class ColorMentalModel{
   /**
   * Returns a value between 0 and 1, where 1 is the farthest perceived distance
   * indexA and indexB must be between 0 and colorPalette.length
-  * @param  {Number} indexA [description]
-  * @param  {Number} indexB [description]
+  * @param  {Number} indexA index of reference color in the colorPalette
+  * @param  {Number} indexB index of target color in the colorPalette.
   * @return {Number} The value between 0 and 1, where 1 is the farthest perceived distance
   */
   calcPerceivedDist(indexA, indexB){
@@ -135,15 +137,24 @@ class ColorMentalModel{
       let delta = Math.abs(indexA - indexB);
       switch (this.sensibility){
         case 'linear':
-        return delta/(this.colorPalette.length-1);
+          return delta/(this.colorPalette.length-1);
+        break;
+        case 'chordal':
+          let subAngle = Math.PI*2/this.colorPalette.length;
+          let totalAngle = subAngle * delta;
+          if(totalAngle > Math.PI){
+            totalAngle = Math.PI*2 - totalAngle;
+          }  
+          let distance = totalAngle/Math.PI;
+          return distance;
         break;
         case 'exponential':
-        // This function is y = a^x where 0 < a < 1. The closer to 0 the tightest
-        // the graph elbow. 0.97 is a good number. This reseambles the exponential
-        // model of human perception defined by Stevens (1975) in Psychophysics:
-        // introduction to its perceptual, neural, and social prospects. Wiley
+          // This function is y = a^x where 0 < a < 1. The closer to 0 the tightest
+          // the graph elbow. 0.97 is a good number. This reseambles the exponential
+          // model of human perception defined by Stevens (1975) in Psychophysics:
+          // introduction to its perceptual, neural, and social prospects. Wiley
 
-        return 1 - Math.pow(0.97,delta);
+          return 1 - Math.pow(0.97,delta);
         break;
       }
     }else{
@@ -182,5 +193,9 @@ class ColorMentalModel{
     }
     //  console.log("  range: " +range+ "  tar: "+tarIndex +"  color beyond boundaries" );
     return false;
+  }
+
+  updateSensibility(value){
+    this.sensibility = value;
   }
 }

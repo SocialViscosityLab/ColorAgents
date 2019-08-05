@@ -5,19 +5,24 @@ Human agent. Extends Agent
 @param {String} index the id of this agent
 @param {String} theColor the color id of this agent
 @param {String} colorPalette the color palette used by this agent
-@param {String} sensibility a function (linear, exponential...) that represents the perceived proximity between colors from the reference point of this observer.
 @param {Number} shortest scalar used by spatial mental model to determine what on canvas how near an agent wants to be from the most similar agent
 @param {Number} farthest scalar used by spatial mental model to determine what on canvas how far away an agent was to be from the most dissimilar agent
 */
 class Human extends Agent{
 
-constructor (x, y, index, theColor, colorPalette, sensibility, shortest, farthest){
+constructor (x, y, index, theColor, colorPalette, shortest, farthest){
 	super(x, y, index);
 
 	this.colorValues = theColor;
 
 	/** This agents' color Mental Model. This represents the unique way this agent perceives colors in the world*/
-	this.cMentalModel = new ColorMentalModel(colorPalette, document.getElementById("sensibility").value);
+	this.sensibility = document.getElementById('sensibility')
+
+	this.cMentalModel = new ColorMentalModel(colorPalette, this.sensibility.value);
+
+	this.sensibility.addEventListener('change', ()=>{
+		this.cMentalModel.updateSensibility(this.sensibility.value);
+	})
 
 	/** This agents' spacial Mental Model. This represents the unique way this agent perceives distances in the world*/
 	this.sMentalModel = new SpatialMentalModel(shortest, farthest);
@@ -26,7 +31,7 @@ constructor (x, y, index, theColor, colorPalette, sensibility, shortest, farthes
 	this.cMentalModel.setMyIndex(this.colorValues);
 
 	/** Visual perception angle in radians*/
-	this.visualPerceptionAngle = Math.PI*3/4;
+	this.visualPerceptionAngle = Math.PI *3/4;
 
 	/** Percentage of "color similarity" that triggers this agent to act. Value between 0 and 1. Where 1 means
 	that all the colors fall within the range of colors that trigger actions. 0.7 means that only
@@ -50,9 +55,10 @@ constructor (x, y, index, theColor, colorPalette, sensibility, shortest, farthes
 2) Store agent's last position before moving, 
 3) Filter pairs with whom to interact according to user settings,
 4) If there is any interactant
-4.1) Estimate the magnitude and direction of next step using this.calculateStep(), 
+4.1) Estimate the magnitude of next step using this.calculateStep(), 
 4.2) Verfiy if the change is worth to execute the movement. Threshold in user settings,
-4.3) move or set done status to true.
+4.3 Set the new bearing
+4.4) move or set done status to true.
 5) If no interactants
 5.1) Set done status to true.
 */
@@ -74,23 +80,20 @@ interact (){
 		
 		let nextPos = this.calculateStep(interactants);
 
-		this.bearing = nextPos.heading();
-
 		// Get change magnitude threshold using user settings 
 		let magnitudeThreshold = document.getElementById("changeMagnitude").value * (this.sMentalModel.farthest - this.sMentalModel.shortest);
 		magnitudeThreshold += this.sMentalModel.shortest;
 
 		// Verfiy if the change is worth to execute the movement
 		if (nextPos.mag() > Number(magnitudeThreshold)){
+
+			this.bearing = nextPos.heading();
+
 			this.iAmDone = false;
 			// Move
 			this.move2(nextPos.normalize());
 		} else{
 			this.iAmDone = true;
-		}
-	} else if (document.getElementById("rule").value == 'byField'){
-		if (!this.iAmDone){
-			this.bearing += 0.1;
 		}
 	} else {
 		this.iAmDone = true;
@@ -185,8 +188,8 @@ retrieveInteractants(otherAgents){
 		interactants = Utils.chooseByRadius(this, Number(val.value) * this.radiusFactor, agents);
 		break;
 		case 'byField':
-		document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor;
-		interactants = Utils.chooseByField(this, Number(val.value) * this.radiusFactor, 'radius', agents);
+		document.getElementById('sliderValue').innerHTML = val.value * this.radiusFactor*2;
+		interactants = Utils.chooseByField(this, Number(val.value) * this.radiusFactor*2, agents);
 		break;
 		case 'all':
 		interactants = this.resetInteractants();
