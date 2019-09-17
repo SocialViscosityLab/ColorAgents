@@ -2,12 +2,12 @@
 * The world is a collection of observers. If agents observe the world, it means that they are observing each other.
 * Observations could be self referenced, meaning that one agent can have a reflexive interaction
 */
-class World{
+class World {
 
-/**
- * Constructor
- */
-  constructor(){
+  /**
+   * Constructor
+   */
+  constructor() {
     this.observers = [];
     this.ticks = 0;
   }
@@ -16,11 +16,11 @@ class World{
   * Subscribes an agent as observer to this world. https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/
   * @param {Agent} observer The agent that observes this world
   */
-  subscribe(observer){
+  subscribe(observer) {
     //if (observer instanceof Human || observer instanceof Nonhuman){
-      this.observers.push(observer);
-      // notify
-      this.notifyObservers(this);
+    this.observers.push(observer);
+    // notify
+    this.notifyObservers(this);
     //}
   }
 
@@ -28,7 +28,7 @@ class World{
   * Unsubscribes an agent from this world. https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/
   * @param {Agent} agent If agent is not undefined returns the collection of agents except this agent
   */
-  unsubscribe(observer){
+  unsubscribe(observer) {
     this.observers = this.observers.filter(subscriber => subscriber !== observer);
     // notify
     this.notifyObservers();
@@ -38,8 +38,8 @@ class World{
   * Notifies all observers the latest version of this world
   * https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/
   */
-  notifyObservers(world){
-    this.observers.forEach(function(element){
+  notifyObservers(world) {
+    this.observers.forEach(function (element) {
       element.updateMyWorld(world);
     })
   }
@@ -49,8 +49,8 @@ class World{
   * @param {Agent} exceptAgent If not undefined returns the collection of agents except this agent
   * @return the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent
   */
-  getAgents(exceptAgent){
-    if (exceptAgent){
+  getAgents(exceptAgent) {
+    if (exceptAgent) {
       return this.observers.filter(subscriber => subscriber !== exceptAgent);
     } else {
       return this.observers;
@@ -62,11 +62,11 @@ class World{
   * @param {Agent} agent If agent is not undefined returns the collection of agents except this agent
   * @return the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent
   */
-  getHumans(agent){
-    if (agent){
+  getHumans(agent) {
+    if (agent) {
       return this.observers.filter(subscriber => subscriber !== agent && subscriber instanceof Human);//
     } else {
-        return this.observers.filter(subscriber => subscriber instanceof Human);
+      return this.observers.filter(subscriber => subscriber instanceof Human);
     }
   }
 
@@ -75,44 +75,49 @@ class World{
   * @param {Agent} agent If agent is not undefined returns the collection of agents except this agent
   * @return the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent
   */
-  getNonhumans(agent){
-    if (agent){
+  getNonhumans(agent) {
+    if (agent) {
       return this.observers.filter(subscriber => subscriber !== agent && subscriber instanceof Nonhuman);
     } else {
       return this.observers.filter(subscriber => subscriber instanceof Nonhuman);
     }
   }
 
-/**
- * Calls interact() function on all world observers. It should be timed by a
- * Window setInterval() Method from the browser or the server.
- */
-  runAgents(){
-    Utils.startRecording(world.getTicks());
-    for (var a = 0; a < this.observers.length; a++){
-      Utils.recordData(this.observers[a]);
-      this.observers[a].interact();
+  /**
+   * Calls interact() function on all world observers. It should be timed by a
+   * Window setInterval() Method from the browser or the server.
+   */
+  runAgents(limit) {
+    if (!limit){
+      limit = Infinity;
     }
-    Utils.endRecording();
-    Utils.clearRecorder();
-    this.ticks ++;
-    document.getElementById("ticksInWorld").innerHTML = this.ticks;
+    if (world.getTicks() < limit) {
+      Utils.startRecording(world.getTicks());
+      for (var a = 0; a < this.observers.length; a++) {
+        Utils.recordData(this.observers[a]);
+        this.observers[a].interact();
+      }
+      Utils.endRecording();
+      Utils.clearRecorder();
+      this.ticks++;
+      document.getElementById("ticksInWorld").innerHTML = this.ticks;
+    }
   }
 
-/**
- * Clears the world's collection of observers
- */
-  reset(){
+  /**
+   * Clears the world's collection of observers
+   */
+  reset() {
     this.observers = [];
     this.ticks = 0;
   }
 
-/**
- * Gets the elapsed number of ticks ran while the main interval function has been enabled
- *
- * @return {Number} The ellapsed number of ticks
- */
-  getTicks(){
+  /**
+   * Gets the elapsed number of ticks ran while the main interval function has been enabled
+   *
+   * @return {Number} The ellapsed number of ticks
+   */
+  getTicks() {
     return this.ticks;
   }
 }

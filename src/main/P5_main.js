@@ -137,8 +137,9 @@ var main = function(p5){
 			if (running){
 
 				// the interval controlling how often the world updtaes itself. Units in milliseconds
-				simulationInterval = setInterval(() => {world.runAgents()}, interval);
-
+				let iterations = 30
+				simulationInterval = setInterval(() => {world.runAgents(iterations)}, interval);
+				
 				// calculate metrics
 				metricsInterval = setInterval(() => {metrics.getMetricsData(),
 					vizMatrix.setLastMatrix(world.getTicks())},
