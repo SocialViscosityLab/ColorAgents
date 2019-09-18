@@ -150,10 +150,13 @@ var main = function(p5){
 				}
 
 				// Update DOM element content
+				let runButton = document.getElementById("run");
 				if (running){
-					document.getElementById("run").innerHTML = "Running";
+					runButton.innerHTML = "Running";
+					runButton.style.backgroundColor = "rgb(240, 162, 186)";
 				} else {
-					document.getElementById("run").innerHTML = "On hold";
+					runButton.innerHTML = "On hold";
+					runButton.style.backgroundColor = "rgb(162, 209, 162)";
 				}
 			}else{
 				alert('Choose interaction rule first');
