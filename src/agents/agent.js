@@ -78,7 +78,7 @@ class Agent{
   }
 
   /**
-  * Wheter or not the given element interacts with this agent AND is an isntance of Human
+  * Wheter or not the given element interacts with this agent AND is an instance of Human
   * @param  {[Agent]}  element [description]
   * @return {Boolean}         [description]
   */
@@ -169,37 +169,6 @@ class Agent{
     this.pos.add(vector);
   }
 
-  /**
-  * Updates the collections of spatial magnitudes and pixel distances between this
-  * agent and other agent identified by its id
-  * @param  {String} id          Other agent's ID
-  * @param  {Number} spatialMag  This agent's percived spatial magnitud to other's agent
-  * @param  {Number} currentDist Current distance between this and other agent
-  * @deprecated
-  *
-  updateSpatialDistances(id, spatialMag, currentDist){
-    // The very first time
-    if (this.distances.length < 1){
-      this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-    } else {
-      // Find the interactants's index in the collection of distances
-      let index = -1;
-      for (var i = 0; i < this.distances.length; i++) {
-        if (this.distances[i].id == id){
-          index = i;
-          break;
-        }
-      }
-      // if the interactants is in the collection, update the distances to that interactant
-      if(index != -1){
-        this.distances[index].spatialMag = spatialMag;
-        this.distances[index].currentDist = currentDist;
-      } else {
-        // else, create a new record
-        this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-      }
-    }
-  }*/
 
     /**
     * Updates the map of spatial magnitudes and pixel distances between this

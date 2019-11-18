@@ -1,29 +1,14 @@
 var viscosityChart = function (p5){
   // The chart object
   let series;
-  // Chart visibility
-  let showSeries;
-  // Chart individual series visibility
-  let showIndividualSeries;
-  // slider control
-  let tickSlider;
 
   p5.setup = function(){
     p5.createCanvas(500,300);
     series = new Chart(this, p5.createVector(30,270), 400, 250, 1, 1 );
     // GUI Elements
-    document.getElementById("showSeries").onclick = showSeries;
-    document.getElementById("showIndividualSeries").onclick = showIndividualSeries;
-    document.getElementById("viscosities_to_JSON").onclick = viscositiesToJSON;
-    document.getElementById("globalViscosity_to_JSON").onclick = globalViscosityToJSON;
-    document.getElementById("globalViscosity_to_CSV").onclick = globalViscosityToCSV;
-    showSeries = true;
-    showIndividualSeries = false;
-    tickSlider = document.getElementById("ticks");
-  }
-
-  showSeries = function(){
-    showSeries = !showSeries;
+    DOM.buttons.viscosities_to_JSON.onclick = viscositiesToJSON;
+    DOM.buttons.globalViscosity_to_JSON.onclick = globalViscosityToJSON;
+    DOM.buttons.globalViscosity_to_CSV.onclick = globalViscosityToCSV;
   }
 
   showIndividualSeries = function(){
@@ -33,14 +18,14 @@ var viscosityChart = function (p5){
   p5.draw = function(){
     p5.background(255);
 
-    if (showIndividualSeries){
+    if (DOM.checkboxes.showIndividualSeries.checked){
       //go over all the keys of metrics.viscosityData
       metrics.agentsViscosityData.forEach((value, agent)=>{
         series.geomPath(value, "", agent.colorValues.rgb());
       })
     }
 
-    if (showSeries){
+    if (DOM.checkboxes.showSeries.checked){
       series.geomPath(metrics.globalViscosityData,"global",[0,0,0]);
     }
 
@@ -48,11 +33,11 @@ var viscosityChart = function (p5){
     series.canvas();
 
     // Set the max value of tickSlider
-    tickSlider.max = series.xAxis.value;
+    DOM.sliders.ticks.max = series.xAxis.value;
 
-    series.geomVLine(tickSlider.value);
+    series.geomVLine(DOM.sliders.ticks.value);
 
-    series.geomTextValueAtKey(metrics.globalViscosityData, Number(tickSlider.value));
+    series.geomTextValueAtKey(metrics.globalViscosityData, Number(DOM.sliders.ticks.value));
   }
 
   // Exports all the agent's viscosities to JSON. The file is saved in user's download folder

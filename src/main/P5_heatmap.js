@@ -1,24 +1,24 @@
 var heatMap = function (p5){
 
   let vizMatrixCanvas;
-  let showIntlastMatrix = true;
+  //let showIntlastMatrix = true;
   let lastMatrix;
   let lastMatrixTick = -1;
 
   p5.setup = function(){
     p5.createCanvas(350,350);
-    tickSlider = document.getElementById("ticks");
+    tickSlider = DOM.sliders.ticks;
     initialize();
-    document.getElementById("reset").addEventListener('click', () =>{initialize();})
-    document.getElementById("showMatrix").onclick = sIntlastMatrix;
-    document.getElementById("cFactory").addEventListener('change', ()=>{
+    DOM.buttons.reset.addEventListener('click', () =>{initialize();})
+    //DOM.checkboxes.showMatrix.onclick = sIntlastMatrix;
+    DOM.buttons.cFactory.addEventListener('change', ()=>{
       initialize();
     })
   }
 
-  sIntlastMatrix = function(){
-    showIntlastMatrix = !showIntlastMatrix;
-  }
+  // sIntlastMatrix = function(){
+  //   showIntlastMatrix = !showIntlastMatrix;
+  // }
 
   initialize = function(){
     // Reset matrix visualizer
@@ -40,7 +40,7 @@ var heatMap = function (p5){
     p5.background(250);
 
     // MATRICES
-    if (showIntlastMatrix && lastMatrix != undefined){
+    if (DOM.checkboxes.showMatrix.checked && lastMatrix != undefined){
       vizMatrixCanvas.plot2(p5.createVector(25,30), lastMatrix);
     }
   }
