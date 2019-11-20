@@ -100,7 +100,10 @@ class World {
       Utils.endRecording();
       Utils.clearRecorder();
       this.ticks++;
-      document.getElementById("ticksInWorld").innerHTML = this.ticks;
+      DOM.labels.ticksInWorld.innerHTML = this.ticks;
+    }else {
+      // At run completion 
+      return true;
     }
   }
 

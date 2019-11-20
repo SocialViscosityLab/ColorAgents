@@ -11,7 +11,7 @@ var heatMap = function (p5){
     initialize();
     DOM.buttons.reset.addEventListener('click', () =>{initialize();})
     //DOM.checkboxes.showMatrix.onclick = sIntlastMatrix;
-    DOM.buttons.cFactory.addEventListener('change', ()=>{
+    DOM.lists.cFactory.addEventListener('change', ()=>{
       initialize();
     })
   }

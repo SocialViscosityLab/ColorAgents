@@ -9,13 +9,11 @@ var metrics;
 
 var main = function (p5) {
 	// Boolean variable to control the animation
-	 let running;
+	let running;
 	// This variable controls the simulation pace
 	let simulationInterval;
 	// This variable controls the metrics pace
 	let metricsInterval;
-	// timeInterval in milliseconds
-	let interval = 100;
 	// The visual elements representing agents from the world
 	let vAgents = [];
 
@@ -26,14 +24,15 @@ var main = function (p5) {
 		// Instantiate the world
 		world = new World();
 
-			// Animation starts on hold
-	running = false;
+		// Animation starts on hold
+		running = false;
 
 		// set GUI elements
 		DOM.initialize();
-
 		DOM.buttons.run.onclick = runSimulation;
 		DOM.buttons.reset.onclick = initialize;
+		DOM.buttons.runSweep.onclick = runSweep;
+		DOM.buttons.resetSweep.onclick = initialize;
 		DOM.lists.cFactory.addEventListener('change', () => {
 			initialize();
 		})
@@ -42,13 +41,12 @@ var main = function (p5) {
 		DOM.buttons.trajectories_to_CSV.onclick = trajectoriesToCSV;
 
 		// Create an agent for each color
-		initialize();
+		initialize(DOM.lists.cFactory.value);
 	}
 
 	function initialize() {
-
 		// Instantiate all the colors
-		var cFactory = new ColorFactory(DOM.buttons.cFactory.value);
+		var cFactory = new ColorFactory(DOM.lists.cFactory.value);
 
 		// Retrieve al the colors
 		var colors = cFactory.getAll();
@@ -61,7 +59,7 @@ var main = function (p5) {
 		for (var i = 0; i < colors.length; i++) {
 			let x = Math.floor(Math.random() * p5.width);
 			let y = Math.floor(Math.random() * p5.height);
-			var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.buttons.cFactory.value, 0, 100);
+			var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
 
 			//	agents.push(agent);
 			world.subscribe(agent);
@@ -128,15 +126,21 @@ var main = function (p5) {
 		if (DOM.lists.rule.value != '') {
 			running = !running;
 			if (running) {
-
-				// the interval controlling how often the world updtaes itself. Units in milliseconds
-				let iterations = Infinity;
+				// the max number of iterations the internal tick counter should get before stopping the simmulation 
+				let iterations;
+				if (DOM.checkboxes.sweepDuration.checked) {
+					iterations = DOM.sliders.duration.value;
+				} else {
+					iterations = Infinity;
+				}
+				// the interval controlling how often the world updates itself. Units in milliseconds
+				let interval = DOM.sliders.tickLength.value;
 				simulationInterval = setInterval(() => { world.runAgents(iterations) }, interval);
 
 				// calculate metrics
 				metricsInterval = setInterval(() => {
 					metrics.getMetricsData(),
-					vizMatrix.setLastMatrix(world.getTicks())
+						vizMatrix.setLastMatrix(world.getTicks())
 				},
 					interval);
 			} else {
@@ -157,21 +161,70 @@ var main = function (p5) {
 		}
 	}
 
-	// function sAgents() {
-	// 	showAgents = !showAgents;
-	// }
+	/**
+	 * Executes a series of simulation runs with the parameters given. The parameters are arrays containing
+	 * the conditions to be tested. The conditions are executed in the following order: 1) ColorFactory, 2)interaction rule
+	 * 3) range, 4) sensibility, 5) tolerance.
+	 * 
+	 * @param {Object} param Object containing key:value pairs where the keys must match these names: cFactory, rule, range,
+	 * sensibility, tolerance. The corresponding values must be arrays of categorical parameters. In the case of continuous inputs,
+	 * such as sliders, the array of all steps from the min to the max value of the slider must be added. For convenience, the class
+	 * DOM has the abstract methods getListOptions() and getSliderParams() to retrieve all the categorical values of lists and sliders
+	 * from the HTML GUI elements. 
+	 */
+	function runSweep(param) {
 
-	// function sTrajectories() {
-	// 	showTrajectories = !showTrajectories;
-	// }
+		DOM.checkboxes.sweepDuration.checked = true;
 
-	// function sInteractions() {
-	// 	showInteractions = !showInteractions;
-	// }
+		param = {cFactory:[1,3]}
 
-	// function sPerField() {
-	// 	showPerField = !showPerField;
-	// }
+		if (param instanceof Object) {
+			// cFactory
+			if (!param.cFactory) {
+				param.cFactory = [DOM.lists.cFactory.value];
+			}
+			for (let i = 0; i < param.cFactory.length; i++) {
+				let next0 = param.cFactory[i]
+				// iRule
+				if (!param.rule) {
+					param.rule = [DOM.lists.rule.value];
+				}
+				for (let j = 0; j < param.rule.length; j++) {
+					let next1 = param.rule[j]
+					// scope
+					if (!param.range) {
+						param.range = [DOM.sliders.range.value];
+					}
+					for (let k = 0; k < param.range.length; k++) {
+						let next2 = param.range[k]
+						// sensibility
+						if (!param.sensibility) {
+							param.sensibility = [DOM.lists.sensibility.value];
+						}
+						for (let l = 0; l < param.sensibility.length; l++) {
+							let next3 = param.sensibility[l]
+							// tolerance
+							if (!param.tolerance) {
+								param.tolerance = [DOM.sliders.tolerance.value];
+							}
+							for (let m = 0; m < param.tolerance.length; m++) {
+								let next4 = param.tolerance[m]
+								console.log("Run simulation: " + next0 + ", " + next1 + ", " + next2 + ", " + next3 + ", " + next4)
+								DOM.lists.cFactory.value = DOM.lists.cFactory.options[next0].value
+								let event = new Event('change');
+								// Initialize all conditions
+								DOM.lists.cFactory.dispatchEvent(event);
+								// run the simulation IN A PROMISE
+								runSimulation()
+							}
+						}
+					}
+				}
+			}
+		} else {
+			alert("No parameters for sweep run")
+		}
+	}
 
 	function trajectoriesToJSON() {
 		let file = []
@@ -188,10 +241,6 @@ var main = function (p5) {
 	function trajectoriesToCSV() {
 		p5.save(Utils.getRecording(), 'trajectoriesCSV.csv');
 		console.log("Trajectories CSV File saved");
-	}
-
-	p5.updateSliderValue = function (sliderName, value) {
-		document.getElementById(sliderName).innerHTML = value;
 	}
 }
 

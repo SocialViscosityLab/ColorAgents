@@ -164,6 +164,9 @@
             <button type="button" data-toggle="collapse" data-target="#visibilityBar" aria-expanded="false"
               aria-controls="visibilityBar">Visibility</button>
 
+            <button type="button" data-toggle="collapse" data-target="#sweepBar" aria-expanded="false"
+              aria-controls="sweepBar">Sweeps</button>
+
             <button type="button" data-toggle="collapse" data-target="#exportBar" aria-expanded="false"
               aria-controls="exportBar">Output</button>
           </p>
@@ -175,13 +178,12 @@
     <!--  ***** SIMULATION ***** -->
     <div class="row">
       <div class="collapse multi-collapse in" id="simulationCollapsible">
-        <!-- SETTINGS-->
+        <!-- Settings-->
         <div class="row">
-          <!-- Lab Settings button -->
           <div class="col-sm-2">
           </div>
 
-          <!-- Lab Settings menu -->
+          <!-- Settings menu -->
           <div class="col-sm-10">
             <div class="collapse in" id="toolbar">
               <div class="row">
@@ -191,7 +193,7 @@
                   <p style="font-size:10px; color:grey;"><b>Color factory:</b> A factory of predifined color palettes to
                     be asigned to human agents' mental models</p>
                   <p style="font-size:10px; color:grey;">
-                    <select id="cFactory" name ="colorFactoryGUI">
+                    <select id="cFactory" name="colorFactoryGUI">
                       <option value="test">Triad</option>
                       <option value="secondary">Secondary</option>
                       <option value="newton">Newton</option>
@@ -222,7 +224,8 @@
                       <div class="row">
                         <div class="col-sm-8">
                           <input type="range" min="0" max="20" value="5" id="range" step="5"
-                            oninput="mainP5.updateSliderValue ('sliderValue',Number(this.value))"></input>
+                            oninput="DOM.updateSliderValue ('sliderValue',Number(this.value))">
+                          </input>
                         </div>
                         <p style="font-size:10px; color:grey;"> <span id="sliderValue"> 5 </span></p>
                       </div>
@@ -247,22 +250,25 @@
                 </div>
 
                 <!-- Slider change threshold magnitude -->
-                <div class="col-sm-2">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Tolerance: </b> The agents' conformity to displacement from expected distances to
-                    interactants<br>
-                    <input type="range" min="0" max="1" value="0.2" id="changeMagnitude" step="0.2"
-                      oninput="mainP5.updateSliderValue ('sliderChangeMagnitude',Number(this.value))">
-                    </input>
-                    <span id="sliderChangeMagnitude"> 0.2 </span>
-                  </p>
+                <div class="col-sm-3">
+                  <div class="row">
+                    <div class="col-sm-10">
+                      <p style="font-size:10px; color:grey;">
+                        <b>Tolerance: </b> The agents' conformity to displacement from expected distances to
+                        interactants<br>
+                        <input type="range" min="0" max="1" value="0.2" id="changeMagnitude" step="0.2"
+                          oninput="DOM.updateSliderValue ('sliderChangeMagnitude',Number(this.value))">
+                        </input>
+                        <span id="sliderChangeMagnitude"> 0.2 </span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <hr>
             </div>
           </div>
         </div>
-
 
         <!-- Visibility settings-->
         <div class="row">
@@ -284,8 +290,110 @@
           </div>
         </div>
 
-        <!--Export settings-->
+        <!--Lab settings-->
+        <div class="row">
+          <!--Left gap-->
+          <div class="col-sm-2">
+          </div>
+          <!--lab menu-->
+          <div class="col-sm-10">
+            <div class="collapse in" id="sweepBar">
+              <div class="row">
 
+
+                <!--Repetitions-->
+                <div class="col-sm-2">
+                  <p style="font-size:10px; color:grey;">
+                    <b>Number of repetitions: </b> Total number of repetitions per each condition. Up to 30
+                    repetitions<br>
+                    <br>
+                  </p>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <input type="range" min="1" max="30" value="1" id="runs" step="1"
+                        oninput="DOM.updateSliderValue ('repetitions',Number(this.value))">
+                      </input>
+                    </div>
+                    <p style="font-size:10px; color:grey;"> <span id="repetitions"> 1 </span></p>
+                  </div>
+                </div>
+
+                <!--Conditions-->
+                <div class="col-sm-3">
+                  <p style="font-size:10px; color:grey;">
+                    <b>Conditions: </b> the parameters you want to include in this sweep. Unselected boxes means
+                    it will only use the current choice made in general settings<br>
+                  </p>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <p style="font-size:10px; color:grey;">
+                        <input type="checkbox" id="includeCFactory"> All color factory values </input><br>
+                        <input type="checkbox" id="includeRules"> All interaction rules </input><br>
+                        <input type="checkbox" id="includeSensibility"> All sensibility values </input><br>
+                        <input type="checkbox" id="includeTolerance"> All tolerance values </input><br>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!--Tic length-->
+                <div class="col-sm-3">
+                  <p style="font-size:10px; color:grey;">
+
+                    <b>Tick length:</b> ellapsed time between each simulation tick. From 10 and 1000 milliseconds
+                    <br>
+                  </p>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <input type="range" min="10" max="1000" value="100" id="tickLength" step="10"
+                        oninput="DOM.updateSliderValue ('currentTickLength',Number(this.value))">
+                      </input>
+                    </div>
+                    <p style="font-size:10px; color:grey;"> <span id="currentTickLength"> 100 </span></p>
+                  </div>
+                  </p>
+                </div>
+
+
+                <!--Duration-->
+                <div class="col-sm-3">
+                  <p style="font-size:10px; color:grey;">
+                    <b>Duration: </b> Total number of ticks per each sweep. From 10 to 1000<br>
+                  </p>
+                  <div class="row">
+                    <div class="col-sm-10">
+                      <p style="font-size:10px; color:grey;">
+                        <input type="checkbox" id="durationLimit"> Set duration limit </input>
+                      </p>
+                      <input type="range" min="10" max="1000" value="100" id="duration" step="1"
+                        oninput="DOM.updateSliderValue ('totalTicks',Number(this.value))">
+                      </input>
+
+                      <p style="font-size:10px; color:grey;"> <span id="totalTicks"> 100 </span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- Sweep button-->
+        <div class="row">
+          <!--Left gap-->
+          <div class="col-sm-2">
+          </div>
+          <div class="col-sm-10">
+            <p style="font-size:12px">
+                <button type="button" id="runSweep" style="background-color:rgb(162, 209, 162); font-weight: bold"> Start
+                  Sweep Simulation </button>
+                <button type="button" id="resetSweep"> Reset Sweep </button>
+              </p>
+            <hr>
+          </div>
+        </div>
+
+        <!--Export settings-->
         <div class="row">
           <!--Left gap-->
           <div class="col-sm-2">
@@ -302,6 +410,8 @@
             </div>
           </div>
         </div>
+
+        <!--Simulation row-->
         <div class='row'>
           <!-- left gap -->
           <div class="col-sm-2">
@@ -394,7 +504,7 @@
           </div>
           <div class="col-sm-10">
             <div class="collapse" id="viscosityOutput">
-              <p style="font-size:10px; color:grey;"> 
+              <p style="font-size:10px; color:grey;">
                 <button type="button" id="viscosities_to_JSON"> Each agent's viscosity to JSON</button>
                 <button type="button" id="globalViscosity_to_JSON"> Global viscosity to JSON</button>
                 <button type="button" id="globalViscosity_to_CSV"> Global viscosity to CSV</button>
@@ -422,7 +532,7 @@
                 <div id="TimeSeries"></div>
                 <p style="font-size:12px">Viewing charts at tick <span id="sliderChart"> 0 </span></p>
                 <input type="range" min="0" max="0" value="0" id="ticks" oninput="vizMatrix.setLastMatrix(Number(this.value));
-                        mainP5.updateSliderValue('sliderChart', Number(this.value))"></input>
+                        DOM.updateSliderValue('sliderChart', Number(this.value))"></input>
               </div>
             </div>
           </div>
