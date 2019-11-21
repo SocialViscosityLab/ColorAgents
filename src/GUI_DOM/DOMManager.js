@@ -96,6 +96,7 @@ class DOM {
 		}
 	}
 
+	/** Creates an object with the sweep parameters as defined by the user on the GUI */
 	static getSweepParams() {
 		let param = {}
 		if (DOM.checkboxes.sweepCFactory.checked) {
@@ -123,6 +124,7 @@ class DOM {
 		} else {
 			param.tolerance = [DOM.sliders.tolerance.value]
 		}
+		param.runs = DOM.sliders.runs.value;
 		return param;
 	}
 }

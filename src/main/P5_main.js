@@ -250,7 +250,7 @@ var main = function (p5) {
 							for (let m = 0; m < param.tolerance.length; m++) {
 								let next4 = param.tolerance[m]
 								// number of repetitions
-								for (let n = 0; n < DOM.sliders.runs.value; n++) {
+								for (let n = 0; n < param.runs; n++) {
 									// Change DOM values for the condition values
 									DOM.lists.cFactory.value = next0;
 									DOM.lists.rule.value = next1;
