@@ -14,6 +14,10 @@ var main = function (p5) {
 	let simulationInterval;
 	// This variable controls the metrics pace
 	let metricsInterval;
+	// This variable controls the sweep simulation pace
+	let sweepSimulationInterval;
+	// This variable controls the sweep metrics pace
+	let sweepMetricsInterval;
 	// The visual elements representing agents from the world
 	let vAgents = [];
 
@@ -67,7 +71,6 @@ var main = function (p5) {
 			//for each agent instantiate one vAgent
 			vAgents.push(new VAgent(p5, agent));
 		}
-		let nObservers = world.observers.length;
 
 		Utils.setStartTime();
 
@@ -84,9 +87,13 @@ var main = function (p5) {
 		//
 		Utils.resetRecorder();
 
-		DOM.labels.agentsInWorld.innerHTML = nObservers;
+		DOM.labels.agentsInWorld.innerHTML = world.observers.length;
 		DOM.labels.humansInWorld.innerHTML = world.getHumans().length;
 		DOM.labels.nonhumansInWorld.innerHTML = world.getNonhumans().length;
+
+		//
+		DOM.buttons.runSweep.innerHTML = "Start Sweep SImulation";
+		DOM.buttons.runSweep.style.backgroundColor = "rgb(162, 209, 162)";
 	}
 
 	// ***** DRAW ******
@@ -122,43 +129,73 @@ var main = function (p5) {
 
 	//Function controlled by guy element that enables or disables the animation
 	function runSimulation() {
-
-		if (DOM.lists.rule.value != '') {
-			running = !running;
-			if (running) {
-				// the max number of iterations the internal tick counter should get before stopping the simmulation 
-				let iterations;
-				if (DOM.checkboxes.sweepDuration.checked) {
-					iterations = DOM.sliders.duration.value;
-				} else {
-					iterations = Infinity;
-				}
-				// the interval controlling how often the world updates itself. Units in milliseconds
-				let interval = DOM.sliders.tickLength.value;
-				simulationInterval = setInterval(() => { world.runAgents(iterations) }, interval);
-
-				// calculate metrics
-				metricsInterval = setInterval(() => {
-					metrics.getMetricsData(),
-						vizMatrix.setLastMatrix(world.getTicks())
-				},
-					interval);
+		running = !running;
+		if (running) {
+			// the max number of iterations the internal tick counter should get before stopping the simmulation 
+			let iterations;
+			if (DOM.checkboxes.sweepDuration.checked) {
+				iterations = DOM.sliders.duration.value;
 			} else {
-				clearInterval(simulationInterval);
-				clearInterval(metricsInterval);
+				iterations = Infinity;
 			}
+			// the interval controlling how often the world updates itself. Units in milliseconds
+			let interval = DOM.sliders.tickLength.value;
 
-			// Update DOM element content
-			if (running) {
-				DOM.buttons.run.innerHTML = "Running";
-				DOM.buttons.run.style.backgroundColor = "rgb(240, 162, 186)";
-			} else {
-				DOM.buttons.run.innerHTML = "On hold";
-				DOM.buttons.run.style.backgroundColor = "rgb(162, 209, 162)";
-			}
+			simulationInterval = setInterval(() => { world.runAgents(iterations) }, interval);
+			// calculate metrics
+			metricsInterval = setInterval(() => {
+				metrics.getMetricsData(),
+					vizMatrix.setLastMatrix(world.getTicks())
+			},
+				interval);
 		} else {
-			alert('Choose interaction rule first');
+			clearInterval(simulationInterval);
+			clearInterval(metricsInterval);
 		}
+
+		// Update DOM element content
+		if (running) {
+			DOM.buttons.run.innerHTML = "Running";
+			DOM.buttons.run.style.backgroundColor = "rgb(240, 162, 186)";
+		} else {
+			DOM.buttons.run.innerHTML = "On hold";
+			DOM.buttons.run.style.backgroundColor = "rgb(162, 209, 162)";
+		}
+	}
+
+
+	//Function controlled by guy element that enables or disables the animation
+	function runSimulationSweep(label) {
+		return new Promise(function (resolve, reject) {
+			// the max number of iterations the internal tick counter should get before stopping the simmulation 
+			let iterations = DOM.sliders.duration.value;
+
+			// the interval controlling how often the world updates itself. Units in milliseconds
+			let interval = DOM.sliders.tickLength.value;
+
+			// Change the GUI button
+			DOM.buttons.runSweep.innerHTML = "Running: "+label;
+			DOM.buttons.runSweep.style.backgroundColor = "rgb(240, 162, 186)";
+
+			sweepSimulationInterval = setInterval(() => {
+				world.runAgents(iterations);
+				if (world.ticks == iterations) {
+					trajectoriesToCSV(label);
+					clearInterval(sweepSimulationInterval);
+					clearInterval(sweepMetricsInterval);
+					DOM.buttons.runSweep.innerHTML = "Completed";
+					DOM.buttons.runSweep.style.backgroundColor = "rgb(204, 202, 133)";
+					resolve()
+				}
+			}, interval);
+
+			// calculate metrics
+			sweepMetricsInterval = setInterval(() => {
+				metrics.getMetricsData(),
+					vizMatrix.setLastMatrix(world.getTicks())
+			},
+				interval);
+		})
 	}
 
 	/**
@@ -172,11 +209,14 @@ var main = function (p5) {
 	 * DOM has the abstract methods getListOptions() and getSliderParams() to retrieve all the categorical values of lists and sliders
 	 * from the HTML GUI elements. 
 	 */
-	function runSweep(param) {
-
+	async function runSweep(param) {
+		// This guarantees that each run has a time limit
 		DOM.checkboxes.sweepDuration.checked = true;
 
-		param = {cFactory:[1,3]}
+		// If no parameters are provided, they are retrieved from the user input on the GUI interface
+		if (param instanceof MouseEvent) {
+			param = DOM.getSweepParams();
+		}
 
 		if (param instanceof Object) {
 			// cFactory
@@ -209,20 +249,28 @@ var main = function (p5) {
 							}
 							for (let m = 0; m < param.tolerance.length; m++) {
 								let next4 = param.tolerance[m]
-								console.log("Run simulation: " + next0 + ", " + next1 + ", " + next2 + ", " + next3 + ", " + next4)
-								DOM.lists.cFactory.value = DOM.lists.cFactory.options[next0].value
-								let event = new Event('change');
-								// Initialize all conditions
-								DOM.lists.cFactory.dispatchEvent(event);
-								// run the simulation IN A PROMISE
-								runSimulation()
+								// number of repetitions
+								for (let n = 0; n < DOM.sliders.runs.value; n++) {
+									// Change DOM values for the condition values
+									DOM.lists.cFactory.value = next0;
+									DOM.lists.rule.value = next1;
+									DOM.sliders.range.value = next2;
+									DOM.lists.sensibility.value = next3;
+									DOM.sliders.tolerance.value = next4;
+									let event = new Event('change');
+									// Initialize all conditions
+									DOM.lists.cFactory.dispatchEvent(event);
+									// run the simulation IN A PROMISE
+									let currentRun = next0 + ", " + next1 + ", " + next2 + ", " + next3 + ", " + next4 + ", run " + n;
+									await runSimulationSweep(currentRun)
+								}
 							}
 						}
 					}
 				}
 			}
 		} else {
-			alert("No parameters for sweep run")
+			alert("Wrong parameter formet for sweep run")
 		}
 	}
 
@@ -238,9 +286,12 @@ var main = function (p5) {
 		p5.saveJSON(Utils.getRecording(), 'trajectoriesV2.json', true);
 	}
 
-	function trajectoriesToCSV() {
-		p5.save(Utils.getRecording(), 'trajectoriesCSV.csv');
-		console.log("Trajectories CSV File saved");
+	function trajectoriesToCSV(label) {
+		if (!label) {
+			label = 'trajectoriesCSV.csv'
+		}
+		p5.save(Utils.getRecording(), label);
+		console.log("Saved: " + label + " CSV File saved");
 	}
 }
 

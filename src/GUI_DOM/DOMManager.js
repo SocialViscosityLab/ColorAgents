@@ -29,7 +29,8 @@ class DOM {
 		DOM.checkboxes.showSeries = document.getElementById("showSeries");
 		DOM.checkboxes.showIndividualSeries = document.getElementById("showIndividualSeries");
 		DOM.checkboxes.sweepCFactory = document.getElementById("includeCFactory");
-		DOM.checkboxes.sweepRules = document.getElementById("includeRules");
+		DOM.checkboxes.sweepRule = document.getElementById("includeRules");
+		DOM.checkboxes.sweepRange = document.getElementById("includeRange");
 		DOM.checkboxes.sweepSensibility = document.getElementById("includeSensibility");
 		DOM.checkboxes.sweepTolerance = document.getElementById("includeTolerance");
 		DOM.checkboxes.sweepDuration = document.getElementById("durationLimit");
@@ -95,8 +96,34 @@ class DOM {
 		}
 	}
 
-	static setSweepParams(cFactory, rule, range, sensibility, tolerance){
-		DOM.lists.cFactory.value = cFactory;
+	static getSweepParams() {
+		let param = {}
+		if (DOM.checkboxes.sweepCFactory.checked) {
+			param.cFactory = this.getListOptions('cFactory')
+		} else {
+			param.cFactory = [DOM.lists.cFactory.value]
+		}
+		if (DOM.checkboxes.sweepRule.checked) {
+			param.rule = this.getListOptions('rule')
+		} else {
+			param.rule = [DOM.lists.rule.value]
+		}
+		if (DOM.checkboxes.sweepRange.checked) {
+			param.range = this.getSliderParams('range')
+		} else {
+			param.range = [DOM.sliders.range.value]
+		}
+		if (DOM.checkboxes.sweepSensibility.checked) {
+			param.sensibility = this.getListOptions('sensibility')
+		} else {
+			param.sensibility = [DOM.lists.sensibility.value]
+		}
+		if (DOM.checkboxes.sweepTolerance.checked) {
+			param.tolerance = this.getSliderParams('tolerance')
+		} else {
+			param.tolerance = [DOM.sliders.tolerance.value]
+		}
+		return param;
 	}
 }
 DOM.buttons = {};
