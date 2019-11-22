@@ -1,4 +1,9 @@
+/**
+ * This static class manages all the GUI elements displayed in the browser and serves as an interface between the DOM and the JavaScript code.
+ */
 class DOM {
+	// This constructor is not needed, but it is here because the documentation generatior requires it to format the documentation
+	constructor() { }
 
 	/** Initializes all the GUI elements ceated in the DOM
 	*/

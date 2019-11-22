@@ -1,14 +1,15 @@
-/**
-* Abstract class with utility functions
-*/
+
 
 var startTime;
-
 var tmpLabels = [];
 var tmpValues = [];
 var returnValues = [];
-
+/**
+* Abstract class with utility functions
+*/
 class Utils{
+  // This constructor is not needed, but it is here because the documentation generatior requires it to format the documentation
+  constructor(){}
 
   /**
   * Euclidean distance between this agent and other agent
@@ -150,9 +151,6 @@ class Utils{
   }
 
   // DATA RECORDER
-
-
-
   static startRecording(val){
     this.tmpLabels.push('tick');
     this.tmpValues.push(val);

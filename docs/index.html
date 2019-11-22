@@ -175,12 +175,6 @@
                         #updateDistanceMap
                       </a></li>
                       
-                      <li><a
-                        href='#agentupdatedistancemap'
-                        class='regular pre-open'>
-                        #updateDistanceMap
-                      </a></li>
-                      
                     </ul>
                   
                   
@@ -202,12 +196,6 @@
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
-                      
-                      <li><a
-                        href='#humansensibility'
-                        class='regular pre-open'>
-                        #sensibility
-                      </a></li>
                       
                       <li><a
                         href='#humansmentalmodel'
@@ -340,6 +328,68 @@
                   
                   
                 </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#dom'
+                  class=" toggle-sibling">
+                  DOM
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#dominitialize'
+                        class='regular pre-open'>
+                        .initialize
+                      </a></li>
+                    
+                      <li><a
+                        href='#domupdateslidervalue'
+                        class='regular pre-open'>
+                        .updateSliderValue
+                      </a></li>
+                    
+                      <li><a
+                        href='#domgetlistoptions'
+                        class='regular pre-open'>
+                        .getListOptions
+                      </a></li>
+                    
+                      <li><a
+                        href='#domgetsliderparams'
+                        class='regular pre-open'>
+                        .getSliderParams
+                      </a></li>
+                    
+                      <li><a
+                        href='#domgetsweepparams'
+                        class='regular pre-open'>
+                        .getSweepParams
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#runsweep'
+                  class="">
+                  runSweep
+                  
+                </a>
                 
                 </li>
               
@@ -1475,7 +1525,7 @@ world in relation to ALL its interactants. It is used to control when this agent
 
   
 
-  <p>Wheter or not the given element interacts with this agent AND is an isntance of Human</p>
+  <p>Wheter or not the given element interacts with this agent AND is an instance of Human</p>
 
  
   
@@ -2056,116 +2106,6 @@ world in relation to ALL its interactants. It is used to control when this agent
 
   
 
-  <p>Updates the collections of spatial magnitudes and pixel distances between this
-agent and other agent identified by its id</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>updateDistanceMap(id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>, spatialMag: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>, currentDist: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</div>
-   
-  
-  
-
-  <div>Deprecated: updateSpatialDistances(id, spatialMag, currentDist){
-// The very first time
-if (this.distances.length &#x3C; 1){
-this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-} else {
-// Find the interactants's index in the collection of distances
-let index = -1;
-for (var i = 0; i &#x3C; this.distances.length; i++) {
-if (this.distances
-[i]
-.id == id){
-index = i;
-break;
-}
-}
-// if the interactants is in the collection, update the distances to that interactant
-if(index != -1){
-this.distances
-[index]
-.spatialMag = spatialMag;
-this.distances
-[index]
-.currentDist = currentDist;
-} else {
-// else, create a new record
-this.distances.push({id:id, spatialMag:spatialMag, currentDist:currentDist});
-}
-}
-}
-</div>
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>)</code>
-	    Other agent's ID
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>spatialMag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    This agent's percived spatial magnitud to other's agent
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>currentDist</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a>)</code>
-	    Current distance between this and other agent
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='agentupdatedistancemap'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>updateDistanceMap(id, spatialMag, currentDist)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
   <p>Updates the map of spatial magnitudes and pixel distances between this
 agent and other agent identified by its id</p>
 
@@ -2364,54 +2304,6 @@ agent and other agent identified by its id</p>
   
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
-  
-    <div class='border-bottom' id='humansensibility'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>sensibility</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>This agents' color Mental Model. This represents the unique way this agent perceives colors in the world</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>sensibility</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
   
     <div class='border-bottom' id='humansmentalmodel'>
       <div class="clearfix small pointer toggle-sibling">
@@ -3457,6 +3349,435 @@ is returned</p>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='dom'>
+      DOM
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This static class manages all the GUI elements displayed in the browser and serves as an interface between the DOM and the JavaScript code.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>new DOM()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='dominitialize'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>initialize</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Initializes all the GUI elements ceated in the DOM</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>initialize</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='domupdateslidervalue'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>updateSliderValue</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Updates a slider's label</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>updateSliderValue</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>sliderName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>value</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='domgetlistoptions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getListOptions</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Retrieves the list of HTML options from a given list</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getListOptions</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listKey</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The name of the list whose options will be retrieved
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        The collection of options
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='domgetsliderparams'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getSliderParams</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Retrieves the value of all possible parameters for a slider. It creates an array with
+all the values, starting from the min slider value up to the max slider value,
+increasing in slider predefined steps.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getSliderParams</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>sliderKey</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The name of the slider whose parameters will be retrieved
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        The collection of values
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='domgetsweepparams'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getSweepParams()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Creates an object with the sweep parameters as defined by the user on the GUI</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>getSweepParams()</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='runsweep'>
+      runSweep
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Asynch function that executes a series of simulation runs with the parameters given. The parameters are arrays containing
+the conditions to be tested. The conditions are executed in the following order: 1) ColorFactory, 2)interaction rule
+3) range, 4) sensibility, 5) tolerance, 6) Number of runs.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>runSweep(param: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>param</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    Object containing key:value pairs where the keys must match these names: cFactory, rule, range,
+sensibility, tolerance, runs. The corresponding values must be arrays of categorical parameters. In the case of continuous inputs,
+such as sliders, the array of all steps from the min to the max value of the slider must be added. For convenience, the class
+DOM has the abstract methods getListOptions() and getSliderParams() to retrieve all the categorical values of lists and sliders
+from the HTML GUI elements.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='colormentalmodel'>
       ColorMentalModel
     </h3>
@@ -3469,7 +3790,8 @@ is returned</p>
 the world. Every color mental model belongs to an agent, therefore, color mental
 models exist only in the 'mind' of each agent.
 By default this class returns the Newtonean rainbow model, but other models are
-available.</p>
+available.
+Constructor</p>
 
  
   
@@ -4000,11 +4322,13 @@ indexA and indexB must be between 0 and colorPalette.length</p>
 
   <p>Spatial Mental Model
 This mental model is a mechanism to convert values from other mental models into spatial distances.
-For example, it serves to map the perceived proximity between two colors into a spatial proximity</p>
+For example, it serves to map the perceived proximity between two colors into a spatial proximity
+The model needs two parameters to determine what is near and what is far away. When shortests is not undefined
+it is assumed that it is equal to 0,</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>new SpatialMentalModel(shortest: any, farthest: any)</div>
+    <div class='pre p1 fill-light mt0'>new SpatialMentalModel(shortest: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, farthest: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
    
   
   
@@ -4022,16 +4346,18 @@ For example, it serves to map the perceived proximity between two colors into a 
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>shortest</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>shortest</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    : scalar used by spatial mental model to determine what on canvas how near an agent wants to be from the most similar agent
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>farthest</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>farthest</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    : scalar used by spatial mental model to determine what on canvas how far away an agent was to be from the most dissimilar agent
+
           </div>
           
         </div>
@@ -6178,7 +6504,7 @@ Observations could be self referenced, meaning that one agent can have a reflexi
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>runAgents()</span>
+            <span class='code strong strong truncate'>runAgents(limit)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -6191,7 +6517,7 @@ Window setInterval() Method from the browser or the server.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>runAgents()</div>
+    <div class='pre p1 fill-light mt0'>runAgents(limit: any)</div>
    
   
   
@@ -6203,6 +6529,19 @@ Window setInterval() Method from the browser or the server.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>limit</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   

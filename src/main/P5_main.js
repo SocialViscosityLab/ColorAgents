@@ -199,12 +199,12 @@ var main = function (p5) {
 	}
 
 	/**
-	 * Executes a series of simulation runs with the parameters given. The parameters are arrays containing
+	 * Asynch function that executes a series of simulation runs with the parameters given. The parameters are arrays containing
 	 * the conditions to be tested. The conditions are executed in the following order: 1) ColorFactory, 2)interaction rule
-	 * 3) range, 4) sensibility, 5) tolerance.
+	 * 3) range, 4) sensibility, 5) tolerance, 6) Number of runs.
 	 * 
 	 * @param {Object} param Object containing key:value pairs where the keys must match these names: cFactory, rule, range,
-	 * sensibility, tolerance. The corresponding values must be arrays of categorical parameters. In the case of continuous inputs,
+	 * sensibility, tolerance, runs. The corresponding values must be arrays of categorical parameters. In the case of continuous inputs,
 	 * such as sliders, the array of all steps from the min to the max value of the slider must be added. For convenience, the class
 	 * DOM has the abstract methods getListOptions() and getSliderParams() to retrieve all the categorical values of lists and sliders
 	 * from the HTML GUI elements. 

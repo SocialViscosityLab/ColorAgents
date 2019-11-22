@@ -2,14 +2,12 @@
 * Spatial Mental Model
 * This mental model is a mechanism to convert values from other mental models into spatial distances.
 * For example, it serves to map the perceived proximity between two colors into a spatial proximity
+* The model needs two parameters to determine what is near and what is far away. When shortests is not undefined
+* it is assumed that it is equal to 0,
+* @param {number} shortest: scalar used by spatial mental model to determine what on canvas how near an agent wants to be from the most similar agent
+* @param {number} farthest: scalar used by spatial mental model to determine what on canvas how far away an agent was to be from the most dissimilar agent
 */
 class SpatialMentalModel{
-  /*
-  The model needs two parameters to determine what is near and what is far away. When shortests is not undefined
-  it is assumed that it is equal to 0,
-  Shortest: scalar used by spatial mental model to determine what on canvas how near an agent wants to be from the most similar agent
-  Farthest: scalar used by spatial mental model to determine what on canvas how far away an agent was to be from the most dissimilar agent
-  */
   constructor(shortest,farthest){
     this.farthest = farthest;
     this.shortest = 0;
