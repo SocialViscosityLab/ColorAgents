@@ -1,11 +1,6 @@
 /**
  * This static class manages all the GUI elements displayed in the browser and serves as an interface between the DOM and the JavaScript code.
  */
-DOM.buttons = {};
-DOM.checkboxes = {};
-DOM.labels = {};
-DOM.sliders = {}
-DOM.lists = {}
 
 class DOM {
     // This constructor is not needed, but it is here because the documentation generatior requires it to format the documentation
@@ -139,3 +134,9 @@ class DOM {
         return param;
     }
 }
+
+DOM.buttons = {};
+DOM.checkboxes = {};
+DOM.labels = {};
+DOM.sliders = {}
+DOM.lists = {}
