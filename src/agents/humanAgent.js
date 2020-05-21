@@ -41,7 +41,6 @@ class Human extends Agent {
 
         // The amplification factor of interaction radius scope
         this.radiusFactor = 10;
-
     }
 
     /**
@@ -88,7 +87,9 @@ class Human extends Agent {
 
                 this.iAmDone = false;
                 // Move
-                this.move2(nextPos.normalize());
+                // this.move2(nextPos.normalize());
+
+                this.move(nextPos.mag(), this.bearing, leng);
             } else {
                 this.iAmDone = true;
             }
