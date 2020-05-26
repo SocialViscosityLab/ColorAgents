@@ -20,10 +20,13 @@ var main = function(p5) {
     let sweepMetricsInterval;
     // The visual elements representing agents from the world
     let vAgents = [];
-
+    // Reference for test new agent and its palette
+    let nAgent; 
+    let nAP = [];
 
     // ***** Setup ******
     p5.setup = function() {
+
         p5.createCanvas(500, 500);
         // Instantiate the world
         world = new World();
@@ -54,17 +57,29 @@ var main = function(p5) {
 
         // Retrieve al the colors
         var colors = cFactory.getAll();
+        nAP = colors;
 
         // clear agents
         world.reset();
         vAgents = [];
 
+        let nAgentID = [];
+        //New agent initialization
+        for (let i = 0; i < 3; i++) {
+            nAgentID.push(Math.floor(Math.random()* (colors.length-1)));
+        }
+        //let nAgentID = Math.floor(Math.random()* (colors.length-1));
+        nAgent = [];
         // create instances
         for (var i = 0; i < colors.length; i++) {
             let x = Math.floor(Math.random() * p5.width);
             let y = Math.floor(Math.random() * p5.height);
-            var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
-
+            if (nAgentID.includes(i)){
+                var agent = new NewHuman(x, y, colors[i].name, colors[i].chroma, 0, 100);
+                nAgent.push(agent);
+            }
+            else {var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
+            }
             //	agents.push(agent);
             world.subscribe(agent);
 
@@ -90,8 +105,10 @@ var main = function(p5) {
         DOM.labels.agentsInWorld.innerHTML = world.observers.length;
         DOM.labels.humansInWorld.innerHTML = world.getHumans().length;
         DOM.labels.nonhumansInWorld.innerHTML = world.getNonhumans().length;
-
-        //
+        let newAgentsName = nAgent.map(a => a.id)
+        console.log(newAgentsName)
+        DOM.labels.learningAgent.innerHTML = newAgentsName.join(", ");
+        //DOM.labels.learningAgent.style.color = "rgb("+nAgent.colorValues.rgb()[0]+", "+nAgent.colorValues.rgb()[1]+", "+nAgent.colorValues.rgb()[2]+")";
         DOM.buttons.runSweep.innerHTML = "Start Sweep SImulation";
         DOM.buttons.runSweep.style.backgroundColor = "rgb(162, 209, 162)";
     }
@@ -123,6 +140,27 @@ var main = function(p5) {
                 vAgents[a].showTrajectory();
             }
         }
+        /***
+           * Updated the learned colormodel from the new agent
+           * TODO: Take to a better place
+           */ 
+          let cm = nAgent[0].cMentalModel;
+          let nACM = []
+          for (let c = 0; c < cm.length; c++) {
+              cId = -1;
+              for (let i = 0; i < nAP.length; i++) {
+                  if(nAP[i].name == cm[c]){
+                      nACM.push(nAP[i].chroma.rgb())
+                  }
+              }
+          }
+        // Draw color model from learning agent
+        p5.noStroke();
+        let ss = 20;
+        for (let fc = 0; fc < nACM.length; fc++) {
+            p5.fill(nACM[fc]);
+            p5.rect(p5.width-ss-(fc*ss), 0, ss, ss)
+            }
     }
 
 
@@ -148,6 +186,7 @@ var main = function(p5) {
                         vizMatrix.setLastMatrix(world.getTicks())
                 },
                 interval);
+
         } else {
             clearInterval(simulationInterval);
             clearInterval(metricsInterval);

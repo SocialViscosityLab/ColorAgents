@@ -64,9 +64,9 @@ class World {
   */
   getHumans(agent) {
     if (agent) {
-      return this.observers.filter(subscriber => subscriber !== agent && subscriber instanceof Human);//
+      return this.observers.filter(subscriber => subscriber !== agent && (subscriber instanceof Human || subscriber instanceof NewHuman));//
     } else {
-      return this.observers.filter(subscriber => subscriber instanceof Human);
+      return this.observers.filter(subscriber => (subscriber instanceof Human || subscriber instanceof NewHuman));
     }
   }
 

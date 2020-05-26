@@ -83,12 +83,10 @@ class Human extends Agent {
 
             // Verfiy if the change is worth to execute the movement
             if (nextPos.mag() > Number(magnitudeThreshold)) {
-
                 this.bearing = nextPos.heading();
-
                 this.iAmDone = false;
                 // Move
-                this.move2(nextPos.normalize());
+                this.move(nextPos.mag(),nextPos.heading(), this.stepLengthFactor);
             } else {
                 this.iAmDone = true;
             }

@@ -45,8 +45,10 @@ class DOM {
         DOM.labels.agentsInWorld = document.getElementById("agentsInWorld");
         DOM.labels.humansInWorld = document.getElementById("humansInWorld");
         DOM.labels.nonhumansInWorld = document.getElementById("nonhumansInWorld");
+        DOM.labels.learningAgent = document.getElementById("learningAgent");
         DOM.labels.ticksInWorld = document.getElementById("ticksInWorld");
         DOM.labels.sliderValue = document.getElementById('sliderValue');
+
 
         // sliders
         DOM.sliders.ticks = document.getElementById("ticks");

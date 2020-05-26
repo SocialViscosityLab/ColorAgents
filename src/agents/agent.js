@@ -1,3 +1,4 @@
+
 /**
 * The primary class to define an agent situated in a cartesian space.
 */
@@ -39,6 +40,9 @@ class Agent{
     /** This boolean variable defines when this agent feels "comfortable" with its current situation in the
     world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions*/
     this.iAmDone = false;
+
+    //Factor of movement for viscosity
+    this.stepLengthFactor = 0.01;
   }
 
   /**
@@ -83,7 +87,7 @@ class Agent{
   * @return {Boolean}         [description]
   */
   isHumanInteractant(element){
-    return (element.interactant == true && element.agent instanceof Human);
+    return (element.interactant == true && ( element.agent instanceof Human ||  element.agent instanceof NewHuman));
   }
 
   /**
