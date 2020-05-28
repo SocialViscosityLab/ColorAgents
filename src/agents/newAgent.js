@@ -138,11 +138,10 @@ interact() {
     let state = this.getAbstractState(interactants);
 
     if(state != this.prevState){
-      console.log("updating Tables")
+      console.log("updating Tables");
       if(this.prevState == ''){
         this.qTable = this.createQTable(interactants);
       }else{
-        console.log("nuevo agente")
         this.qTable = this.createQTable(interactants,this.qTable);
       }
 
@@ -181,14 +180,14 @@ interact() {
     let currentModelInx = this.models.indexOf(this.cMentalModel.join(" "))
     this.nTable[currentModelInx] = this.nTable[currentModelInx] + 1;
 
+
     //Register the current interactants
     this.interactantsRegister = _.cloneDeep(interactants);
 
     //console.log("N-Table")
     //console.log(this.nTable)
-    console.log("Q-Table")
-    console.log(this.qTable)
-    console.log(this.cMentalModel)
+    //console.log("Q-Table")
+    //console.log(this.qTable)
   }
 
 /**

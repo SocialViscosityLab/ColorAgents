@@ -20,9 +20,11 @@ var main = function(p5) {
     let sweepMetricsInterval;
     // The visual elements representing agents from the world
     let vAgents = [];
-    // Reference for test new agent and its palette
-    let nAgent; 
-    let nAP = [];
+    // Number of new agents 
+    let NA = 1;
+    let nAgents = [];
+    // Reference for test new agents model
+    let nAP;
 
     // ***** Setup ******
     p5.setup = function() {
@@ -65,18 +67,18 @@ var main = function(p5) {
 
         let nAgentID = [];
         //New agent initialization
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < NA; i++) {
             nAgentID.push(Math.floor(Math.random()* (colors.length-1)));
         }
         //let nAgentID = Math.floor(Math.random()* (colors.length-1));
-        nAgent = [];
+        nAgents = [];
         // create instances
         for (var i = 0; i < colors.length; i++) {
             let x = Math.floor(Math.random() * p5.width);
             let y = Math.floor(Math.random() * p5.height);
             if (nAgentID.includes(i)){
                 var agent = new NewHuman(x, y, colors[i].name, colors[i].chroma, 0, 100);
-                nAgent.push(agent);
+                nAgents.push(agent);
             }
             else {var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
             }
@@ -105,10 +107,8 @@ var main = function(p5) {
         DOM.labels.agentsInWorld.innerHTML = world.observers.length;
         DOM.labels.humansInWorld.innerHTML = world.getHumans().length;
         DOM.labels.nonhumansInWorld.innerHTML = world.getNonhumans().length;
-        let newAgentsName = nAgent.map(a => a.id)
-        console.log(newAgentsName)
+        let newAgentsName = nAgents.map(a => a.id)
         DOM.labels.learningAgent.innerHTML = newAgentsName.join(", ");
-        //DOM.labels.learningAgent.style.color = "rgb("+nAgent.colorValues.rgb()[0]+", "+nAgent.colorValues.rgb()[1]+", "+nAgent.colorValues.rgb()[2]+")";
         DOM.buttons.runSweep.innerHTML = "Start Sweep SImulation";
         DOM.buttons.runSweep.style.backgroundColor = "rgb(162, 209, 162)";
     }
@@ -144,23 +144,27 @@ var main = function(p5) {
            * Updated the learned colormodel from the new agent
            * TODO: Take to a better place
            */ 
-          let cm = nAgent[0].cMentalModel;
-          let nACM = []
-          for (let c = 0; c < cm.length; c++) {
-              cId = -1;
-              for (let i = 0; i < nAP.length; i++) {
-                  if(nAP[i].name == cm[c]){
-                      nACM.push(nAP[i].chroma.rgb())
-                  }
-              }
-          }
-        // Draw color model from learning agent
-        p5.noStroke();
-        let ss = 20;
-        for (let fc = 0; fc < nACM.length; fc++) {
-            p5.fill(nACM[fc]);
-            p5.rect(p5.width-ss-(fc*ss), 0, ss, ss)
-            }
+          p5.noStroke();
+          let ss = 20;
+          let count = 0;
+          nAgents.forEach(nAgent => {
+            let cm = nAgent.cMentalModel;
+            if(cm.length>0){
+                p5.textSize(20);
+                p5.fill(nAgent.colorValues.rgb());
+                p5.text(nAgent.id, p5.width-(ss*cm.length)-80, 20 + (count*(ss+4)))
+                  for (let c = 0; c < cm.length; c++) {
+                      if((cm[c]!= "blanc")){
+                        let tempColor = nAP.find(col => {
+                            return col.name == cm[c];
+                        });
+                        p5.fill(tempColor.chroma.rgb());
+                        p5.rect(p5.width-(ss*cm.length)+(c*ss), 0+(count*(ss+4)), ss, ss);
+                      }
+                    }
+                      count ++;    
+                } 
+            });
     }
 
 
