@@ -111,7 +111,6 @@ class Human extends Agent {
 
             // Use the mental model to calculate the perceived distance to each interactant
             let perceivedColorDistance = this.cMentalModel.getPerceivedColorDistance(i.colorValues);
-
             /*
 			There are spatial distances between this agent's location and the interactants'
 			locations. Such distances may not correspond to this agent's perceived color

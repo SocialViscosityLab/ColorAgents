@@ -25,6 +25,7 @@ class NewHuman extends Agent{
     /** This agents' spacial Mental Model. This represents the unique way this agent perceives distances in the world*/
     this.sMentalModel = new SpatialMentalModel(shortest, farthest);
     this.cMentalModel = [];
+    this.currentModelInx = -1;
     this.sensibility = DOM.lists.sensibility.value;
 
     DOM.lists.sensibility.addEventListener('change', () => {
@@ -42,10 +43,10 @@ class NewHuman extends Agent{
     this.radiusFactor = 10;
 
 
-    // ----> Variables for learning
+    // ----> Methaparamethers for learning
 
     /** The initial learning rate */
-    this.alpha = 1;
+    this.a = 1;
     /** Decreasing factor for the learning rate */
     this.c = 20;
     /** The optimistic value use for not explore actions */
@@ -56,7 +57,7 @@ class NewHuman extends Agent{
     this.prevState = '';
     /** Keeps record of the expected result, and current the result */
     this.expectedResult = { };
-    this.interactantsRegister = []
+    this.interactantsRegister = { }
     /** Matrix with the quality of each decision for a specific state */
     this.qTable;
     /** Matrix with the number of times each decision was made for a specific state */
@@ -116,6 +117,7 @@ interact() {
             // Move
             this.move(nextPos.mag(),nextPos.heading(), this.stepLengthFactor);
           } else {
+            console.log("not moving anymore")
             for(let r in this.expectedResult){
               this.expectedResult[r]=0;
             }
@@ -135,7 +137,7 @@ interact() {
    */
   train(interactants){
 
-    let state = this.getAbstractState(interactants);
+    let [state, smplInteractants] = this.getAbstractState(interactants);
 
     if(state != this.prevState){
       console.log("updating Tables");
@@ -145,26 +147,31 @@ interact() {
         this.qTable = this.createQTable(interactants,this.qTable);
       }
 
-      this.nTable = [...this.qTable];
+      this.nTable = new Array(this.qTable.length).fill(0);
       //The previous state register is updated
       this.prevState = state
     }
 
     //If there is already a expected result from the agent
-    if(this.expectedResult != {}){
-      let result = this.getResult(interactants);
+    if(this.cMentalModel.length > 0){
+  
+      let result = this.getResult(smplInteractants);
       let reward = this.calculateReward(result);
-  
-      let prevModelInx = this.models.indexOf(this.cMentalModel.join(" "))
-  
-      this.alpha = this.c/(this.c + this.nTable[prevModelInx]);
-      this.qTable[prevModelInx] = this.qTable[prevModelInx] + (this.alpha * reward);
+      
+      if(reward != 0){
+      //Updates the N-table if there is a reward (positive or negative)
+      this.nTable[this.currentModelInx] = this.nTable[this.currentModelInx] + 1;
+      }
+
+      // Updates the Q-table 
+      let alpha = this.a * (this.c / (this.c + this.nTable[this.currentModelInx]));
+      this.qTable[this.currentModelInx] = this.qTable[this.currentModelInx] + (alpha * reward);
     }
     
     // Looks for the models with higher quality and set the current color modet to it
     let modelCandidates = [];
     for (let i = 0; i < this.nTable.length; i++) {
-      if(this.nTable[i] <= this.NE){
+      if(this.nTable[i] < this.NE){
         modelCandidates.push(this.rPlus);
       }else{
         modelCandidates.push(this.qTable[i]);
@@ -172,22 +179,17 @@ interact() {
     }
 
     //Looks for the candidate with the higher value
-    tf.tensor1d(modelCandidates).argMax().data().then(id => {
-      this.cMentalModel = this.models[id[0]].split(" ")
-    });
-
-    //the N-table is updated
-    let currentModelInx = this.models.indexOf(this.cMentalModel.join(" "))
-    this.nTable[currentModelInx] = this.nTable[currentModelInx] + 1;
-
+    
+    this.currentModelInx = modelCandidates.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1]; //ArgMax form
+    this.cMentalModel = this.models[this.currentModelInx].split(" ");
 
     //Register the current interactants
-    this.interactantsRegister = _.cloneDeep(interactants);
-
-    //console.log("N-Table")
-    //console.log(this.nTable)
-    //console.log("Q-Table")
-    //console.log(this.qTable)
+    this.interactantsRegister = smplInteractants;
+    
+    console.log("N-Table")
+    console.log(this.nTable)
+    console.log("Q-Table")
+    console.log(this.qTable)
   }
 
 /**
@@ -198,8 +200,19 @@ interact() {
    */
   getAbstractState(interactants){
     let state = interactants.map(i => i.agent.id);
+    let smplInteractants = { }
     state.sort();
-    return state.join(" ");
+
+    state.forEach(a => {
+      let tempInt = interactants.find(i => {
+        let tempId = String(i.agent.id)
+        return tempId == a;
+      });
+      smplInteractants[a] = {x:tempInt.agent.pos.x,y:tempInt.agent.pos.y}
+    });
+    console.log(smplInteractants)
+
+    return [state.join(" "), smplInteractants];
   }
 
 /**
@@ -210,21 +223,24 @@ interact() {
    */
   getResult(interactants){
     let result = { }
-    this.interactantsRegister.forEach(ir => {
-      let currentDist = NaN;
-      let prevDist = Utils.euclideanDist(this, ir.agent);
-      interactants.forEach(i => {
-        if(i.agent.id == ir.agent.id){
-          currentDist = Utils.euclideanDist(this, i.agent); 
-        }
-      });
+    for(let ir in this.interactantsRegister){
+      let currentDist = NaN; 
+      let prevDist = Utils.dist(this.pos.x, this.pos.y, this.interactantsRegister[ir].x, this.interactantsRegister[ir].y);
+
+      if(ir in interactants){
+        //TODO: consider ignore if distance is larger than the farthest value
+        currentDist = Utils.dist(this.pos.x, this.pos.y, interactants[ir].x, interactants[ir].y); 
+      }
+
       // If I can't find the interactant in my new list, I assume is now out of my range
       if(currentDist == NaN){
-        result[ir.agent.id] = -1;
+        //result[ir.agent.id] = -1;
+        result[ir] = -1;
       }else{
-        result[ir.agent.id] = Math.sign(prevDist-currentDist);
+        //result[ir.agent.id] = Math.sign(prevDist-currentDist);
+        result[ir] = Math.sign(prevDist-currentDist);
       }
-    });
+    }
     return result;
   }
 
@@ -243,41 +259,41 @@ interact() {
         agentArray.push(pair)
       }else{
         if(pair in (this.prevState.split(" "))){
+          // TODO: Test is this is working to keep colors that were interactants before in the possible models.
           agentArray.push(pair)
         }else{
-          agentArray.push("blanc")
+          //This allows the agent to calculate the distances between the interactants without including all agents.
+          agentArray.push("blanc");
         }
       }
     });
 
-    let temp = Combinatorics.permutation(agentArray).toArray();
-    temp = new Set(temp.map(p => p.join(" ")));
+    let cmbs = Combinatorics.permutation(agentArray).toArray();
+    cmbs = new Set(cmbs.map(p => p.join(" ")));
 
-    temp.forEach(element => {
-      let tempModel = element.split(" ").reverse().join(" ");
-      if(!models.includes(tempModel)){
-        models.push(element);
+    cmbs.forEach(cmb => {
+      let invModel = cmb.split(" ").reverse().join(" ");
+      if(!models.includes(invModel)){
+        models.push(cmb);
       }
     });
     /**
-     * If there are previous models with negative quality
-     * the low quality models are going to be filered out from
+     * If there are previous models with low quality (q < 0).
+     * The low quality models are filered out from
      * the new list of models, taking into account the previously 
-     * evaluated colors positions in them model 
+     * evaluated colors positions only. 
     */
    let filteredModels = []; 
     if(qLearned){
-      //console.log(model)
       // Filter out the models with negative quality
       for (let i = 0; i < qLearned.length; i++) {
-        if(qLearned[i] < 0){
+        if(qLearned[i] < 0){         
           //Identify the low quality model
           let lqModel = this.models[i].split(" ");
           models.forEach(m => {
             let disc = true;
             let tempModel = m.split(" ");
             for (let j = 0; j < tempModel.length; j++) {
-              //console.log(tempModel)
               if(lqModel[j] != "blanc"){
                 if(tempModel[j] != lqModel[j]){
                   disc = false;
@@ -291,17 +307,17 @@ interact() {
         }        
       }
       
-      //TODO: Is not working well yet.
-      //Here the values the previously explored agents are included
-      // but the values generated are ignored. The agent could use the quality values 
-      // to start the new q-tables. Be carefull when copying the n-Table
-      console.log(filteredModels)
+      //Here the previously explored low quality models are excluded
+      // but the previous quality values are ignored. 
+      // TODO: The agent could use the quality values 
+      // to start the new q-tables. 
+      console.log("Filtered low quality models: "+filteredModels.length);
     }
     //Updates the possible models to consider
     this.models = models.filter((m)=> !filteredModels.includes(m));
 
     // Pass an array of values to create a vector with the array dimensions.
-    return new Array(models.length).fill(0);
+    return new Array(this.models.length).fill(0);
   }
 
 
@@ -312,19 +328,22 @@ interact() {
    */
   calculateReward(result){
     let reward = 0;
+    console.log(this.expectedResult)
+    console.log(result)
     if(this.expectedResult != { }){
       for (let er in this.expectedResult) {
-        if(this.expectedResult[er] === result[er]){
-          reward += 0.01;
-        }else{
-          reward -= 0.1;
+
+        if(!isNaN(this.expectedResult[er])){
+          if(this.expectedResult[er] === result[er]){
+            reward += 0.01;
+          }else{
+            reward -= 0.1;
+          }          
         }
       }
       return reward;
     }
   }
-  
-
 
 
   /**
@@ -410,8 +429,15 @@ interact() {
         //Calculate the difference between the spatialMagnitude and the actual spatial distance
         let deltaDist = currentDist - spatialMag;
         
+        /** if the agents is farther than the farthest value, 
+         * the expectations about this agent is not considered in the evaluation of the model
+         */ 
+        if(currentDist > this.farthest){
+          this.expectedResult[i.id] = NaN;
+        }else{
         // This will indicate if the agents expect that the specific interactant get closer or farther for it
-        this.expectedResult[i.id] = Math.sign(deltaDist)
+          this.expectedResult[i.id] = Math.sign(deltaDist)
+        }
 
         // Update distances. This could be done somewhere else, but here it saves the cost of iterating over all the interactants
         this.updateDistanceMap(i.id, spatialMag, currentDist);
