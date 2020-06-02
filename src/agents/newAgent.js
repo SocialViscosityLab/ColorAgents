@@ -48,11 +48,11 @@ class NewHuman extends Agent{
     /** The initial learning rate */
     this.a = 1;
     /** Decreasing factor for the learning rate */
-    this.c = 20;
+    this.c = 40;
     /** The optimistic value use for not explore actions */
     this.rPlus = 1;
     /** The minimum count of explorations for each model */
-    this.NE = 1;
+    this.NE = 50;
     /** Keeps a record for the interactants list */
     this.prevState = '';
     /** Keeps record of the expected result, and current the result */
@@ -64,8 +64,7 @@ class NewHuman extends Agent{
     this.nTable;
     /** Posible actions to take, in this context, the posible color models for the agent */
     this.models;
-    /** Swith if the agent is learning */
-    this.learning = true;
+    this.pdModels = {};
   }
 
 
@@ -96,9 +95,6 @@ interact() {
     // get the interactants
     let interactants = this.retrieveInteractants();
 
-    // Estimate the magnitude and direction of next step with all the current interactants
-    // WARNING: This function internally updates spatial distances.
-    // See function definition below
     if (interactants.length > 0) {
 
         //HERE IS DEFINED WHAT MODEL IS USED TO ACT      
@@ -117,7 +113,7 @@ interact() {
             // Move
             this.move(nextPos.mag(),nextPos.heading(), this.stepLengthFactor);
           } else {
-            console.log("not moving anymore")
+            //console.log("not moving anymore")
             for(let r in this.expectedResult){
               this.expectedResult[r]=0;
             }
@@ -138,45 +134,62 @@ interact() {
   train(interactants){
 
     let [state, smplInteractants] = this.getAbstractState(interactants);
+    let modelCandidates = [];
+    let rewards = [];
 
     if(state != this.prevState){
       console.log("updating Tables");
       if(this.prevState == ''){
-        this.qTable = this.createQTable(interactants);
+        this.qTable = this.createQTable(smplInteractants);
       }else{
-        this.qTable = this.createQTable(interactants,this.qTable);
+        this.qTable = this.createQTable(smplInteractants,this.qTable);
       }
 
       this.nTable = new Array(this.qTable.length).fill(0);
-      //The previous state register is updated
-      this.prevState = state
     }
 
     //If there is already a expected result from the agent
-    if(this.cMentalModel.length > 0){
-  
+    if(this.cMentalModel.length > 0 && state == this.prevState){
       let result = this.getResult(smplInteractants);
-      let reward = this.calculateReward(result);
-      
-      if(reward != 0){
-      //Updates the N-table if there is a reward (positive or negative)
-      this.nTable[this.currentModelInx] = this.nTable[this.currentModelInx] + 1;
-      }
-
-      // Updates the Q-table 
-      let alpha = this.a * (this.c / (this.c + this.nTable[this.currentModelInx]));
-      this.qTable[this.currentModelInx] = this.qTable[this.currentModelInx] + (alpha * reward);
+      //let reward = this.calculateReward(result);
+      rewards = this.calculateInferedReward(result);
     }
-    
-    // Looks for the models with higher quality and set the current color modet to it
-    let modelCandidates = [];
-    for (let i = 0; i < this.nTable.length; i++) {
-      if(this.nTable[i] < this.NE){
+
+    for (let m = 0; m < this.models.length; m++) {
+      if(this.cMentalModel.length > 0 && state == this.prevState){
+
+        const reward = rewards[m];
+        if(reward != 0){
+          this.nTable[m] = this.nTable[m] + 1;
+          let alpha = this.a * (this.c / (this.c + this.nTable[m]));
+          this.qTable[m] = this.qTable[m] + (alpha * reward);
+        }
+      }
+      if(this.nTable[m] < this.NE){
         modelCandidates.push(this.rPlus);
       }else{
-        modelCandidates.push(this.qTable[i]);
+        modelCandidates.push(this.qTable[m]);
       }
+      
+      //if(reward != 0){
+      //Updates the N-table if there is a reward (positive or negative)
+      //this.nTable[this.currentModelInx] = this.nTable[this.currentModelInx] + 1;
+      //}
+
+      // Updates the Q-table 
+      //let alpha = this.a * (this.c / (this.c + this.nTable[this.currentModelInx]));
+      //this.qTable[this.currentModelInx] = this.qTable[this.currentModelInx] + (alpha * reward);
     }
+    //The previous state register is updated
+    this.prevState = state
+    // Looks for the models with higher quality and set the current color modet to it
+    //for (let i = 0; i < this.nTable.length; i++) {
+    //  if(this.nTable[i] < this.NE){
+    //    modelCandidates.push(this.rPlus);
+    //  }else{
+    //    modelCandidates.push(this.qTable[i]);
+    //  }
+    //}
 
     //Looks for the candidate with the higher value
     
@@ -189,6 +202,7 @@ interact() {
     console.log("N-Table")
     console.log(this.nTable)
     console.log("Q-Table")
+    console.log(this.qTable[this.currentModelInx])
     console.log(this.qTable)
   }
 
@@ -210,8 +224,7 @@ interact() {
       });
       smplInteractants[a] = {x:tempInt.agent.pos.x,y:tempInt.agent.pos.y}
     });
-    console.log(smplInteractants)
-
+    //console.log(smplInteractants)
     return [state.join(" "), smplInteractants];
   }
 
@@ -250,12 +263,13 @@ interact() {
    * With two options, the agent is interacting (1) or not (0)
    * @return {list} List with the quality values spaces
    */
-  createQTable(interactants, qLearned){
+  createQTable(sInteractants, qLearned){
     let models = []
+    let pdModels = {}
     let agentArray = [this.id]
     this.getPairs().forEach(element => {
       let pair = element.agent.id;
-      if (interactants.includes(element)){
+      if (pair in sInteractants){
         agentArray.push(pair)
       }else{
         if(pair in (this.prevState.split(" "))){
@@ -275,6 +289,7 @@ interact() {
       let invModel = cmb.split(" ").reverse().join(" ");
       if(!models.includes(invModel)){
         models.push(cmb);
+        pdModels[cmb] = this.getPerceivedColorDistanceFeatures(cmb.split(" "));
       }
     });
     /**
@@ -283,41 +298,69 @@ interact() {
      * the new list of models, taking into account the previously 
      * evaluated colors positions only. 
     */
-   let filteredModels = []; 
-    if(qLearned){
-      // Filter out the models with negative quality
-      for (let i = 0; i < qLearned.length; i++) {
-        if(qLearned[i] < 0){         
-          //Identify the low quality model
-          let lqModel = this.models[i].split(" ");
-          models.forEach(m => {
-            let disc = true;
-            let tempModel = m.split(" ");
-            for (let j = 0; j < tempModel.length; j++) {
-              if(lqModel[j] != "blanc"){
-                if(tempModel[j] != lqModel[j]){
-                  disc = false;
-                }
-              } 
+   let qualityList = new Array(models.length).fill(0);
+   if(qLearned){
+     console.log("Learning from old")
+     // Filter out the models with negative quality
+     this.models.forEach(lm => {
+      let lModel = this.pdModels[lm];
+      models.forEach(m => {
+        let tempModel = pdModels[m];
+        let equivalent = true;
+        for (let cp in lModel) {
+          if(cp in tempModel){
+            if(tempModel[cp] != lModel[cp]){
+             equivalent = false;
             }
-            if(disc && !filteredModels.includes(m)){
-              filteredModels.push(m);
-            }
-          });
-        }        
-      }
+          } 
+        }
+        if(equivalent){
+          let oldInx = this.models.indexOf(lm);
+          let newInx = models.indexOf(m);
+          qualityList[newInx] = this.qTable[oldInx];
+        }
+      }); 
+     });
+     console.log(pdModels)
+   }
+
+  //  let filteredModels = []; 
+  //   if(qLearned){
+  //     // Filter out the models with negative quality
+  //     for (let i = 0; i < qLearned.length; i++) {
+  //       if(qLearned[i] < 0){         
+  //         //Identify the low quality model
+  //         let lqModel = this.models[i].split(" ");
+  //         models.forEach(m => {
+  //           let tempModel = m.split(" ");
+  //           let disc = true;
+  //           for (let j = 0; j < tempModel.length; j++) {
+  //             if(lqModel[j] != "blanc"){
+  //               if(tempModel[j] != lqModel[j]){
+  //                 disc = false;
+  //               }
+  //             } 
+  //           }
+  //           if(disc && !filteredModels.includes(m)){
+  //             filteredModels.push(m);
+  //           }
+  //         });
+  //       }        
+  //     }
       
       //Here the previously explored low quality models are excluded
       // but the previous quality values are ignored. 
       // TODO: The agent could use the quality values 
       // to start the new q-tables. 
-      console.log("Filtered low quality models: "+filteredModels.length);
-    }
+      //console.log("Filtered low quality models: "+filteredModels.length);
+    //}
     //Updates the possible models to consider
-    this.models = models.filter((m)=> !filteredModels.includes(m));
+    //this.models = models.filter((m)=> !filteredModels.includes(m));
+    this.models = models;
+    this.pdModels = pdModels;
 
     // Pass an array of values to create a vector with the array dimensions.
-    return new Array(this.models.length).fill(0);
+    return qualityList;
   }
 
 
@@ -328,14 +371,14 @@ interact() {
    */
   calculateReward(result){
     let reward = 0;
-    console.log(this.expectedResult)
-    console.log(result)
+    //console.log(this.expectedResult)
+    //console.log(result)
     if(this.expectedResult != { }){
       for (let er in this.expectedResult) {
 
         if(!isNaN(this.expectedResult[er])){
           if(this.expectedResult[er] === result[er]){
-            reward += 0.01;
+            reward += 0.1;
           }else{
             reward -= 0.1;
           }          
@@ -345,6 +388,42 @@ interact() {
     }
   }
 
+     /**
+   * Calculates a reward based on two options
+   * @param {Array} interactants the collection of interactans of this agent.
+   * @return {Array} the representation of the state
+   */
+  calculateInferedReward(result){
+    let iReward = [];
+
+    // Points given by each prediction
+    let ppA = {}
+    if(this.expectedResult != { }){
+      for (let er in this.expectedResult) {
+        if(!isNaN(this.expectedResult[er])){
+          if(this.expectedResult[er] === result[er]){
+            ppA[er] = 0.0001;
+          }else{
+            ppA[er] = - 0.0001;
+          }          
+        }
+      }
+      let pdModel = this.pdModels[this.cMentalModel.join(' ')];
+
+      for (let pdM in this.pdModels){
+        const tempPdM = this.pdModels[pdM];
+        let tempReward = 0;
+
+        for(let cpd in tempPdM){
+          if(tempPdM[cpd] == pdModel[cpd] && !isNaN(ppA[cpd])){
+            tempReward += ppA[cpd];
+          }
+        }
+        iReward.push(tempReward);
+      }
+      return iReward;
+    }
+  }
 
   /**
    * Returns a value between 0 and 1, where 1 is the farthest perceived distance
@@ -385,6 +464,43 @@ interact() {
     }
   }
 
+
+
+  /**
+   * Translate a color model to a list of attributes based on the distances between the curren agent and the others
+   * @param {Array} color simple order list of the colors 
+   * @return {Object} list of value between 0 and 1, where 1 is the farthest perceived distance for each color in the model
+   */
+  getPerceivedColorDistanceFeatures(colorMentalModel) {
+    let indexA = colorMentalModel.indexOf(this.id);
+    let modelFeatures = {}
+        
+    for (let indexB = 0; indexB < colorMentalModel.length; indexB++) {
+      if(indexB != indexA && colorMentalModel[indexB] != 'blanc'){
+        let delta = Math.abs(indexA - indexB);
+        let perceivedColorDistance;
+        switch (this.sensibility) {     
+          case 'linear':
+            perceivedColorDistance = delta / (colorMentalModel.length - 1);
+            break;
+          case 'chordal':
+            let subAngle = Math.PI * 2 / colorMentalModel.length;
+            let totalAngle = subAngle * delta;
+            if (totalAngle > Math.PI) {
+              totalAngle = Math.PI * 2 - totalAngle;
+            }
+            let distance = totalAngle / Math.PI;
+            perceivedColorDistance = distance;
+            break;
+          case 'exponential':
+            perceivedColorDistance = 1 - Math.pow(0.97, delta);
+            break;
+        }
+        modelFeatures[colorMentalModel[indexB]] = perceivedColorDistance;
+      }
+    }
+    return modelFeatures;
+  }
 // ------------------------> End of Learning methods
 
 

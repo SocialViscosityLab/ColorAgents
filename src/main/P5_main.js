@@ -21,7 +21,7 @@ var main = function(p5) {
     // The visual elements representing agents from the world
     let vAgents = [];
     // Number of new agents 
-    let NA = 1;
+    let NA = 3;
     let nAgents = [];
     // Reference for test new agents model
     let nAP;
