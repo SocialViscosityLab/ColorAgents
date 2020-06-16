@@ -10,6 +10,7 @@ class World {
   constructor() {
     this.observers = [];
     this.ticks = 0;
+    this.colors;
   }
 
   /**
@@ -71,6 +72,19 @@ class World {
   }
 
   /**
+  * Returns the collection of human agents in the world. If agent is not undefined returns the collection of human agents except this agent
+  * @param {Agent} agent If agent is not undefined returns the collection of agents except this agent
+  * @return the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent
+  */
+  getLearningAgents(agent) {
+    if (agent) {
+      return this.observers.filter(subscriber => subscriber !== agent && (subscriber instanceof NewHuman));//
+    } else {
+      return this.observers.filter(subscriber => (subscriber instanceof NewHuman));
+    }
+  }
+
+  /**
   * Returns the collection of nonhumn agents in the world. If agent is not undefined returns the collection of nonhuman agents except this agent
   * @param {Agent} agent If agent is not undefined returns the collection of agents except this agent
   * @return the collection of agents in the world. If agent is not undefined returns the collection of agents except this agent
@@ -106,6 +120,7 @@ class World {
       return true;
     }
   }
+
 
   /**
    * Clears the world's collection of observers

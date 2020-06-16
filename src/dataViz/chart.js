@@ -1,8 +1,8 @@
 class Chart{
-  constructor(p5, pos, lengthX, lengthY, valX, valY){
+  constructor(p5, pos, lengthX, lengthY, valX, dependentVariable, minValY, maxValY){
     this.p5 = p5;
-    this.xAxis = new Axis(true, lengthX, valX, "ticks");
-    this.yAxis = new Axis(false, lengthY, valY, "Inverse viscosity");
+    this.xAxis = new Axis(true, lengthX, 0, valX, "ticks");
+    this.yAxis = new Axis(false, lengthY,  minValY, maxValY, dependentVariable);
     this.pos =pos;
   }
 
@@ -72,25 +72,27 @@ class Chart{
 /**** CLASS AXIS *****/
 
 class Axis{
-  constructor(isHorizontal, length, value, label){
+  constructor(isHorizontal, length, minValue, maxValue, label){
     this.isHorizontal = isHorizontal;
     this.length = length;
     this.label = label;
-    this.value = value;
-    this.step = length/value;
+    this.minValue = minValue;
+    this.maxValue = maxValue;
+    this.step = length/(maxValue-minValue);
     this.pos;
   }
 
   mapPosition(p5,val){
     if (val){
       let rtn;
-      if(val <= this.value){
-        rtn = p5.map(val, 0, this.value, 0, this.length);
-      } else {
-        this.value = val;
+      if(val < this.minValue){
+        this.minValue = val;
         return (this.mapPosition(p5,val));
+      }else if(val > this.maxValue){
+        this.maxValue = val;
+      }else{
+        rtn = p5.map(val, this.minValue, this.maxValue, 0, this.length);
       }
-
       if(this.isHorizontal){
         return rtn;
       } else {
@@ -108,17 +110,26 @@ class Axis{
       p5.line(pos.x, pos.y, pos.x+this.length, pos.y);
       p5.noStroke();
       p5.fill(150);
-      p5.text(this.value.toFixed(2), pos.x+this.length, pos.y + 15);
+      p5.text(this.maxValue.toFixed(2), pos.x+this.length, pos.y + 15);
       p5.text(this.label, pos.x+this.length/2, pos.y + 15);
     } else {
       p5.stroke(150);
       p5.line(pos.x, pos.y, pos.x, pos.y-this.length);
       p5.noStroke();
       p5.fill(150);
-      p5.text(this.value.toFixed(2), pos.x - 25, pos.y-this.length);
+      p5.text(this.maxValue.toFixed(2), pos.x - 25, pos.y-this.length);
+      p5.text(this.minValue.toFixed(2), pos.x - 25, pos.y);
+      if(this.minValue != 0 && this.maxValue !=0){
+        p5.fill(200);
+        p5.stroke(230);
+        let zeroPos = p5.map(0, this.minValue, this.maxValue, pos.y-this.length, pos.y);
+        p5.text('0', pos.x - 25, zeroPos);
+        p5.line(pos.x, zeroPos, pos.x+this.length, zeroPos);
+      }
       p5.push();
       p5.translate(pos.x - 5, pos.y-this.length/2);
       p5.rotate(-p5.HALF_PI);
+      p5.fill(150);
       p5.text(this.label, 0,0);
       p5.pop();
     }

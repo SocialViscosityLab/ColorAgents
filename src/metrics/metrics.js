@@ -31,10 +31,15 @@ class Metrics {
     */
     this.metricsMap = new Map();
     this.agents = world.getHumans();
+    this.learningAgents = world.getLearningAgents()
     // Map with key: agent value: anotherMap with key: time tick, value: viscosity
     this.agentsViscosityData = new Map();
     // Map with key: time tick, value: viscosity
     this.globalViscosityData = new Map();
+    // Map with key: agent value: anotherMap with key: time tick, value: Quality
+    this.agentsQualityData = new Map();
+    // Map with key: time tick, value: quality
+    this.globalQualityData = new Map();
   }
 
   /**
@@ -58,6 +63,10 @@ class Metrics {
       this.recordAgentViscosityData(agent);
     }
 
+    for (let lAgent of this.learningAgents) {
+      this.recordAgentQualityData(lAgent);
+    }
+    this.recordGlobalQualityData();
     let vscsty = this.recordGlobalViscosityData();
 
     document.getElementById("viscosityInWorld").innerHTML = vscsty.toFixed(2);
@@ -78,6 +87,22 @@ class Metrics {
     }
   }
 
+
+    /**
+  * Private. Records agent Model's quality data at the current tick
+  * @param  {Agent} agent The agent to record data from
+  */
+ recordAgentQualityData(agent) {
+  let tmp = this.agentsQualityData.get(agent);
+  if (!tmp) {
+    let tmpInnerMap = new Map();
+    tmpInnerMap.set(world.getTicks(), this.qualityAtFor(world.getTicks(), agent));
+    this.agentsQualityData.set(agent, tmpInnerMap);
+  } else {
+    tmp.set(world.getTicks(), this.qualityAtFor(world.getTicks(), agent));
+  }
+}
+
   /**
   * Private. Records global viscosity data at the current tick
   * @return  {Number} global Viscosity value at current tick
@@ -88,6 +113,18 @@ class Metrics {
     this.globalViscosityData.set(world.getTicks(), tmp);
     return tmp;
   }
+
+
+  /**
+  * Private. Records global model's quality data at the current tick
+  * @return  {Number} global models' quality value at current tick
+  */
+ recordGlobalQualityData() {
+  let tmp = this.qualityAt(world.getTicks());
+
+  this.globalQualityData.set(world.getTicks(), tmp);
+  return tmp;
+}
 
   /**
   * Gets the interactions from the distancesMap of a given agent.
@@ -195,6 +232,34 @@ class Metrics {
   }
 
   /**
+  * Calculates the quality for the model of all agents at a given moment in time
+  * @param  {Number} time The tick counter value representing the moment in time from which model's quality wants to be calculated
+  * @return {Number}      The models' quality value at time tick
+  */
+  qualityAt(time) {
+  // Get the innerMap of interactions at given time
+  let modelsQuality = this.getModelsAt(time);
+  let generalQuality;
+  let accumulated = 0;
+  try {
+    // iterate over each agent
+    modelsQuality.forEach(r => {
+      accumulated += r.qValue;
+    });
+
+    // average by agents
+    generalQuality = accumulated / modelsQuality.length;
+    
+  } catch (error) {
+    console.log("Interaction undefined at time " + time);
+  }
+
+  // return averaged result
+  return generalQuality;
+}
+
+
+  /**
   * Calculates the agent's viscosity at a given moment in time
   * @param  {Number} time The tick counter value representing the moment in time from which viscosity wants to be calculated
   * @param  {Agent} agent  The agent whose viscosity wants to be calculated
@@ -222,6 +287,21 @@ class Metrics {
     return innerAccumulate;
   }
 
+
+  /**
+  * Calculates the agent's model's quality at a given moment in time
+  * @param  {Number} time The tick counter value representing the moment in time from which quality wants to be retrived
+  * @param  {Agent} agent  The agent whose model's quality wants to be retrieved
+  * @return {Number}       The agent's model quality value at tick time
+  */
+ qualityAtFor(time, agent) {
+  let qualityRecord = this.getModelsAt(time);
+  let record = qualityRecord.find(r =>{return r.id == agent.id});
+  // return quality 
+  return record.qValue;
+}
+
+
   /**
   * Gets an array with the all the interactions at time tick.
   * Each entry has two pairs (id:agent.id, interactions:interactions) Interactions
@@ -243,6 +323,30 @@ class Metrics {
       }
     }
     return rtn;
+  }
+
+
+  /**
+   * Gets the selected models for each learning agent at a specific
+   * time tick
+   */
+  getModelsAt(time) {
+    let selectedModels = [];
+    let lAs = world.getLearningAgents();
+    
+    if (world.getTicks() > 0) {
+      lAs.forEach(lAgent => {
+
+      try {
+          let modelRecord = lAgent.selectedModels[time];
+          selectedModels.push({id: lAgent.id, qValue: modelRecord.qValue, model: modelRecord.model});
+        } catch (error) {
+          //console.log("Map collections not initialized at time " + time);
+          selectedModels.push({id: lAgent.id, qValue: lAgent.qTable[lAgent.currentModelInx], model: lAgent.cMentalModel});
+        }
+        });
+    }
+    return selectedModels
   }
 
 }

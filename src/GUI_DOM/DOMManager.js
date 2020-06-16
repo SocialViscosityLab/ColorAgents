@@ -20,6 +20,9 @@ class DOM {
         DOM.buttons.viscosities_to_JSON = document.getElementById("viscosities_to_JSON");
         DOM.buttons.globalViscosity_to_JSON = document.getElementById("globalViscosity_to_JSON");
         DOM.buttons.globalViscosity_to_CSV = document.getElementById("globalViscosity_to_CSV");
+        DOM.buttons.modelsQuality_to_JSON = document.getElementById("modelsQuality_to_JSON");
+        DOM.buttons.globalModelQuality_to_JSON = document.getElementById("globalModelQuality_to_JSON");
+        DOM.buttons.globalModelQuality_to_CSV = document.getElementById("globalModelQuality_to_CSV");
 
         // Lists
         DOM.lists.cFactory = document.getElementById("cFactory");
@@ -33,6 +36,8 @@ class DOM {
         DOM.checkboxes.showPerceptionField = document.getElementById("showPerceptionField");
         DOM.checkboxes.showMatrix = document.getElementById("showMatrix");
         DOM.checkboxes.showSeries = document.getElementById("showSeries");
+        DOM.checkboxes.showGeneralModel = document.getElementById("showGeneralModel");
+        DOM.checkboxes.showIndividualModels = document.getElementById("showIndividualModels");
         DOM.checkboxes.showIndividualSeries = document.getElementById("showIndividualSeries");
         DOM.checkboxes.sweepCFactory = document.getElementById("includeCFactory");
         DOM.checkboxes.sweepRule = document.getElementById("includeRules");
@@ -40,6 +45,8 @@ class DOM {
         DOM.checkboxes.sweepSensibility = document.getElementById("includeSensibility");
         DOM.checkboxes.sweepTolerance = document.getElementById("includeTolerance");
         DOM.checkboxes.sweepDuration = document.getElementById("durationLimit");
+        DOM.checkboxes.sweepDuration = document.getElementById("setDecreas");
+        DOM.checkboxes.sweepDuration = document.getElementById("setExploration");
 
         // Labels
         DOM.labels.agentsInWorld = document.getElementById("agentsInWorld");
@@ -57,6 +64,11 @@ class DOM {
         DOM.sliders.runs = document.getElementById("runs");
         DOM.sliders.tickLength = document.getElementById("tickLength");
         DOM.sliders.duration = document.getElementById("duration");
+        DOM.sliders.news = document.getElementById("news");
+        DOM.sliders.rate = document.getElementById("rate");
+        DOM.sliders.decreasing = document.getElementById("decreasing");
+        DOM.sliders.exploration = document.getElementById("exploration");
+
     }
 
     /** Updates a slider's label 

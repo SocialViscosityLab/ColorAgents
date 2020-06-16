@@ -15,22 +15,34 @@ class NewHuman extends Agent{
    * @param {Number} farthest scalar used by spatial mental model to determine what on canvas how far away an agent was to be from the most dissimilar agent
 
    */
-  constructor (x, y, index, theColor, shortest, farthest){
+  constructor (x, y, index, theColor, shortest, farthest, cModelPermutations){
     super(x, y, index);
-    console.log("The New agent is: ", index);
 
     /** This can be used to produce the color for theothers, but can't be perceived for the agent */
     this.colorValues = theColor;
 
     /** This agents' spacial Mental Model. This represents the unique way this agent perceives distances in the world*/
     this.sMentalModel = new SpatialMentalModel(shortest, farthest);
+    
+    /** List of possible permutations for a color mental model in the agent's context (includes all the agents) */
+    this.cModelPermutations = cModelPermutations;
+    /** List of possible permutations for a color mental model in the agent's tick (include only the current interactants) */
+    this.models;
+    /** Features of the models based on the mental distance between the learning agent an the others */
+    this.pdModels = {};
+
+    /** Stores the active color mental model*/
     this.cMentalModel = [];
+    /** Index of the active color mental model in the array of possible models*/
     this.currentModelInx = -1;
+
+    /** Defines how agents perceive distances*/
     this.sensibility = DOM.lists.sensibility.value;
 
     DOM.lists.sensibility.addEventListener('change', () => {
       this.sensibility = DOM.lists.sensibility.value;    
     });
+
 
     /** Visual perception angle in radians*/
     this.visualPerceptionAngle = Math.PI * 3 / 4;
@@ -46,13 +58,17 @@ class NewHuman extends Agent{
     // ----> Methaparamethers for learning
 
     /** The initial learning rate */
-    this.a = 1;
+    this.a = DOM.sliders.rate.value;
     /** Decreasing factor for the learning rate */
-    this.c = 40;
+    this.c = DOM.sliders.decreasing.value;
     /** The optimistic value use for not explore actions */
     this.rPlus = 1;
     /** The minimum count of explorations for each model */
-    this.NE = 50;
+    this.NE = DOM.sliders.exploration.value;
+
+
+    // ----> Records related to the learning process
+
     /** Keeps a record for the interactants list */
     this.prevState = '';
     /** Keeps record of the expected result, and current the result */
@@ -62,9 +78,8 @@ class NewHuman extends Agent{
     this.qTable;
     /** Matrix with the number of times each decision was made for a specific state */
     this.nTable;
-    /** Posible actions to take, in this context, the posible color models for the agent */
-    this.models;
-    this.pdModels = {};
+    /** Register of the selected models and their ego-quality values */
+    this.selectedModels = [];
   }
 
 
@@ -97,7 +112,7 @@ interact() {
 
     if (interactants.length > 0) {
 
-        //HERE IS DEFINED WHAT MODEL IS USED TO ACT      
+        //After each training, the agent select a color mental model to use for its actions
         this.train(interactants);
 
         let nextPos = this.calculateStep(interactants);
@@ -113,7 +128,6 @@ interact() {
             // Move
             this.move(nextPos.mag(),nextPos.heading(), this.stepLengthFactor);
           } else {
-            //console.log("not moving anymore")
             for(let r in this.expectedResult){
               this.expectedResult[r]=0;
             }
@@ -125,92 +139,79 @@ interact() {
 }
 
 
-  // ------------------------> Beginning of learning methods
+  // -----------------> Beginning of learning methods
   
   /**
-   * Create an abstraction of the current state of the world based on the interactans of the agent
+   * Create or updates the Q table to select the best candidate model to use
    * @param {Array} interactants the collection of interactans of this agent.
    */
   train(interactants){
-
-    let [state, smplInteractants] = this.getAbstractState(interactants);
+    //Initialize the candidate models and the rewards as empty arrays
     let modelCandidates = [];
     let rewards = [];
 
-    if(state != this.prevState){
-      console.log("updating Tables");
-      if(this.prevState == ''){
-        this.qTable = this.createQTable(smplInteractants);
-      }else{
-        this.qTable = this.createQTable(smplInteractants,this.qTable);
-      }
+    // Generate an abstraction of the state and the interactants by their ids and positions
+    let [state, smplInteractants] = this.getAbstractState(interactants);
 
+    // Confirms if the interactant list changed to generate a new Tables with the new interactantas
+    if(state != this.prevState){
+      if(this.prevState == ''){
+        this.qTable = this.createQTable(smplInteractants, false);
+      }else{
+        // If it is not the first evaluated state, the quality values in the old state are translated to the new q-table
+        this.qTable = this.createQTable(smplInteractants,true);
+      }
       this.nTable = new Array(this.qTable.length).fill(0);
     }
 
     //If there is already a expected result from the agent
     if(this.cMentalModel.length > 0 && state == this.prevState){
       let result = this.getResult(smplInteractants);
-      //let reward = this.calculateReward(result);
+      //Calculate the reward based on the diference from the expectation to the actual result
       rewards = this.calculateInferedReward(result);
     }
 
     for (let m = 0; m < this.models.length; m++) {
-      if(this.cMentalModel.length > 0 && state == this.prevState){
-
-        const reward = rewards[m];
+      //The q-table is updated With the rewards
+      if(rewards.length > 0){
+        let reward = rewards[m];
         if(reward != 0){
           this.nTable[m] = this.nTable[m] + 1;
+          //The q-table is updated
           let alpha = this.a * (this.c / (this.c + this.nTable[m]));
           this.qTable[m] = this.qTable[m] + (alpha * reward);
         }
       }
+    //Define the candidates values based on exploration vs explotation
       if(this.nTable[m] < this.NE){
         modelCandidates.push(this.rPlus);
       }else{
         modelCandidates.push(this.qTable[m]);
       }
-      
-      //if(reward != 0){
-      //Updates the N-table if there is a reward (positive or negative)
-      //this.nTable[this.currentModelInx] = this.nTable[this.currentModelInx] + 1;
-      //}
-
-      // Updates the Q-table 
-      //let alpha = this.a * (this.c / (this.c + this.nTable[this.currentModelInx]));
-      //this.qTable[this.currentModelInx] = this.qTable[this.currentModelInx] + (alpha * reward);
     }
-    //The previous state register is updated
-    this.prevState = state
-    // Looks for the models with higher quality and set the current color modet to it
-    //for (let i = 0; i < this.nTable.length; i++) {
-    //  if(this.nTable[i] < this.NE){
-    //    modelCandidates.push(this.rPlus);
-    //  }else{
-    //    modelCandidates.push(this.qTable[i]);
-    //  }
-    //}
 
-    //Looks for the candidate with the higher value
-    
+    //Updates the registers
+    this.prevState = state
+    this.interactantsRegister = smplInteractants;
+
+    //Chose the candidate with the higher value as the current model
     this.currentModelInx = modelCandidates.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1]; //ArgMax form
     this.cMentalModel = this.models[this.currentModelInx].split(" ");
 
-    //Register the current interactants
-    this.interactantsRegister = smplInteractants;
-    
-    console.log("N-Table")
-    console.log(this.nTable)
-    console.log("Q-Table")
-    console.log(this.qTable[this.currentModelInx])
-    console.log(this.qTable)
+    this.selectedModels.push({model:this.cMentalModel, qValue:this.qTable[this.currentModelInx]})
+
+    //  console.log("N-Table")
+    //  console.log(this.nTable)
+    //  console.log("Q-Table")
+    //  console.log(this.qTable)
   }
+
 
 /**
    * Takes a list of interactants and translated to an order list of their ids
    * condenced in an simple string
    * @param {Object} interactants
-   * @return {String} Abstraction of the state
+   * @return {String, object} String with interactants names, and interactants names with their current positions
    */
   getAbstractState(interactants){
     let state = interactants.map(i => i.agent.id);
@@ -224,9 +225,9 @@ interact() {
       });
       smplInteractants[a] = {x:tempInt.agent.pos.x,y:tempInt.agent.pos.y}
     });
-    //console.log(smplInteractants)
     return [state.join(" "), smplInteractants];
   }
+
 
 /**
    * reinterpret the agents' coordinates to identify if the interactants got farther
@@ -241,121 +242,71 @@ interact() {
       let prevDist = Utils.dist(this.pos.x, this.pos.y, this.interactantsRegister[ir].x, this.interactantsRegister[ir].y);
 
       if(ir in interactants){
-        //TODO: consider ignore if distance is larger than the farthest value
         currentDist = Utils.dist(this.pos.x, this.pos.y, interactants[ir].x, interactants[ir].y); 
       }
 
-      // If I can't find the interactant in my new list, I assume is now out of my range
+      // If I can't find the interactant in my new list, It assumes it is now out of agents' range
       if(currentDist == NaN){
-        //result[ir.agent.id] = -1;
         result[ir] = -1;
       }else{
-        //result[ir.agent.id] = Math.sign(prevDist-currentDist);
         result[ir] = Math.sign(prevDist-currentDist);
       }
     }
     return result;
   }
 
+
   /**
-   * Create a table that contains the abstraction of all whte posible state of the world.
-   * The state is based on the interactans of the agent, then, the table will have a dimension for each possible interactant
-   * With two options, the agent is interacting (1) or not (0)
+   * List each possible model tha the agente will consider and
+   * Creates a list that will contain a quality value for each of the possible models.
    * @return {list} List with the quality values spaces
    */
-  createQTable(sInteractants, qLearned){
-    let models = []
+  createQTable(sInteractants, hasLearned){
+    let models = [];
     let pdModels = {}
-    let agentArray = [this.id]
-    this.getPairs().forEach(element => {
-      let pair = element.agent.id;
-      if (pair in sInteractants){
-        agentArray.push(pair)
-      }else{
-        if(pair in (this.prevState.split(" "))){
-          // TODO: Test is this is working to keep colors that were interactants before in the possible models.
-          agentArray.push(pair)
+
+    this.cModelPermutations.forEach(permu => {
+      let tempModel = [ ];
+      permu.split(" ").forEach(c => {
+        if(c in sInteractants || c == this.id){
+          tempModel.push(c)
         }else{
-          //This allows the agent to calculate the distances between the interactants without including all agents.
-          agentArray.push("blanc");
-        }
-      }
-    });
-
-    let cmbs = Combinatorics.permutation(agentArray).toArray();
-    cmbs = new Set(cmbs.map(p => p.join(" ")));
-
-    cmbs.forEach(cmb => {
-      let invModel = cmb.split(" ").reverse().join(" ");
-      if(!models.includes(invModel)){
-        models.push(cmb);
-        pdModels[cmb] = this.getPerceivedColorDistanceFeatures(cmb.split(" "));
-      }
-    });
-    /**
-     * If there are previous models with low quality (q < 0).
-     * The low quality models are filered out from
-     * the new list of models, taking into account the previously 
-     * evaluated colors positions only. 
-    */
-   let qualityList = new Array(models.length).fill(0);
-   if(qLearned){
-     console.log("Learning from old")
-     // Filter out the models with negative quality
-     this.models.forEach(lm => {
-      let lModel = this.pdModels[lm];
-      models.forEach(m => {
-        let tempModel = pdModels[m];
-        let equivalent = true;
-        for (let cp in lModel) {
-          if(cp in tempModel){
-            if(tempModel[cp] != lModel[cp]){
-             equivalent = false;
-            }
-          } 
-        }
-        if(equivalent){
-          let oldInx = this.models.indexOf(lm);
-          let newInx = models.indexOf(m);
-          qualityList[newInx] = this.qTable[oldInx];
+          tempModel.push("blanc");
         }
       }); 
-     });
-     console.log(pdModels)
-   }
+      let tempModelS = tempModel.join(" ");
+      if (!models.includes(tempModelS)){
+        models.push(tempModelS);
+        pdModels[tempModelS] = this.getPerceivedColorDistanceFeatures(tempModel);
+      }
+    });
 
-  //  let filteredModels = []; 
-  //   if(qLearned){
-  //     // Filter out the models with negative quality
-  //     for (let i = 0; i < qLearned.length; i++) {
-  //       if(qLearned[i] < 0){         
-  //         //Identify the low quality model
-  //         let lqModel = this.models[i].split(" ");
-  //         models.forEach(m => {
-  //           let tempModel = m.split(" ");
-  //           let disc = true;
-  //           for (let j = 0; j < tempModel.length; j++) {
-  //             if(lqModel[j] != "blanc"){
-  //               if(tempModel[j] != lqModel[j]){
-  //                 disc = false;
-  //               }
-  //             } 
-  //           }
-  //           if(disc && !filteredModels.includes(m)){
-  //             filteredModels.push(m);
-  //           }
-  //         });
-  //       }        
-  //     }
-      
-      //Here the previously explored low quality models are excluded
-      // but the previous quality values are ignored. 
-      // TODO: The agent could use the quality values 
-      // to start the new q-tables. 
-      //console.log("Filtered low quality models: "+filteredModels.length);
-    //}
-    //Updates the possible models to consider
-    //this.models = models.filter((m)=> !filteredModels.includes(m));
+    let qualityList = new Array(models.length).fill(0);
+
+    // If the agents has learned about models before
+    if(hasLearned){
+      // The aggent takes the q-values from the previous explored models
+      // And set the new models with similar characteristics that value
+      for (let i = 0; i < models.length; i++) {
+        let m = models[i];
+        let nModel = pdModels[m];
+        for (let j = 0; j < this.models.length; j++) {
+          let om = this.models[j];
+          let oModel = this.pdModels[om];
+          let equivalent = true;
+          
+          for (let oc in oModel) {
+            if(oc in nModel && oModel[oc] != nModel[oc]){
+              equivalent = false;
+            } 
+          }
+          if(equivalent){ 
+            qualityList[i] = this.qTable[j];
+            break;
+          }
+        } 
+      }
+    }
     this.models = models;
     this.pdModels = pdModels;
 
@@ -402,9 +353,9 @@ interact() {
       for (let er in this.expectedResult) {
         if(!isNaN(this.expectedResult[er])){
           if(this.expectedResult[er] === result[er]){
-            ppA[er] = 0.0001;
+            ppA[er] = 0.01;
           }else{
-            ppA[er] = - 0.0001;
+            ppA[er] = - 0.01;
           }          
         }
       }
@@ -451,11 +402,6 @@ interact() {
                 return distance;
                 break;
             case 'exponential':
-                // This function is y = a^x where 0 < a < 1. The closer to 0 the tightest
-                // the graph elbow. 0.97 is a good number. This reseambles the exponential
-                // model of human perception defined by Stevens (1975) in Psychophysics:
-                // introduction to its perceptual, neural, and social prospects. Wiley
-
                 return 1 - Math.pow(0.97, delta);
                 break;
         }
@@ -501,8 +447,6 @@ interact() {
     }
     return modelFeatures;
   }
-// ------------------------> End of Learning methods
-
 
 
 
@@ -523,7 +467,8 @@ interact() {
         // Calculate vector magnitude
 
         // Use the mental model to calculate the perceived distance to each interactant
-        let perceivedColorDistance = this.getPerceivedColorDistance(i.id);
+        let pdModel = this.pdModels[this.cMentalModel.join(' ')];
+        let perceivedColorDistance = pdModel[i.id];
 
         /*
         There are spatial distances between this agent's location and the interactants'

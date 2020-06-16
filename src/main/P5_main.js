@@ -1,5 +1,5 @@
 // Global P5 instances
-var mainP5, vizMatrix, viscositySeries;
+var mainP5, vizMatrix, viscositySeries, qualitySeries,  vizLearnedModels;
 
 // The global variable world
 var world;
@@ -21,10 +21,7 @@ var main = function(p5) {
     // The visual elements representing agents from the world
     let vAgents = [];
     // Number of new agents 
-    let NA = 3;
-    let nAgents = [];
-    // Reference for test new agents model
-    let nAP;
+    let NA;
 
     // ***** Setup ******
     p5.setup = function() {
@@ -44,13 +41,22 @@ var main = function(p5) {
         DOM.buttons.resetSweep.onclick = initialize;
         DOM.lists.cFactory.addEventListener('change', () => {
             initialize();
-        })
+        });
+        DOM.sliders.news.addEventListener('change', () => {
+            initialize();
+          });
         DOM.buttons.trajectories_to_JSON.onclick = trajectoriesToJSON;
         DOM.buttons.trajectories_to_JSON2.onclick = trajectoriesToJSON2;
         DOM.buttons.trajectories_to_CSV.onclick = trajectoriesToCSV;
 
         // Create an agent for each color
         initialize(DOM.lists.cFactory.value);
+
+        // let p = new PermutationHandler(20,4,10);
+        // console.log(p.permutations)
+        // console.log(p.size())
+        // console.log(p.density())
+
     }
 
     function initialize() {
@@ -59,26 +65,44 @@ var main = function(p5) {
 
         // Retrieve al the colors
         var colors = cFactory.getAll();
-        nAP = colors;
+        //nAP = colors;
 
+        //Set the number of new agents
+        NA = DOM.sliders.news.value;
         // clear agents
         world.reset();
+        world.colors = colors;
         vAgents = [];
 
+        //Randomly select a predefine number of colors
         let nAgentID = [];
-        //New agent initialization
-        for (let i = 0; i < NA; i++) {
-            nAgentID.push(Math.floor(Math.random()* (colors.length-1)));
+        let idsBucket = []
+        for (let i = 0; i < colors.length; i++) {
+            idsBucket.push(i);
         }
-        //let nAgentID = Math.floor(Math.random()* (colors.length-1));
-        nAgents = [];
+        for (let i = 0; i < NA; i++) {
+            let randomIdx = Math.floor(Math.random()* idsBucket.length);
+            nAgentID.push(idsBucket.splice(randomIdx,1)[0]);
+        }
+        
+        // Calculate the different possible models
+        let modelPermu = []
+        let agentsIDs = colors.map(c => c.name);
+        if(colors.length < 10){
+            modelPermu = Utils.calculateCModelPermutations(agentsIDs);
+            modelPermu.sort(function (a, b) { return 0.5 - Math.random() })    
+        }else{
+            modelPermu = Utils.calculateCModelPermutationSample(agentsIDs);
+            console.log(modelPermu)
+        }
+        
+
         // create instances
         for (var i = 0; i < colors.length; i++) {
             let x = Math.floor(Math.random() * p5.width);
             let y = Math.floor(Math.random() * p5.height);
             if (nAgentID.includes(i)){
-                var agent = new NewHuman(x, y, colors[i].name, colors[i].chroma, 0, 100);
-                nAgents.push(agent);
+                var agent = new NewHuman(x, y, colors[i].name, colors[i].chroma, 0, 100, modelPermu);
             }
             else {var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
             }
@@ -97,6 +121,7 @@ var main = function(p5) {
         // Reset matrix visualizer
         try {
             vizMatrix.resetLastMatrix();
+            vizLearnedModels.resetLastModel();
         } catch (error) {
             // error launched when vizMatrix is not hoisted.
         }
@@ -107,7 +132,7 @@ var main = function(p5) {
         DOM.labels.agentsInWorld.innerHTML = world.observers.length;
         DOM.labels.humansInWorld.innerHTML = world.getHumans().length;
         DOM.labels.nonhumansInWorld.innerHTML = world.getNonhumans().length;
-        let newAgentsName = nAgents.map(a => a.id)
+        let newAgentsName = world.getLearningAgents().map(a => a.id)
         DOM.labels.learningAgent.innerHTML = newAgentsName.join(", ");
         DOM.buttons.runSweep.innerHTML = "Start Sweep SImulation";
         DOM.buttons.runSweep.style.backgroundColor = "rgb(162, 209, 162)";
@@ -140,31 +165,6 @@ var main = function(p5) {
                 vAgents[a].showTrajectory();
             }
         }
-        /***
-           * Updated the learned colormodel from the new agent
-           * TODO: Take to a better place
-           */ 
-          p5.noStroke();
-          let ss = 20;
-          let count = 0;
-          nAgents.forEach(nAgent => {
-            let cm = nAgent.cMentalModel;
-            if(cm.length>0){
-                p5.textSize(20);
-                p5.fill(nAgent.colorValues.rgb());
-                p5.text(nAgent.id, p5.width-(ss*cm.length)-80, 20 + (count*(ss+4)))
-                  for (let c = 0; c < cm.length; c++) {
-                      if((cm[c]!= "blanc")){
-                        let tempColor = nAP.find(col => {
-                            return col.name == cm[c];
-                        });
-                        p5.fill(tempColor.chroma.rgb());
-                        p5.rect(p5.width-(ss*cm.length)+(c*ss), 0+(count*(ss+4)), ss, ss);
-                      }
-                    }
-                      count ++;    
-                } 
-            });
     }
 
 

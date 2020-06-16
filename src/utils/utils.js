@@ -148,6 +148,50 @@ class Utils {
         return seconds;
     }
 
+
+    /**
+     * Combine the agents in different orders to create possible color models
+     * @param {Array} agents list of agents' ids
+     * @return {Array} List of meaningful model permutations
+     */
+    static calculateCModelPermutations(agents){
+    let permutations = []
+    let cmbs = Combinatorics.permutation(agents).toArray();
+    cmbs.forEach(cmb => {
+        let invModel = cmb.reverse().join(" ");
+        
+        if(!permutations.includes(invModel)){
+            permutations.push(cmb.reverse().join(" "));
+        }
+    });
+    return permutations;
+    }
+
+    /**
+     * Combine the agents in different orders to create possible color models
+     * @param {Array} agents list of agents' ids
+     * @return {Array} List of meaningful model permutations
+     */
+    static calculateCModelPermutationSample(agents){
+        let permutations = []
+        // the higher that it goes with n=20 is depth = 4 and samples = 10
+        let p = new PermutationHandler(agents.length,2,10);
+        console.log(p.size())
+        console.log(p.density())
+
+
+        let samples = p.permutations;
+        samples.forEach(sample => {
+            let tempS = sample.split(" ").map(x => agents[x]);
+            let invModel = tempS.reverse().join(" ");
+            
+            if(!permutations.includes(invModel)){
+                permutations.push(tempS.reverse().join(" "));
+            }
+        });
+        return permutations;
+        }
+
     // DATA RECORDER
     static startRecording(val) {
         this.tmpLabels.push('tick');
