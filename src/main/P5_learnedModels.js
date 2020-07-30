@@ -18,7 +18,9 @@ var learnedModels = function (p5) {
   }
 
   loadAgents = function () {
-    learningAgents = world.getLearningAgents();
+    world.permuLoaded.then( a =>{
+      learningAgents = world.getLearningAgents();
+    })
   }
 
   p5.setLastModels = function (time) {
@@ -35,25 +37,27 @@ var learnedModels = function (p5) {
   p5.draw = function () {
     p5.background(250);
     p5.noStroke();
-    let arraySize = learningAgents.length;
-    let margin = 25;
-    let fontSize = 20;
-    let modelHight = (p5.height - (margin * 2) - (margin * arraySize / 4)) / arraySize;
-    let count = 0;
+    world.permuLoaded.then( x =>{
+      let arraySize = learningAgents.length;
+      let margin = 25;
+      let fontSize = 20;
+      let modelHight = (p5.height - (margin * 2) - (margin * arraySize / 4)) / arraySize;
+      let count = 0;
 
-      learningAgents.forEach(learningAgent => {
-        if (lastModel != undefined ){
-          if(lastModel.length > 0){
-            let register = lastModel.find(r =>{return r.id == learningAgent.id});
-            drawModel(register.model, learningAgent, count, fontSize, margin, modelHight);
-          }else{
-            drawModel(learningAgent.cMentalModel, learningAgent, count, fontSize, margin, modelHight);
-          }
-      }else{
-        drawModel(learningAgent.cMentalModel, learningAgent, count, fontSize, margin, modelHight);
-      }
-        count++;
-      });
+        learningAgents.forEach(learningAgent => {
+          if (lastModel != undefined ){
+            if(lastModel.length > 0){
+              let register = lastModel.find(r =>{return r.id == learningAgent.id});
+              drawModel(register.model, learningAgent, count, fontSize, margin, modelHight);
+            }else{
+              drawModel(learningAgent.cMentalModel, learningAgent, count, fontSize, margin, modelHight);
+            }
+        }else{
+          drawModel(learningAgent.cMentalModel, learningAgent, count, fontSize, margin, modelHight);
+        }
+          count++;
+        });
+      })
   }
 
 
@@ -76,5 +80,4 @@ var learnedModels = function (p5) {
     }
   }
 }
-
 vizLearnedModels = new p5(learnedModels, "LearnedModels");

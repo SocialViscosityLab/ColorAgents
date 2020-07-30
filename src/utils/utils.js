@@ -150,6 +150,29 @@ class Utils {
 
 
     /**
+     * Calculate a model's quality based on the reference worlds model
+     * @param {Object} evaluatedModel current featured Model of a learning agents 
+     * @param {Object} referenceModel Common featured Model in the word
+     * @return {Float}  Quality value of the evaluated model based on the common featured model
+     */
+    static calculateModelRealQuality(evaluatedModel){
+        let referenceModel = world.referenceModel;
+        let quality = 0;
+        if(evaluatedModel != { }){
+            for (let c in evaluatedModel) {
+                if(evaluatedModel[c] === referenceModel[c]){
+                quality  += 0.01;
+                }else{
+                    quality -= 0.01;
+                }
+            }
+        }
+        return quality;
+    }
+
+
+
+    /**
      * Combine the agents in different orders to create possible color models
      * @param {Array} agents list of agents' ids
      * @return {Array} List of meaningful model permutations
@@ -174,23 +197,51 @@ class Utils {
      */
     static calculateCModelPermutationSample(agents){
         let permutations = []
-        // the higher that it goes with n=20 is depth = 4 and samples = 10
-        let p = new PermutationHandler(agents.length,2,10);
-        console.log(p.size())
-        console.log(p.density())
+        // Promise
+        var permuProm = new Promise(function (resolve, reject) {
+                let p = new PermutationHandler(agents.length,2,10);
+                let samples = p.permutations;
+                // the higher that it goes with n=20 is depth = 4 and samples = 10
+                console.log(p.size())
+                console.log(p.density())
 
-
-        let samples = p.permutations;
-        samples.forEach(sample => {
-            let tempS = sample.split(" ").map(x => agents[x]);
-            let invModel = tempS.reverse().join(" ");
-            
-            if(!permutations.includes(invModel)){
-                permutations.push(tempS.reverse().join(" "));
-            }
-        });
-        return permutations;
-        }
+                samples.forEach(sample => {
+                    let tempS = sample.split(" ").map(x => agents[x]);
+                    let invModel = tempS.reverse().join(" ");
+                    
+                    if(!permutations.includes(invModel)){
+                        permutations.push(tempS.reverse().join(" "));
+                    }
+                });
+                if (permutations.length > 0){
+                    //console.log(permutations)
+                    resolve(permutations);
+                }else{
+                    var reason = new Error('no permutations');
+                    reject(reason); // reject
+                }
+            });
+        return permuProm;
+    }
+        
+    /**
+     * Combine the agents in different orders to create possible color models
+     * @param {String} agentGroup list of agents' ids
+     * @return {Array} List of model permutations or its promes
+     */
+    static loadPermutations(agentGroup, p5){
+        let permutations = []
+        let permuFileName = 'src/permutations/'+agentGroup+'.json';
+        // Promise
+        var permuProm = new Promise(function (resolve) {
+        
+            p5.loadJSON(permuFileName, data =>{
+                permutations = data
+                resolve(permutations);
+                });
+            });
+        return permuProm;
+    }
 
     // DATA RECORDER
     static startRecording(val) {
@@ -223,4 +274,48 @@ class Utils {
         this.clearRecorder();
         this.returnValues = [];
     }
+
+  // Exports global viscosity to CSV. The file is saved in user's download folder
+  static modelQualityToCSV(fileName, p5){
+    let file = [];
+    // first iterator
+    for (let t = 0; t < metrics.globalQualityData.length; t++) {
+      const qualityRecord = metrics.globalQualityData[t];
+      file.push([t, qualityRecord.qValue,qualityRecord.rqValue]);
+    }
+      p5.save(file, fileName+'_quality.csv');
+  }
+    // Exports global viscosity to CSV. The file is saved in user's download folder
+    static viscosityToCSV(fileName, p5){
+        let file = [];
+        // first iterator
+        let itr = metrics.globalViscosityData.entries();
+        let item = itr.next();
+        while(!item.done){
+          file.push([item.value[0],item.value[1]]);
+          item = itr.next();
+        }
+        p5.save(file, fileName+'_viscosity.csv');
+      }
+
+    
+    // // Exports global viscosity to CSV. The file is saved in user's download folder
+    // static modelQualityToCSV(fileName, p5){
+    //     console.log("Heli")
+    //     let file = []
+    //     // first iterator
+    //     let itr = metrics.globalQualityData.entries();
+    //     let item = itr.next();
+    //     while(!item.done){
+    //         console.log(item)
+    //         file.push([item.value[0],item.value[1]]);
+    //         item = itr.next();
+    //     }
+    //     if (fileName !== undefined){
+    //         p5.save(file, fileName+'.csv');
+    //     }else{
+    //         p5.save(file, 'globalQualityCSV.csv');
+    //     }
+    // }
+
 }

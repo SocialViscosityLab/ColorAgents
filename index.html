@@ -332,7 +332,7 @@
                   </p>
                   <div class="row">
                     <div class="col-sm-8">
-                      <input type="range" min="0" max="2" value="1" id="rate" step="0.1"
+                      <input type="range" min="0.5" max="2" value="1" id="rate" step="0.5"
                         oninput="DOM.updateSliderValue ('learningRate',Number(this.value))">
                       </input>
                     </div>
@@ -352,7 +352,7 @@
                       <p style="font-size:10px; color:grey;">
                         <input type="checkbox" id="setDecreas" > Set learning decreas </input>
                       </p>
-                      <input type="range" min="10" max="100" value="40" id="decreasing" step="10"
+                      <input type="range" min="20" max="100" value="40" id="decreasing" step="20"
                         oninput="DOM.updateSliderValue ('decreasingFactor',Number(this.value))">
                       </input>
                     </div>
@@ -372,7 +372,7 @@
                       <p style="font-size:10px; color:grey;">
                         <input type="checkbox" id="setExploration" > Set exploration </input>
                       </p>
-                      <input type="range" min="10" max="100" value="50" id="exploration" step="10"
+                      <input type="range" min="20" max="100" value="60" id="exploration" step="20"
                         oninput="DOM.updateSliderValue ('explorationFactor',Number(this.value))">
                       </input>
 
@@ -439,6 +439,9 @@
                         <input type="checkbox" id="includeRange"> All rule ranges </input><br>
                         <input type="checkbox" id="includeSensibility"> All sensibility values </input><br>
                         <input type="checkbox" id="includeTolerance"> All tolerance values </input><br>
+                        <input type="checkbox" id="includeLRates"> All learning rates </input><br>
+                        <input type="checkbox" id="includeDecreasing"> All decreasing factors </input><br>
+                        <input type="checkbox" id="includeExploration"> All exploration factors </input><br>
                       </p>
                     </div>
                   </div>
@@ -569,7 +572,7 @@
   <!--button-->
   <div class="col-sm-2">
     <button type="button" data-toggle="collapse" data-target=".multi-collapse2" aria-expanded="false"
-      aria-controls="modelsVisualizationMenu modelLearned modelQualityDescription spacer"><b>Learnerd Models</b></button>
+      aria-controls="modelsVisualizationMenu modelLearned modelQualityDescription spacer"><b>Learned Models</b></button>
   </div>
   <!--menu-->
   <div class="col-sm-3">
@@ -720,6 +723,8 @@
                 <button type="button" id="viscosities_to_JSON"> Each agent's viscosity to JSON</button>
                 <button type="button" id="globalViscosity_to_JSON"> Global viscosity to JSON</button>
                 <button type="button" id="globalViscosity_to_CSV"> Global viscosity to CSV</button>
+                <button type="button" id="interactionMatrix_to_JSON"> Interaction Matix to JSON</button>
+                <button type="button" id="interactionMatrix_to_CSV"> Interaction Matix to CSV</button>                
               </p>
               <hr>
             </div>

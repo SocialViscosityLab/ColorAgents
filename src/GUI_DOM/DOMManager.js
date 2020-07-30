@@ -23,6 +23,9 @@ class DOM {
         DOM.buttons.modelsQuality_to_JSON = document.getElementById("modelsQuality_to_JSON");
         DOM.buttons.globalModelQuality_to_JSON = document.getElementById("globalModelQuality_to_JSON");
         DOM.buttons.globalModelQuality_to_CSV = document.getElementById("globalModelQuality_to_CSV");
+        DOM.buttons.interactionMatrix_to_JSON = document.getElementById("interactionMatrix_to_JSON");
+        DOM.buttons.interactionMatrix_to_CSV = document.getElementById("interactionMatrix_to_CSV");
+        
 
         // Lists
         DOM.lists.cFactory = document.getElementById("cFactory");
@@ -44,9 +47,12 @@ class DOM {
         DOM.checkboxes.sweepRange = document.getElementById("includeRange");
         DOM.checkboxes.sweepSensibility = document.getElementById("includeSensibility");
         DOM.checkboxes.sweepTolerance = document.getElementById("includeTolerance");
+        DOM.checkboxes.sweepLRates = document.getElementById("includeLRates");
+        DOM.checkboxes.sweepDecreasing = document.getElementById("includeDecreasing");
+        DOM.checkboxes.sweepExploration = document.getElementById("includeExploration");
         DOM.checkboxes.sweepDuration = document.getElementById("durationLimit");
-        DOM.checkboxes.sweepDuration = document.getElementById("setDecreas");
-        DOM.checkboxes.sweepDuration = document.getElementById("setExploration");
+        DOM.checkboxes.setDecreas = document.getElementById("setDecreas");
+        DOM.checkboxes.setExploration = document.getElementById("setExploration");
 
         // Labels
         DOM.labels.agentsInWorld = document.getElementById("agentsInWorld");
@@ -144,6 +150,23 @@ class DOM {
         } else {
             param.tolerance = [DOM.sliders.tolerance.value]
         }
+        // learning paramethers
+        if (DOM.checkboxes.sweepLRates.checked) {
+            param.rate = this.getSliderParams('rate')
+        } else {
+            param.rate = [DOM.sliders.rate.value]
+        }
+        if (DOM.checkboxes.sweepDecreasing.checked) {
+            param.decreasing = this.getSliderParams('decreasing')
+        } else {
+            param.decreasing = [DOM.sliders.decreasing.value]
+        }
+        if (DOM.checkboxes.sweepExploration.checked) {
+            param.exploration = this.getSliderParams('exploration')
+        } else {
+            param.exploration = [DOM.sliders.decreasing.value]
+        }
+        
         param.runs = DOM.sliders.runs.value;
         return param;
     }

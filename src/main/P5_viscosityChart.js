@@ -17,27 +17,28 @@ var viscosityChart = function (p5){
 
   p5.draw = function(){
     p5.background(255);
+    world.permuLoaded.then(a =>{
+      if (DOM.checkboxes.showIndividualSeries.checked){
+        //go over all the keys of metrics.viscosityData
+        metrics.agentsViscosityData.forEach((value, agent)=>{
+          series.geomPath(value, "", agent.colorValues.rgb());
+        })
+      }
 
-    if (DOM.checkboxes.showIndividualSeries.checked){
-      //go over all the keys of metrics.viscosityData
-      metrics.agentsViscosityData.forEach((value, agent)=>{
-        series.geomPath(value, "", agent.colorValues.rgb());
-      })
-    }
+      if (DOM.checkboxes.showSeries.checked){
+        series.geomPath(metrics.globalViscosityData,"global",[0,0,0]);
+      }
 
-    if (DOM.checkboxes.showSeries.checked){
-      series.geomPath(metrics.globalViscosityData,"global",[0,0,0]);
-    }
+      // Plot the chart canvas
+      series.canvas();
 
-    // Plot the chart canvas
-    series.canvas();
+      // Set the max value of tickSlider
+      DOM.sliders.ticks.max = series.xAxis.value;
 
-    // Set the max value of tickSlider
-    DOM.sliders.ticks.max = series.xAxis.value;
+      series.geomVLine(DOM.sliders.ticks.value);
 
-    series.geomVLine(DOM.sliders.ticks.value);
-
-    series.geomTextValueAtKey(metrics.globalViscosityData, Number(DOM.sliders.ticks.value));
+      series.geomTextValueAtKey(metrics.globalViscosityData, Number(DOM.sliders.ticks.value));
+    })
   }
 
   // Exports all the agent's viscosities to JSON. The file is saved in user's download folder

@@ -9,7 +9,6 @@ class NewHuman extends Agent{
    * @param {Number} x        the x coordinate on canvas
    * @param {Number} y        the y coordinate on canvas
    * @param {String} index    the color's name of this agent
-   * @param {String} colorPalette the color palette used by this agent
    * @param {[type]} theColor the color values of this agent
    * @param {Number} shortest scalar used by spatial mental model to determine what on canvas how near an agent wants to be from the most similar agent
    * @param {Number} farthest scalar used by spatial mental model to determine what on canvas how far away an agent was to be from the most dissimilar agent
@@ -23,8 +22,7 @@ class NewHuman extends Agent{
 
     /** This agents' spacial Mental Model. This represents the unique way this agent perceives distances in the world*/
     this.sMentalModel = new SpatialMentalModel(shortest, farthest);
-    
-    /** List of possible permutations for a color mental model in the agent's context (includes all the agents) */
+    /** List of possible permutations for a color mentalmodel in the agent's context (including all the agents) */
     this.cModelPermutations = cModelPermutations;
     /** List of possible permutations for a color mental model in the agent's tick (include only the current interactants) */
     this.models;
@@ -55,15 +53,15 @@ class NewHuman extends Agent{
     this.radiusFactor = 10;
 
 
-    // ----> Methaparamethers for learning
+    // ----> Metaparameters for learning
 
     /** The initial learning rate */
     this.a = DOM.sliders.rate.value;
     /** Decreasing factor for the learning rate */
     this.c = DOM.sliders.decreasing.value;
-    /** The optimistic value use for not explore actions */
+    /** The optimistic value to asign to non-explored actions */
     this.rPlus = 1;
-    /** The minimum count of explorations for each model */
+    /** The minimum count of explorations for each model before the agent change to a greedy stategy*/
     this.NE = DOM.sliders.exploration.value;
 
 
@@ -74,9 +72,9 @@ class NewHuman extends Agent{
     /** Keeps record of the expected result, and current the result */
     this.expectedResult = { };
     this.interactantsRegister = { }
-    /** Matrix with the quality of each decision for a specific state */
+    /** List of qualities for each model */
     this.qTable;
-    /** Matrix with the number of times each decision was made for a specific state */
+    /** Matrix with the number of times each model has been explored */
     this.nTable;
     /** Register of the selected models and their ego-quality values */
     this.selectedModels = [];
@@ -197,8 +195,9 @@ interact() {
     //Chose the candidate with the higher value as the current model
     this.currentModelInx = modelCandidates.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1]; //ArgMax form
     this.cMentalModel = this.models[this.currentModelInx].split(" ");
-
-    this.selectedModels.push({model:this.cMentalModel, qValue:this.qTable[this.currentModelInx]})
+    console.log("hey")
+    console.log(this.qTable[this.currentModelInx])
+    this.selectedModels.push({model:this.models[this.currentModelInx], fModel: this.pdModels[this.models[this.currentModelInx]], qValue:this.qTable[this.currentModelInx]})
 
     //  console.log("N-Table")
     //  console.log(this.nTable)

@@ -11,6 +11,9 @@ class World {
     this.observers = [];
     this.ticks = 0;
     this.colors;
+    this.referenceModel;
+    // Boolean to registe if the permutations have been loaded
+    this.permuLoaded = false;
   }
 
   /**

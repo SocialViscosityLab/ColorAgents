@@ -39,7 +39,7 @@ class Metrics {
     // Map with key: agent value: anotherMap with key: time tick, value: Quality
     this.agentsQualityData = new Map();
     // Map with key: time tick, value: quality
-    this.globalQualityData = new Map();
+    this.globalQualityData = [];
   }
 
   /**
@@ -96,10 +96,10 @@ class Metrics {
   let tmp = this.agentsQualityData.get(agent);
   if (!tmp) {
     let tmpInnerMap = new Map();
-    tmpInnerMap.set(world.getTicks(), this.qualityAtFor(world.getTicks(), agent));
+    tmpInnerMap.set(world.getTicks(), [this.qualityAtFor(world.getTicks(), agent)[0],  this.qualityAtFor(world.getTicks(), agent)[1]]);
     this.agentsQualityData.set(agent, tmpInnerMap);
   } else {
-    tmp.set(world.getTicks(), this.qualityAtFor(world.getTicks(), agent));
+    tmp.set(world.getTicks(), this.qualityAtFor(world.getTicks(), agent)[0],  [this.qualityAtFor(world.getTicks(), agent)[1]]);
   }
 }
 
@@ -120,10 +120,15 @@ class Metrics {
   * @return  {Number} global models' quality value at current tick
   */
  recordGlobalQualityData() {
-  let tmp = this.qualityAt(world.getTicks());
+  //this.globalQualityData = []
+  // for (let t = 0; t < world.getTicks(); t++) {
+  this.globalQualityData.push({tick:world.getTicks(), qValue:this.qualityAt(world.getTicks())[0], rqValue: this.qualityAt(world.getTicks())[1]});  
+  // }
+  //let tmpGQ = this.qualityAt(world.getTicks())[0];
+  //let tmpRGQ = this.qualityAt(world.getTicks())[1];
 
-  this.globalQualityData.set(world.getTicks(), tmp);
-  return tmp;
+  //this.globalQualityData.set(world.getTicks(), (tmpGQ, tmpRGQ));
+  return this.globalQualityData;
 }
 
   /**
@@ -240,22 +245,26 @@ class Metrics {
   // Get the innerMap of interactions at given time
   let modelsQuality = this.getModelsAt(time);
   let generalQuality;
+  let generalRealQuality;
   let accumulated = 0;
+  let accumulatedReal = 0;
   try {
     // iterate over each agent
     modelsQuality.forEach(r => {
       accumulated += r.qValue;
+      accumulatedReal += r.rqValue;
     });
 
     // average by agents
     generalQuality = accumulated / modelsQuality.length;
+    generalRealQuality = accumulatedReal / modelsQuality.length;
     
   } catch (error) {
     console.log("Interaction undefined at time " + time);
   }
 
   // return averaged result
-  return generalQuality;
+  return [generalQuality, generalRealQuality];
 }
 
 
@@ -298,7 +307,7 @@ class Metrics {
   let qualityRecord = this.getModelsAt(time);
   let record = qualityRecord.find(r =>{return r.id == agent.id});
   // return quality 
-  return record.qValue;
+  return [record.qValue, record.qrValue];
 }
 
 
@@ -331,6 +340,7 @@ class Metrics {
    * time tick
    */
   getModelsAt(time) {
+    
     let selectedModels = [];
     let lAs = world.getLearningAgents();
     
@@ -339,10 +349,9 @@ class Metrics {
 
       try {
           let modelRecord = lAgent.selectedModels[time];
-          selectedModels.push({id: lAgent.id, qValue: modelRecord.qValue, model: modelRecord.model});
+          selectedModels.push({id: lAgent.id, qValue: modelRecord.qValue, rqValue: Utils.calculateModelRealQuality(modelRecord[fModel]) ,model: modelRecord.model});
         } catch (error) {
-          //console.log("Map collections not initialized at time " + time);
-          selectedModels.push({id: lAgent.id, qValue: lAgent.qTable[lAgent.currentModelInx], model: lAgent.cMentalModel});
+          selectedModels.push({id: lAgent.id, qValue: lAgent.qTable[lAgent.currentModelInx], rqValue: Utils.calculateModelRealQuality(lAgent.pdModels[lAgent.cMentalModel.join(' ')]), model: lAgent.cMentalModel.join(' ')});
         }
         });
     }
