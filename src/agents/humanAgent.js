@@ -89,7 +89,7 @@ class Human extends Agent {
                 // Move
                 // this.move2(nextPos.normalize());
 
-                this.move(nextPos.mag(), this.bearing, leng);
+                this.move(nextPos.mag(), this.bearing, this.stepLengthFactor);
             } else {
                 this.iAmDone = true;
             }

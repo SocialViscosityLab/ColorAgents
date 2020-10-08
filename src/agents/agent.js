@@ -41,7 +41,7 @@ class Agent {
         this.iAmDone = false;
 
         // Dampens the length of move step
-        this.stepLengthFactor = 0.01;
+        this.stepLengthFactor = 0.001;
     }
 
     /**
