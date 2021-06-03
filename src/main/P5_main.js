@@ -1,5 +1,5 @@
 // Global P5 instances
-var mainP5, vizMatrix, viscositySeries, qualitySeries,  vizLearnedModels;
+var mainP5, vizMatrix, viscositySeries, qualitySeries, vizLearnedModels;
 
 // The global variable world
 var world;
@@ -44,7 +44,7 @@ var main = function(p5) {
         });
         DOM.sliders.news.addEventListener('change', () => {
             initialize();
-          });
+        });
         DOM.buttons.trajectories_to_JSON.onclick = trajectoriesToJSON;
         DOM.buttons.trajectories_to_JSON2.onclick = trajectoriesToJSON2;
         DOM.buttons.trajectories_to_CSV.onclick = trajectoriesToCSV;
@@ -81,24 +81,24 @@ var main = function(p5) {
             idsBucket.push(i);
         }
         for (let i = 0; i < NA; i++) {
-            let randomIdx = Math.floor(Math.random()* idsBucket.length);
-            nAgentID.push(idsBucket.splice(randomIdx,1)[0]);
+            let randomIdx = Math.floor(Math.random() * idsBucket.length);
+            nAgentID.push(idsBucket.splice(randomIdx, 1)[0]);
         }
-    
 
-        
-        world.permuLoaded.then(modelPermu =>{
 
-                    // create instances
+
+        world.permuLoaded.then(modelPermu => {
+
+            // create instances
             for (var i = 0; i < colors.length; i++) {
                 let x = Math.floor(Math.random() * p5.width);
                 let y = Math.floor(Math.random() * p5.height);
-                if (nAgentID.includes(i)){
-                    console.log('The learning agents is '+ colors[i].name)
+                if (nAgentID.includes(i)) {
+                    console.log('The learning agents is ' + colors[i].name)
                     var agent = new NewHuman(x, y, colors[i].name, colors[i].chroma, 0, 100, modelPermu);
                     world.referenceModel = agent.getPerceivedColorDistanceFeatures(colors.map(a => a.name))
-                }
-                else {var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
+                } else {
+                    var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
                 }
                 //	agents.push(agent);
                 world.subscribe(agent);
@@ -107,7 +107,7 @@ var main = function(p5) {
                 vAgents.push(new VAgent(p5, agent));
             }
 
-                
+
             Utils.setStartTime();
 
             // setup metrics
@@ -130,20 +130,20 @@ var main = function(p5) {
             DOM.labels.learningAgent.innerHTML = newAgentsName.join(", ");
             DOM.buttons.runSweep.innerHTML = "Start Sweep SImulation";
             DOM.buttons.runSweep.style.backgroundColor = "rgb(162, 209, 162)";
-            
-         });
- 
+
+        });
+
         //Calculation the permutations
         //modelPermu = calculatePermutations()
-        
+
     }
 
     // ***** DRAW ******
     p5.draw = function() {
-        p5.background(250, 250, 250);
+        p5.background(50);
 
-        if(world.permuLoaded){
-           // go over all the agents
+        if (world.permuLoaded) {
+            // go over all the agents
             for (var a = 0; a < vAgents.length; a++) {
 
                 //show agent
@@ -165,7 +165,7 @@ var main = function(p5) {
                 if (DOM.checkboxes.showTrajectories.checked) {
                     vAgents[a].showTrajectory();
                 }
-            } 
+            }
         }
     }
 
@@ -173,7 +173,7 @@ var main = function(p5) {
 
     //Function controlled by guy element that enables or disables the animation
     function runSimulation() {
-        if(world.permuLoaded){
+        if (world.permuLoaded) {
 
             running = !running;
             if (running) {
@@ -299,13 +299,13 @@ var main = function(p5) {
                             }
                             for (let m = 0; m < param.tolerance.length; m++) {
                                 let next4 = param.tolerance[m]
-                                for(let n = 0; n < param.rate.length; n++){
+                                for (let n = 0; n < param.rate.length; n++) {
                                     let next5 = param.rate[n]
-                                    for(let s = 0; s < param.decreasing.length; s++){
+                                    for (let s = 0; s < param.decreasing.length; s++) {
                                         let next6 = param.decreasing[s]
-                                        for(let t = 0; t < param.exploration.length; t++){
+                                        for (let t = 0; t < param.exploration.length; t++) {
                                             let next7 = param.exploration[t]
-                                            // number of repetitions
+                                                // number of repetitions
                                             for (let u = 0; u < param.runs; u++) {
                                                 // Change DOM values for the condition values
                                                 DOM.lists.cFactory.value = next0;
@@ -349,46 +349,46 @@ var main = function(p5) {
     }
 
     function trajectoriesToCSV(label) {
-        if (!label) {
+        if (!label || typeof(label) != "string") {
             label = 'trajectoriesCSV.csv'
         }
         p5.save(Utils.getRecording(), label);
-        console.log("Saved: " + label + " CSV File saved");
+        console.log("Saved: " + label);
     }
 
 
     /**
      * Calculate the permutations for the selected color model
-    */
-   function calculatePermutations(){
-       mPermutations = []
-       let agentsIDs = colors.map(c => c.name);
-       if(colors.length < 10){
-           mPermutations = Utils.calculateCModelPermutations(agentsIDs);
-           mPermutations.sort(function (a, b) { return 0.5 - Math.random() })
-           p5.saveJSON(mPermutations, DOM.lists.cFactory.value);    
-           return mPermutations
-        }else{
-            Utils.calculateCModelPermutationSample(agentsIDs).then(function (permutations) {
+     */
+    function calculatePermutations() {
+        mPermutations = []
+        let agentsIDs = colors.map(c => c.name);
+        if (colors.length < 10) {
+            mPermutations = Utils.calculateCModelPermutations(agentsIDs);
+            mPermutations.sort(function(a, b) { return 0.5 - Math.random() })
+            p5.saveJSON(mPermutations, DOM.lists.cFactory.value);
+            return mPermutations
+        } else {
+            Utils.calculateCModelPermutationSample(agentsIDs).then(function(permutations) {
                 mPermutations = permutations;
                 p5.saveJSON(permutations, DOM.lists.cFactory.value);
                 return mPermutations
-        });
+            });
+        }
+
     }
-    
-}
 
     /**
      * Load local files with the saved permutations
-    */
-   function loadPermutations(){
-       mPermutations = []
-       let permuFileName = 'src/permutations/'+DOM.lists.cFactory.value+'.json';
-       
-       let p = p5.loadJSON(permuFileName, data =>{
-           console.log(data)
-           mPermutations = Object.values(data)
-           return mPermutations
+     */
+    function loadPermutations() {
+        mPermutations = []
+        let permuFileName = 'src/permutations/' + DOM.lists.cFactory.value + '.json';
+
+        let p = p5.loadJSON(permuFileName, data => {
+            console.log(data)
+            mPermutations = Object.values(data)
+            return mPermutations
         });
         return p;
     }

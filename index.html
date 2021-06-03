@@ -7,785 +7,710 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <!-- Enable responsiveness on mobile devices-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <!-- Enable responsiveness on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>Agent-based modeling of color proximity</title>
+    <title>Agent-based modeling of color proximity</title>
 
-  <!-- CSS -->
-  <style>
-    p {
-      font-size: 11px;
-    }
-  </style>
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-  <script src="libs/p5.js" type="text/javascript"></script>
-  <script src="libs/p5.dom.js" type="text/javascript"></script>
-  <script src="libs/chroma.min.js" type="text/javascript"></script>
+    <script src="libs/p5.js" type="text/javascript"></script>
+    <script src="libs/p5.dom.js" type="text/javascript"></script>
+    <script src="libs/chroma.min.js" type="text/javascript"></script>
 
-  <!-- Code -->
-  <script src="src/main/P5_main.js" type="text/javascript"></script>
-  <script src="src/main/P5_heatmap.js" type="text/javascript"></script>
-  <script src="src/main/P5_viscosityChart.js" type="text/javascript"></script>
-  <script src="src/main/P5_learnedModels.js" type="text/javascript"></script>
-  <script src="src/main/P5_modelsQualityChart.js" type="text/javascript"></script>
-  <script src="src/world.js" type="text/javascript"></script>
-  <script src="src/agents/agent.js" type="text/javascript"></script>
-  <script src="src/agents/humanAgent.js" type="text/javascript"></script>
-  <script src="src/agents/newAgent.js" type="text/javascript"></script>
-  <script src="src/agents/nonhumanAgent.js" type="text/javascript"></script>
-  <script src="src/visualAgents/vAgent.js" type="text/javascript"></script>
-  <script src="src/colorFactory.js" type="text/javascript"></script>
+    <!-- Code -->
+    <script src="src/main/P5_main.js" type="text/javascript"></script>
+    <script src="src/main/P5_heatmap.js" type="text/javascript"></script>
+    <script src="src/main/P5_viscosityChart.js" type="text/javascript"></script>
+    <script src="src/main/P5_learnedModels.js" type="text/javascript"></script>
+    <script src="src/main/P5_modelsQualityChart.js" type="text/javascript"></script>
+    <script src="src/world.js" type="text/javascript"></script>
+    <script src="src/agents/agent.js" type="text/javascript"></script>
+    <script src="src/agents/humanAgent.js" type="text/javascript"></script>
+    <script src="src/agents/newAgent.js" type="text/javascript"></script>
+    <script src="src/agents/nonhumanAgent.js" type="text/javascript"></script>
+    <script src="src/visualAgents/vAgent.js" type="text/javascript"></script>
+    <script src="src/colorFactory.js" type="text/javascript"></script>
 
-  <!-- GUI DOM -->
-  <script src="src/GUI_DOM/DOMManager.js" type="text/javascript"></script>
+    <!-- GUI DOM -->
+    <script src="src/GUI_DOM/DOMManager.js" type="text/javascript"></script>
 
-  <!-- Visualization code -->
-  <script src="src/dataViz/interactionMatrixCanvas.js" type="text/javascript"></script>
-  <script src="src/dataViz/lattice.js" type="text/javascript"></script>
-  <script src='src/dataViz/chart.js' type="text/javascript"></script>
+    <!-- Visualization code -->
+    <script src="src/dataViz/interactionMatrixCanvas.js" type="text/javascript"></script>
+    <script src="src/dataViz/lattice.js" type="text/javascript"></script>
+    <script src='src/dataViz/chart.js' type="text/javascript"></script>
 
-  <!-- Utils -->
-  <script src="src/utils/utils.js" type="text/javascript"></script>
-  <script src="src/utils/permutationHandler.js" type="text/javascript"></script>
+    <!-- Utils -->
+    <script src="src/utils/utils.js" type="text/javascript"></script>
+    <script src="src/utils/permutationHandler.js" type="text/javascript"></script>
 
-  <!-- Metrics -->
-  <script src="src/metrics/metrics.js" type="text/javascript"></script>
+    <!-- Metrics -->
+    <script src="src/metrics/metrics.js" type="text/javascript"></script>
 
-  <!-- Mental models -->
-  <script src="src/mentalModels/cMentalModel.js" type="text/javascript"></script>
-  <script src="src/mentalModels/sMentalModel.js" type="text/javascript"></script>
+    <!-- Mental models -->
+    <script src="src/mentalModels/cMentalModel.js" type="text/javascript"></script>
+    <script src="src/mentalModels/sMentalModel.js" type="text/javascript"></script>
 
-  <!-- Laboratory -->
+    <!-- Laboratory -->
 
-  <!-- Libraries -->
-  <script src="libs/chroma.js" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
+    <!-- Libraries -->
+    <script src="libs/chroma.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-combinatorics@0.5"></script>
 
-  <!-- utility library https://lodash.com/-->
-  <!--script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>-->
-  <script src="libs/lodash.min.js" type="text/javascript"></script>
-  <script src="libs/math.min.js" type="text/javascript"></script>
+    <!-- utility library https://lodash.com/-->
+    <!--script src='https://cdn.jsdelivr.net/g/lodash@4(lodash.min.js+lodash.fp.min.js)'></script>-->
+    <script src="libs/lodash.min.js" type="text/javascript"></script>
+    <script src="libs/math.min.js" type="text/javascript"></script>
+
+    <!-- CSS -->
+    <style>
+        p {
+            font-size: 11px;
+        }
+        
+        hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        button {
+            margin-bottom: 1vh;
+        }
+    </style>
 
 </head>
 
 
 <body>
-  <!-- NAVBAR & HEADER -->
-  <div class="container" style="background-color: rgb(31, 31, 31)">
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="navbar-header" style="margin-top:10px">
-          <p style="font-size:12px; color:grey;"> <img class="img-responsive" src="images/D4SVwhite.png" width="160">
-            Design for social viscosity lab. <br> University of Illinois Urbana-Champaign</p>
-        </div>
-      </div>
-      <div class="col-sm-9">
+    <!-- NAVBAR & HEADER -->
+    <div class="container" style="background-color: rgb(31, 31, 31)">
         <div class="row">
-          <ul class="nav navbar-nav" style="font-size:12px; color:grey;">
-            <li><a href="docs/index.html" target="_blank">Documentation</a></li>
-            <li><a href="https://github.com/SocialViscosityLab/ColorAgents" target="_blank">GitHub</a></li>
-          </ul>
+            <div class="col-sm-3">
+                <div class="navbar-header" style="margin-top:10px">
+                    <p style="font-size:12px; color:grey;"> <img class="img-responsive" src="images/D4SVwhite.png" width="160"> Design for social viscosity lab. <br> University of Illinois Urbana-Champaign</p>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="row">
+                    <ul class="nav navbar-nav" style="font-size:12px; color:grey;">
+                        <li><a href="docs/index.html" target="_blank">Documentation</a></li>
+                        <li><a href="https://github.com/SocialViscosityLab/ColorAgents" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <h4 style="color:rgb(255, 255, 255);">Agent-based model of color proximity - Reinforcement learning version </h4>
+                </div>
+            </div>
         </div>
-        <div class="row">
-          <h4 style="color:rgb(255, 255, 255);">Agent-based model of color proximity </h4>
-        </div>
-      </div>
-    </div>
-    <hr>
-  </div>
-
-  <!-- BEGIN CONTENT -->
-  <div class="container">
-    <br>
-    <!--  ***** DESCRIPTION ***** -->
-    <div class="row">
-      <!--button-->
-      <div class="col-sm-2">
-        <button type="button" data-toggle="collapse" data-target="#modelDescription" aria-expanded="true"
-          aria-controls="modelDescription">
-          <b>Model description</b>
-        </button>
-      </div>
+        <hr>
     </div>
 
-    <div class="row">
-      <!--content-->
-      <div class="collapse in" id="modelDescription">
+    <!--  ***** MODEL DESCRIPTION ***** -->
+    <div class="container">
         <br>
-        <div class="col-sm-6">
-          <p style="font-size:14px;">
-            The visual spectrum of light is commonly represented as a linear sequence
-            of hues that resembles the rainbow, starting at red and ending at purple.
 
-            Newton’s generally accepted model for additive color theory --as well
-            as Munsell's model-- connects both ends of the spectrum in a circular color model.
-            This means that purple and red are perceptually closer to each other than
-            to intermediate hues such as green.
-            <br><br>
-            Shepard and Cooper (1992) demonstrated that normally sighted people organize
-            primary hues mirroring such circular model. The agent-based model (ABM)
-            herein is the result of an experiment inspired
-            by Shepard and Cooper methods.
-          </p>
-        </div>
-        <div class="col-sm-6">
-          <p style="font-size:14px;">
-            Eighteen participants were asked
-            to impersonate one out of 18 hues picked from the Munsell's color wheel and
-            choose a random spot in a square room. Their task was to find the location
-            where they feel their hue was near to other's and far away from those with
-            distant hues. After a couple of minutes moving around the room participants organized
-            themselves in the same circular shape observed by Shepard and Cooper's.
-            This ABM model recreates the participants behavior in such experiment
-            and studies the social viscosity mutually exerted as participants tried
-            to accomplish the task.<br><br>
-            See a detailed description of the model <a href="odd/odd.pdf" target="_blank">here in ODD protocol</a>.
-          </p>
-        </div>
-      </div>
-    </div>
-    <hr>
-
-    <!--  ***** SIMULATION MENU ***** -->
-    <div class="row">
-      <!--button-->
-      <div class="col-sm-2">
-        <button type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false"
-          aria-controls="settingsMenu simulationCollapsible"><b>Agent simulation </b></button>
-      </div>
-      <!--menu-->
-      <div class="col-sm-10">
-        <div class="collapse multi-collapse in" id="settingsMenu">
-          <p style="font-size:12px; color:grey;">
-            <button type="button" data-toggle="collapse" data-target="#toolbar" aria-expanded="false"
-              aria-controls="toolbar">Settings</button>
-
-            <button type="button" data-toggle="collapse" data-target="#visibilityBar" aria-expanded="false"
-              aria-controls="visibilityBar">Visibility</button>
-
-            <button type="button" data-toggle="collapse" data-target="#sweepBar" aria-expanded="false"
-              aria-controls="sweepBar">Sweeps</button>
-
-            <button type="button" data-toggle="collapse" data-target="#exportBar" aria-expanded="false"
-              aria-controls="exportBar">Output</button>
-          </p>
-          <hr>
-        </div>
-      </div>
-    </div>
-
-    <!--  ***** SIMULATION ***** -->
-    <div class="row">
-      <div class="collapse multi-collapse in" id="simulationCollapsible">
-        <!-- Settings-->
         <div class="row">
-          <div class="col-sm-2">
-          </div>
 
-          <!-- Settings menu -->
-          <div class="col-sm-10">
-            <div class="collapse in" id="toolbar">
-              <div class="row">
+            <!--button-->
+            <div class="col-sm-2">
+                <button type="button" data-toggle="collapse" data-target="#modelDescription" aria-expanded="true" aria-controls="modelDescription"><b>Model description</b></button>
+            </div>
+        </div>
 
-                <!-- Color Factory -->
+        <div class="row">
+            <!--content-->
+            <div class="collapse in" id="modelDescription">
+                <br>
+                <div class="col-sm-6">
+                    <p style="font-size:14px;">
+                        The visual spectrum of light is commonly represented as a linear sequence of hues that resembles the rainbow, starting at red and ending at purple. Newton’s generally accepted model for additive color theory --as well as Munsell's model-- connects both
+                        ends of the spectrum in a circular color model. This means that purple and red are perceptually closer to each other than to intermediate hues such as green.
+                        <br><br> Shepard and Cooper (1992) demonstrated that normally sighted people organize primary hues mirroring such circular model. The agent-based model (ABM) herein is the result of an experiment inspired by Shepard and Cooper
+                        methods.
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <p style="font-size:14px;">
+                        Eighteen participants were asked to impersonate one out of 18 hues picked from the Munsell's color wheel and choose a random spot in a square room. Their task was to find the location where they feel their hue was near to other's and far away from those
+                        with distant hues. After a couple of minutes moving around the room participants organized themselves in the same circular shape observed by Shepard and Cooper's. This ABM model recreates the participants behavior in such experiment
+                        and studies the social viscosity mutually exerted as participants tried to accomplish the task.<br><br> See a detailed description of the model <a href="odd/odd.pdf" target="_blank">here in ODD protocol</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+    <!-- ***** AGENT SIMULATION ***** -->
+    <div class="container" style="background-color: rgb(220, 220, 220); padding-top: 10px;">
+
+        <!--  Simulation Menu -->
+        <div class="row">
+
+            <!-- Agent simulation section button-->
+            <div class="col-sm-2">
+                <button type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="settingsMenu simulationCollapsible"><b>Agent simulation </b></button>
+            </div>
+
+            <div class="col-sm-10">
+                <!-- <hr> -->
+            </div>
+
+        </div>
+
+        <!--  Simulation Collapsible  -->
+        <div class="collapse multi-collapse in" id="simulationCollapsible">
+            <!-- Agent Settings-->
+            <div class="row">
                 <div class="col-sm-2">
-                  <p style="font-size:10px; color:grey;"><b>Color factory:</b> A factory of predifined color palettes to
-                    be asigned to human agents' mental models</p>
-                  <p style="font-size:10px; color:grey;">
-                    <select id="cFactory" name="colorFactoryGUI">
-                      <option value="test">Triad</option>
-                      <option value="secondary"selected>Secondary</option>
-                      <option value="newton">Newton</option>
-                      <option value='munsell'>Munsell</option>
-                    </select>
-                  </p>
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#toolbar" aria-expanded="false" aria-controls="toolbar">Agents</button>
+                    </div>
                 </div>
 
-                <!-- Interaction rule -->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Interaction rule:</b> How agents choose their interactants from the world</p>
-                  <p style="font-size:10px; color:grey;">
-                    <select id="rule">
+                <!-- Settings menu -->
+                <div class="col-sm-10">
+                    <div class="collapse in" id="toolbar">
+                        <div class="row">
+                            <!-- Color Factory -->
+                            <div class="col-sm-2">
+                                <p style="font-size:10px; color:grey;"><b>Color factory:</b> A factory of predifined color palettes to be asigned to human agents' mental models</p>
+                                <div style="font-size:10px; color:grey;">
+                                    <select id="cFactory" name="colorFactoryGUI">
+                      <option value="test">Triad *</option>
+                      <option value="secondary"selected>Secondary</option>
+                      <option value="newton">Newton *</option>
+                      <option value='munsell'>Munsell</option>
+                    </select>
+                                </div>
+                                <div style="font-size:10px; color:grey; padding-top: 7px;"> * These factories are note enabled for Reinforcement learning </div>
+                            </div>
+
+                            <!-- Interaction rule -->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Interaction rule:</b> How agents choose their interactants from the world</p>
+                                <p style="font-size:10px; color:grey;">
+                                    <select id="rule">
                       <option value="all">all</option>
                       <option value="nClosest" selected>N closest</option>
                       <option value="radius">by radius</option>
                       <option value='byField'>by visual perception field</option>
                     </select>
-                  </p>
+                                </p>
 
-                  <div class="row">
-                    <!-- Slider radius -->
-                    <div class='col-sm-12'>
-                      <p style="font-size:10px; color:grey;">
-                        Set N closest, radius or visual perception field <br>
-                      </p>
-                      <div class="row">
-                        <div class="col-sm-8">
-                          <input type="range" min="0" max="20" value="5" id="range" step="1"
-                            oninput="DOM.updateSliderValue ('sliderValue',Number(this.value))">
-                          </input>
-                        </div>
-                        <p style="font-size:10px; color:grey;"> <span id="sliderValue"> 5 </span></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                                <div class="row">
+                                    <!-- Slider radius -->
+                                    <div class='col-sm-12'>
+                                        <p style="font-size:10px; color:grey;">
+                                            Set N closest, radius or visual perception field <br>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <input type="range" min="0" max="20" value="5" id="range" step="1" oninput="DOM.updateSliderValue ('sliderValue',Number(this.value))">
+                                                </input>
+                                            </div>
+                                            <p style="font-size:10px; color:grey;"> <span id="sliderValue"> 5 </span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <!-- sensibility -->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Sensibility: </b> How agents estimate their proximity to their interactants based on their color
-                    mental
-                    model. Inspired by Stevens' psychophysics (1957).
-                  </p>
-                  <p style="font-size:10px; color:grey;">
-                    <select id="sensibility">
+                            <!-- sensibility -->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Sensibility: </b> How agents estimate their proximity to their interactants based on their color mental model. Inspired by Stevens' psychophysics (1957).
+                                </p>
+                                <p style="font-size:10px; color:grey;">
+                                    <select id="sensibility">
                       <option value="linear">Linear proximity</option>
                       <option value="chordal" selected>Chordal proximity</option>
                       <option value="exponential">Exponential proximity</option>
                     </select>
-                  </p>
-                </div>
+                                </p>
+                            </div>
 
-                <!-- Slider change threshold magnitude -->
-                <div class="col-sm-3">
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <p style="font-size:10px; color:grey;">
-                        <b>Tolerance: </b> The agents' conformity to displacement from expected distances to
-                        interactants<br>
-                        <input type="range" min="0" max="1" value="0.2" id="changeMagnitude" step="0.2"
-                          oninput="DOM.updateSliderValue ('sliderChangeMagnitude',Number(this.value))">
-                        </input>
-                        <span id="sliderChangeMagnitude"> 0.2 </span>
-                      </p>
+                            <!-- Slider change threshold magnitude -->
+                            <div class="col-sm-3">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <p style="font-size:10px; color:grey;">
+                                            <b>Tolerance: </b> The agents' conformity to displacement from expected distances to interactants
+                                            <br>
+                                            <input type="range" min="0" max="1" value="0.2" id="changeMagnitude" step="0.05" oninput="DOM.updateSliderValue ('sliderChangeMagnitude',Number(this.value))">
+                                            </input>
+                                            <span id="sliderChangeMagnitude"> 0.2 </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                    <hr>
                 </div>
-              </div>
-              <hr>
             </div>
-          </div>
-        </div>
 
-        <!-- Visibility settings-->
-        <div class="row">
-          <!-- Visibility settings button-->
-          <div class="col-sm-2">
-          </div>
-          <!-- Visibility menu-->
-          <div class="col-sm-10">
-            <!-- Visibility Buttons -->
-            <div class="collapse" id="visibilityBar">
-              <p style="font-size:10px; color:grey;">
-                <input type="checkbox" id="showAgents" checked> Show agents &nbsp;&nbsp; </input>
-                <input type="checkbox" id="showTrajectories"> Show trajectories &nbsp;&nbsp; </input>
-                <input type="checkbox" id="showInteractions" checked> Show interactions &nbsp;&nbsp; </input>
-                <input type="checkbox" id="showPerceptionField" checked> Show perception field &nbsp;&nbsp; </input>
-              </p>
-              <hr>
-            </div>
-          </div>
-        </div>
-
-
-
-        <!--Learning settings-->
-        <div class="row">
-          <!--Left gap-->
-          <div class="col-sm-2">
-          </div>
-          <!--lab menu-->
-          <div class="col-sm-10">
-            <div class="collapse in" id="LearningBar">
-
-              <div class="row">
-                <!--New agents-->
-                <div class="col-sm-2">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Number of learning Agents: </b> Total number of learning agents in the simulation<br>
-                    <br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-8">
-                      <input type="range" min="1" max="6" value="1" id="news" step="1"
-                        oninput="DOM.updateSliderValue ('learningAgents',Number(this.value))">
-                      </input>
-                    </div>
-                    <p style="font-size:10px; color:grey;"> <span id="learningAgents"> 1 </span></p>
-                  </div>
-                </div>
-
-                <!--Initial Learning rate-->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Learning rate: </b> This paramether reflect how much the learning agents learn for each iteration<br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-8">
-                      <input type="range" min="0.5" max="2" value="1" id="rate" step="0.5"
-                        oninput="DOM.updateSliderValue ('learningRate',Number(this.value))">
-                      </input>
-                    </div>
-                    <p style="font-size:10px; color:grey;"> <span id="learningRate"> 1 </span></p>
-                  </div>
-                </div>
-
-                <!--Decreasing Factor-->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-
-                    <b>Decreasing Factor:</b> The factor used to decreased the learning rate through time. The higher the number, the slower the decreas.
-                    <br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <p style="font-size:10px; color:grey;">
-                        <input type="checkbox" id="setDecreas" > Set learning decreas </input>
-                      </p>
-                      <input type="range" min="20" max="100" value="40" id="decreasing" step="20"
-                        oninput="DOM.updateSliderValue ('decreasingFactor',Number(this.value))">
-                      </input>
-                    </div>
-                    <p style="font-size:10px; color:grey;"> <span id="decreasingFactor"> 40 </span></p>
-                  </div>
-                  </p>
-                </div>
-
-
-                <!--Exploration Factor-->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Exploration Factor: </b> Total number of explorations of a model before it  <br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <p style="font-size:10px; color:grey;">
-                        <input type="checkbox" id="setExploration" > Set exploration </input>
-                      </p>
-                      <input type="range" min="20" max="100" value="60" id="exploration" step="20"
-                        oninput="DOM.updateSliderValue ('explorationFactor',Number(this.value))">
-                      </input>
-
-                      <p style="font-size:10px; color:grey;"> <span id="explorationFactor"> 50 </span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr>
-
-            </div>
-          </div>
-        </div>
-
-
-
-
-
-
-        <!--Lab settings-->
-        <div class="row">
-          <!--Left gap-->
-          <div class="col-sm-2">
-          </div>
-          <!--lab menu-->
-          <div class="col-sm-10">
-            <div class="collapse in" id="sweepBar">
-              
-                <p style="color:indianred"><b>Running a sweep triggers a series of nested runs. For each run a new file is stored in your downloads folder. 
-                  Be sure you are entering the right settings, else your downloads folder would be flodded or your browser might collapse.
-                </b></p>
-
-             
-
-              <div class="row">
-                <!--Repetitions-->
-                <div class="col-sm-2">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Number of repetitions: </b> Total number of repetitions per each condition. Up to 30
-                    repetitions<br>
-                    <br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-8">
-                      <input type="range" min="1" max="30" value="1" id="runs" step="1"
-                        oninput="DOM.updateSliderValue ('repetitions',Number(this.value))">
-                      </input>
-                    </div>
-                    <p style="font-size:10px; color:grey;"> <span id="repetitions"> 1 </span></p>
-                  </div>
-                </div>
-
-                <!--Conditions-->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Conditions: </b> the parameters you want to include in this sweep. Unselected boxes means
-                    it will only use the current choice made in general settings<br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-8">
-                      <p style="font-size:10px; color:grey;">
-                        <input type="checkbox" id="includeCFactory"> All color factory values </input><br>
-                        <input type="checkbox" id="includeRules"> All interaction rules </input><br>
-                        <input type="checkbox" id="includeRange"> All rule ranges </input><br>
-                        <input type="checkbox" id="includeSensibility"> All sensibility values </input><br>
-                        <input type="checkbox" id="includeTolerance"> All tolerance values </input><br>
-                        <input type="checkbox" id="includeLRates"> All learning rates </input><br>
-                        <input type="checkbox" id="includeDecreasing"> All decreasing factors </input><br>
-                        <input type="checkbox" id="includeExploration"> All exploration factors </input><br>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!--Tic length-->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-
-                    <b>Tick length:</b> ellapsed time between each simulation tick. From 10 and 1000 milliseconds
-                    <br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-8">
-                      <input type="range" min="10" max="1000" value="100" id="tickLength" step="10"
-                        oninput="DOM.updateSliderValue ('currentTickLength',Number(this.value))">
-                      </input>
-                    </div>
-                    <p style="font-size:10px; color:grey;"> <span id="currentTickLength"> 100 </span></p>
-                  </div>
-                  </p>
-                </div>
-
-
-                <!--Duration-->
-                <div class="col-sm-3">
-                  <p style="font-size:10px; color:grey;">
-                    <b>Duration: </b> Total number of ticks per each sweep. From 10 to 1000<br>
-                  </p>
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <p style="font-size:10px; color:grey;">
-                        <input type="checkbox" id="durationLimit"> Set duration limit </input>
-                      </p>
-                      <input type="range" min="10" max="1000" value="100" id="duration" step="1"
-                        oninput="DOM.updateSliderValue ('totalTicks',Number(this.value))">
-                      </input>
-
-                      <p style="font-size:10px; color:grey;"> <span id="totalTicks"> 100 </span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <!-- Sweep button-->
-        <div class="row">
-          <!--Left gap-->
-          <div class="col-sm-2">
-          </div>
-          <div class="col-sm-10">
-            <p style="font-size:12px">
-              <button type="button" id="runSweep" style="background-color:rgb(162, 209, 162); font-weight: bold"> Start
-                Sweep Simulation </button>
-              <button type="button" id="resetSweep"> Reset Sweep </button>
-            </p>
-            <hr>
-          </div>
-        </div>
-
-        <!--Export settings-->
-        <div class="row">
-          <!--Left gap-->
-          <div class="col-sm-2">
-          </div>
-          <!--Export menu-->
-          <div class="col-sm-10">
-            <div class="collapse" id="exportBar">
-              <p style="font-size:10px; color:grey;">
-                <button type="button" id="trajectories_to_JSON"> Trajectories to JSON</button>
-                <button type="button" id="trajectories_to_JSON2"> Trajectories to JSON 2</button>
-                <button type="button" id="trajectories_to_CSV"> Trajectories to CSV</button>
-              </p>
-              <hr>
-            </div>
-          </div>
-        </div>
-
-        <!--Simulation row-->
-        <div class='row'>
-          <!-- left gap -->
-          <div class="col-sm-2">
-
-          </div>
-          <!-- Control simulation buttons -->
-          <div class="col-sm-10">
+            <!--Laboratory settings-->
             <div class="row">
-              <div class="col-sm-3">
-                <p style="font-size:12px">
-                  <button type="button" id="run" style="background-color:rgb(162, 209, 162); font-weight: bold"> Start
-                    Simulation </button>
-                  <button type="button" id="reset"> Reset </button>
-                </p>
-              </div>
-              <div class="col-sm-9">
-                <p style="font-size:12px">
-                  Observers in the world: <span id="agentsInWorld"> 0 </span>
-                  &nbsp | &nbsp Humans: <span id="humansInWorld"> 0 </span>
-                  &nbsp | &nbsp Nonhumans: <span id="nonhumansInWorld"> 0 </span>
-                  &nbsp | &nbsp Ticks: <span id="ticksInWorld"> 0 </span>
-                  &nbsp | &nbsp Inverse viscosity: <span id="viscosityInWorld"> 0 </span>
-                  &nbsp | &nbsp Learning Agent: <span id="learningAgent"> 0 </span>
-                </p>
-              </div>
+                <!--Left gap-->
+                <div class="col-sm-2">
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#sweepBar" aria-expanded="false" aria-controls="sweepBar">Laboratory</button>
+                    </div>
+                </div>
+                <!--lab menu-->
+                <div class="col-sm-10">
+                    <div class="collapse" id="sweepBar">
+                        <p style="color:indianred"><b>Running a sweep triggers a series of nested runs. For each run a new file is stored in your downloads folder. Be sure you are entering the right settings, else your downloads folder would be flodded or your browser might collapse.</b></p>
+
+                        <div class="row">
+                            <!--Repetitions-->
+                            <div class="col-sm-2">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Number of repetitions: </b> Total number of repetitions per each condition. Up to 30 repetitions
+                                    <br>
+                                    <br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <input type="range" min="1" max="30" value="1" id="runs" step="1" oninput="DOM.updateSliderValue ('repetitions',Number(this.value))">
+                                        </input>
+                                    </div>
+                                    <p style="font-size:10px; color:grey;"> <span id="repetitions"> 1 </span></p>
+                                </div>
+                            </div>
+
+                            <!--Conditions-->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Conditions: </b> the parameters you want to include in this sweep. Unselected boxes means it will only use the current choice made in general settings<br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <p style="font-size:10px; color:grey;">
+                                            <input type="checkbox" id="includeCFactory"> All color factory values </input><br>
+                                            <input type="checkbox" id="includeRules"> All interaction rules </input><br>
+                                            <input type="checkbox" id="includeRange"> All rule ranges </input><br>
+                                            <input type="checkbox" id="includeSensibility"> All sensibility values </input><br>
+                                            <input type="checkbox" id="includeTolerance"> All tolerance values </input><br>
+                                            <input type="checkbox" id="includeLRates"> All learning rates </input><br>
+                                            <input type="checkbox" id="includeDecreasing"> All decreasing factors </input><br>
+                                            <input type="checkbox" id="includeExploration"> All exploration factors </input><br>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Tic length-->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+
+                                    <b>Tick length:</b> ellapsed time between each simulation tick. From 10 and 1000 milliseconds
+                                    <br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <input type="range" min="10" max="1000" value="100" id="tickLength" step="10" oninput="DOM.updateSliderValue ('currentTickLength',Number(this.value))">
+                                        </input>
+                                    </div>
+                                    <p style="font-size:10px; color:grey;"> <span id="currentTickLength"> 100 </span></p>
+                                </div>
+                                </p>
+                            </div>
+
+
+                            <!--Duration-->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Duration: </b> Total number of ticks per each sweep. From 10 to 1000<br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <p style="font-size:10px; color:grey;">
+                                            <input type="checkbox" id="durationLimit"> Set duration limit </input>
+                                        </p>
+                                        <input type="range" min="10" max="1000" value="100" id="duration" step="1" oninput="DOM.updateSliderValue ('totalTicks',Number(this.value))">
+                                        </input>
+
+                                        <p style="font-size:10px; color:grey;"> <span id="totalTicks"> 100 </span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Sweep button-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p style="font-size:12px; padding-top: 10px;">
+                                    <button type="button" id="runSweep" style="background-color:rgb(162, 209, 162); font-weight: bold"> StartSweep Simulation </button>
+                                    <button type="button" id="resetSweep"> Reset Sweep </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
             </div>
-            <!-- SIMULATION CANVAS -->
-            <div id="ColorAgents" align="center"></div>
-          </div>
+
+            <!--Visualization canvas-->
+            <div class='row'>
+                <!-- left gap -->
+                <div class="col-sm-2">
+
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#visualization" aria-expanded="false" aria-controls="visualization">Visualization</button>
+                    </div>
+
+                </div>
+                <!-- Control simulation buttons -->
+                <div class="col-sm-10">
+                    <div class="collapse in" id="visualization">
+                        <!-- Visibility menu -->
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p style="font-size:12px">
+                                    <button type="button" id="run" style="background-color:rgb(162, 209, 162); font-weight: bold"> Start Simulation </button>
+                                    <button type="button" id="reset"> Reset </button>
+                                </p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p style="font-size:12px">
+                                    Observers in the world: <span id="agentsInWorld"> 0 </span> &nbsp | &nbsp Humans: <span id="humansInWorld"> 0 </span> &nbsp | &nbsp Nonhumans: <span id="nonhumansInWorld"> 0 </span> &nbsp | &nbsp Ticks: <span id="ticksInWorld"> 0 </span>                                    &nbsp | &nbsp Inverse viscosity: <span id="viscosityInWorld"> 0 </span> &nbsp | &nbsp Learning Agent: <span id="learningAgent"> 0 </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- SIMULATION CANVAS -->
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9 text-center">
+                                <div id="ColorAgents"></div>
+                                <div>
+                                    <p style="font-size:10px; color:grey;">
+                                        <input type="checkbox" id="showAgents" checked> Show agents &nbsp;&nbsp; </input>
+                                        <input type="checkbox" id="showTrajectories" checked> Show trajectories &nbsp;&nbsp; </input>
+                                        <input type="checkbox" id="showInteractions" checked> Show interactions &nbsp;&nbsp; </input>
+                                        <input type="checkbox" id="showPerceptionField" checked> Show perception field &nbsp;&nbsp; </input>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9">
+                                <p style="font-size:12px;">Viewing values at tick <span id="sliderChart"> 0 </span></p>
+                                <input type="range" min="0" max="0" value="0" id="ticks" oninput="vizLearnedModels.setLastModels(Number(this.value)); vizMatrix.setLastMatrix(Number(this.value)); DOM.updateSliderValue('sliderChart', Number(this.value))"></input>
+                                <!-- <input type="range" min="0" max="0" value="0" id="ticks" oninput="vizMatrix.setLastMatrix(Number(this.value)); DOM.updateSliderValue('sliderChart', Number(this.value))"></input> -->
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
+            </div>
+
+            <!--Output settings-->
+            <div class="row">
+                <!--Left gap-->
+                <div class="col-sm-2">
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#exportBar" aria-expanded="false" aria-controls="exportBar">Export sim. data</button>
+                    </div>
+                </div>
+                <!--Export menu-->
+                <div class="col-sm-10">
+                    <div class="collapse in" id="exportBar">
+                        <p style="font-size:10px; color:grey;">
+                            <button type="button" id="trajectories_to_JSON"> Trajectories to JSON</button>
+                            <button type="button" id="trajectories_to_JSON2"> Trajectories to JSON 2</button>
+                            <button type="button" id="trajectories_to_CSV"> Trajectories to CSV</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
     <hr>
-<div class="row">
-  <div class="col-sm-10">
-    <p style="font-size:12px">Viewing values at tick <span id="sliderChart"> 0 </span></p>
-    <input type="range" min="0" max="0" value="0" id="ticks" oninput="vizLearnedModels.setLastModels(Number(this.value));
-            vizMatrix.setLastMatrix(Number(this.value));
-            DOM.updateSliderValue('sliderChart', Number(this.value))"></input> 
-  </div>
-</div>
-<hr>
 
+    <!-- ***** LEARNED MODEL QUALITY ***** -->
+    <div class='container' style="background-color: rgb(220, 220, 220); padding-top: 10px;">
 
-<!--  ***** LEARNED MODEL QUALITY ***** -->
-<div class="row">
-  <!--button-->
-  <div class="col-sm-2">
-    <button type="button" data-toggle="collapse" data-target=".multi-collapse2" aria-expanded="false"
-      aria-controls="modelsVisualizationMenu modelLearned modelQualityDescription spacer"><b>Learned Models</b></button>
-  </div>
-  <!--menu-->
-  <div class="col-sm-3">
-    <div class="collapse multi-collapse2 in" id="modelsVisualizationMenu">
-      <p style="font-size:12px; color:grey;">
-        <button type="button" data-toggle="collapse" data-target="#modelsPlotSettings" aria-expanded="false"
-          aria-controls="modelsPlotSettings">Visibility</button>
-        <button type="button" data-toggle="collapse" data-target="#modelQualityOutput" aria-expanded="false"
-          aria-controls="modelQualityOutput">Export data</button>
-      </p>
-    </div>
-  </div>
-  <div class="col-sm-7">
-    <div class="collapse multi-collapse2 in" id="modelQualityDescription">
-      <p style="font-size:12px;">
-        The quality of a learning agent's color mental model is calculated by comparing the
-        expected behavior from the agents that interact with learning agent and contrast it 
-        with the actual behavior from the interactant agents.
-      </p>
-    </div>
-  </div>
-
-  <div class="collapse multi-collapse2 in" id="spacer">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-10">
-      <hr>
-    </div>
-  </div>
-
-</div>
-
-<!--charts-->
-<div class="row">
-  <div class="collapse multi-collapse2 in" id="modelLearned">
-    <div class="row">
-      <div class="col-sm-2">
-      </div>
-      <div class="col-sm-10">
-        <div class="collapse" id="modelsPlotSettings">
-          <p style="font-size:10px; color:grey;">
-            <input type="checkbox" id="showIndividualModels"> Plot Model Quality for each agent &nbsp;&nbsp;</input></p>
-            <input type="checkbox" id="showGeneralModel" checked> Plot the general Model Quality  &nbsp;&nbsp;</input></p>
-          <hr>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-2">
-      </div>
-      <div class="col-sm-10">
-        <div class="collapse" id="modelQualityOutput">
-          <p style="font-size:10px; color:grey;">
-            <button type="button" id="modelsQuality_to_JSON"> Each agent's model quality to JSON</button>
-            <button type="button" id="globalModelQuality_to_JSON"> Global model quality  to JSON</button>
-            <button type="button" id="globalModelQuality_to_CSV"> Global model quality  to CSV</button>
-          </p>
-          <hr>
-        </div>
-      </div>
-    </div>
-
-    <!-- Learning Chart holders -->
-    <div class="row">
-      <div class="col-sm-2">
-      </div>
-      <div class="col-sm-10">
+        <!-- Learning menu -->
         <div class="row">
-          <!-- MODEL LIST -->
-          <div class="col-sm-6">
-            <p style="font-size:12px">Color Mental Models of Learning Agents</p>
-            <div id="LearnedModels"></div>
-          </div>
-
-          <!-- MODEL QUALITY CHART -->
-          <div class="col-sm-6">
-            <p style="font-size:12px">Color Mental Model Quality Chart</p>
-            <div id="QualityChart"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <hr>
-</div>
-
-
-
-    <!--  ***** CHARTS ***** -->
-    <div class="row">
-      <!--button-->
-      <div class="col-sm-2">
-        <button type="button" data-toggle="collapse" data-target=".multi-collapse2" aria-expanded="false"
-          aria-controls="visualizationMenu charts viscosityDescription spacer"><b>Social viscosity </b></button>
-      </div>
-      <!--menu-->
-      <div class="col-sm-3">
-        <div class="collapse multi-collapse2 in" id="visualizationMenu">
-          <p style="font-size:12px; color:grey;">
-            <button type="button" data-toggle="collapse" data-target="#plotSettings" aria-expanded="false"
-              aria-controls="plotSettings">Visibility</button>
-            <button type="button" data-toggle="collapse" data-target="#viscosityOutput" aria-expanded="false"
-              aria-controls="viscosityOutput">Export data</button>
-          </p>
-        </div>
-      </div>
-      <div class="col-sm-7">
-        <div class="collapse multi-collapse2 in" id="viscosityDescription">
-          <p style="font-size:12px;">
-            The viscosity of a social practice is estimated by contrasting
-            the situation each agent "intended to be" with the situation they "ended"
-            after the concurrent execution of actions. The meaning of "situation"
-            encompasses the interactions with the world and its dwellers.
-          </p>
-        </div>
-      </div>
-
-      <div class="collapse multi-collapse2 in" id="spacer">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">
-          <hr>
-        </div>
-      </div>
-
-    </div>
-
-    <!--charts-->
-    <div class="row">
-      <div class="collapse multi-collapse2 in" id="charts">
-        <div class="row">
-          <div class="col-sm-2">
-          </div>
-          <div class="col-sm-10">
-            <div class="collapse" id="plotSettings">
-              <p style="font-size:10px; color:grey;">
-                <input type="checkbox" id="showMatrix" checked> Show interaction matrix &nbsp;&nbsp;</input>
-                <input type="checkbox" id="showSeries" checked> Plot global viscosity &nbsp;&nbsp;</input>
-                <input type="checkbox" id="showIndividualSeries"> Plot viscosity for each agent &nbsp;&nbsp;</input></p>
-              <hr>
+            <div class="col-sm-2">
+                <!-- <button type="button" data-toggle="collapse" data-target=".multi-collapse2" aria-expanded="false" aria-controls="modelsVisualizationMenu modelLearned modelQualityDescription spacer"><b>Learned Models</b></button> -->
+                <button type="button" data-toggle="collapse" data-target="#learningCollapsible" aria-expanded="false" aria-controls="learningCollapsible"><b>Learned Models</b></button>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2">
-          </div>
-          <div class="col-sm-10">
-            <div class="collapse" id="viscosityOutput">
-              <p style="font-size:10px; color:grey;">
-                <button type="button" id="viscosities_to_JSON"> Each agent's viscosity to JSON</button>
-                <button type="button" id="globalViscosity_to_JSON"> Global viscosity to JSON</button>
-                <button type="button" id="globalViscosity_to_CSV"> Global viscosity to CSV</button>
-                <button type="button" id="interactionMatrix_to_JSON"> Interaction Matix to JSON</button>
-                <button type="button" id="interactionMatrix_to_CSV"> Interaction Matix to CSV</button>                
-              </p>
-              <hr>
+            <div class="col-sm-10">
+                <p>
+                    The quality of a learning agent's color mental model is calculated by comparing the expected behavior from the agents that interact with learning agent and contrast it with the actual behavior from the interactant agents.
+                </p>
             </div>
-          </div>
         </div>
 
-        <!-- Chart holders -->
-        <div class="row">
-          <div class="col-sm-2">
-          </div>
-          <div class="col-sm-10">
+        <!--  ***** Simulation Collapsible  ***** -->
+        <div class="collapse in" id="learningCollapsible">
+
+            <!-- Parameters -->
             <div class="row">
-              <!-- MATRIX -->
-              <div class="col-sm-6">
-                <p style="font-size:12px">Interaction matrix</p>
-                <div id="PlotMatrix"></div>
-              </div>
+                <div class="col-sm-2">
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#learningBar" aria-expanded="false" aria-controls="learningBar">Parameters</button>
+                    </div>
+                </div>
 
-              <!-- VISCOSITY CHART -->
-              <div class="col-sm-6">
-                <p style="font-size:12px">Viscosity chart</p>
-                <div id="TimeSeries"></div>
-                <p style="font-size:12px">Viewing charts at tick <span id="sliderChart"> 0 </span></p>
-              </div>
+                <!--lab menu-->
+                <div class="col-sm-10">
+                    <div class="collapse in" id="learningBar">
+                        <div class="row">
+                            <!--New agents-->
+                            <div class="col-sm-2">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Number of learning Agents: </b> Total number of learning agents in the simulation<br>
+                                    <br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <input type="range" min="0" max="6" value="1" id="news" step="1" oninput="DOM.updateSliderValue ('learningAgents',Number(this.value))">
+                                        </input>
+                                    </div>
+                                    <p style="font-size:10px; color:grey;"> <span id="learningAgents"> 1 </span></p>
+                                </div>
+                            </div>
+
+                            <!--Initial Learning rate-->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Learning rate: </b> This paramether reflect how much the learning agents learn for each iteration<br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <input type="range" min="0.5" max="2" value="1" id="rate" step="0.5" oninput="DOM.updateSliderValue ('learningRate',Number(this.value))">
+                                        </input>
+                                    </div>
+                                    <p style="font-size:10px; color:grey;"> <span id="learningRate"> 1 </span></p>
+                                </div>
+                            </div>
+
+                            <!--Decreasing Factor-->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+
+                                    <b>Decreasing Factor:</b> The factor used to decreased the learning rate through time. The higher the number, the slower the decreas.
+                                    <br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <p style="font-size:10px; color:grey;">
+                                            <input type="checkbox" id="setDecreas"> Set learning decreas </input>
+                                        </p>
+                                        <input type="range" min="20" max="100" value="40" id="decreasing" step="20" oninput="DOM.updateSliderValue ('decreasingFactor',Number(this.value))">
+                                        </input>
+                                    </div>
+                                    <p style="font-size:10px; color:grey;"> <span id="decreasingFactor"> 40 </span></p>
+                                </div>
+                                </p>
+                            </div>
+
+
+                            <!--Exploration Factor-->
+                            <div class="col-sm-3">
+                                <p style="font-size:10px; color:grey;">
+                                    <b>Exploration Factor: </b> Total number of explorations of a model before it <br>
+                                </p>
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <p style="font-size:10px; color:grey;">
+                                            <input type="checkbox" id="setExploration"> Set exploration </input>
+                                        </p>
+                                        <input type="range" min="20" max="100" value="60" id="exploration" step="20" oninput="DOM.updateSliderValue ('explorationFactor',Number(this.value))">
+                                        </input>
+
+                                        <p style="font-size:10px; color:grey;"> <span id="explorationFactor"> 50 </span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
             </div>
-          </div>
+
+            <!-- Charts -->
+            <div class="row">
+                <div class="col-sm-2">
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#modelsPlotSettings" aria-expanded="false" aria-controls="modelsPlotSettings">Charts</button>
+                    </div>
+                </div>
+
+                <!--charts-->
+                <div class="col-sm-10">
+                    <div class="collapse in" id="modelsPlotSettings">
+                        <div class="row">
+                            <!-- MODEL LIST -->
+                            <div class="col-sm-5">
+                                <p style="font-size:12px">Color Mental Models of Learning Agent</p>
+                                <div id="LearnedModels"></div>
+                            </div>
+
+                            <!-- MODEL QUALITY CHART -->
+                            <div class="col-sm-6">
+                                <p style="font-size:12px">Color Mental Model Quality Chart</p>
+                                <div id="QualityChart"></div>
+
+                                <!-- menu -->
+                                <p style="font-size:10px; color:grey;">
+                                    <input type="checkbox" id="showIndividualModels"> Plot Model Quality for each agent &nbsp;&nbsp;</input>
+                                    <input type="checkbox" id="showGeneralModel" checked> Plot the general Model Quality &nbsp;&nbsp;</input>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+            <!--Export data-->
+            <div class="row">
+                <div class="col-sm-2">
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#modelQualityOutput" aria-expanded="false" aria-controls="modelQualityOutput">Export learn. data</button>
+                    </div>
+                </div>
+
+                <!--menu-->
+                <div class="col-sm-10">
+                    <div class="collapse" id="modelQualityOutput">
+                        <p style="font-size:10px; color:grey;">
+                            <button type="button" id="modelsQuality_to_JSON"> Each agent's model quality to JSON</button>
+                            <button type="button" id="globalModelQuality_to_JSON"> Global model quality  to JSON</button>
+                            <button type="button" id="globalModelQuality_to_CSV"> Global model quality  to CSV</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <hr>
+    </div>
+    <hr>
+
+    <!-- SOCIAL VISCOSITY -->
+    <div class="container" style="background-color: rgb(220, 220, 220); padding-top: 10px;">
+
+        <!--  ***** CHARTS ***** -->
+        <div class="row">
+            <!--button-->
+            <div class="col-sm-2">
+                <button type="button" data-toggle="collapse" data-target="#viscosityCollapsible" aria-expanded="false" aria-controls="viscosityCollapsible"><b>Social viscosity </b></button>
+            </div>
+            <!--menu-->
+            <div class="col-sm-10">
+                <p style="font-size:12px;">
+                    The viscosity of a social practice is estimated by contrasting the situation each agent "intended to be" with the situation they "ended" after the concurrent execution of actions. The meaning of "situation" encompasses the interactions with the world
+                    and its dwellers.
+                </p>
+
+            </div>
+        </div>
+        <div class="collapsible in" id="viscosityCollapsible">
+
+            <!-- Viscosity charts -->
+            <div class="row">
+                <div class="col-sm-2">
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#plotSettings" aria-expanded="false" aria-controls="plotSettings">Charts</button>
+                    </div>
+                </div>
+
+                <!-- charts -->
+                <div class="col-sm-10">
+                    <div class="collapse in" id="plotSettings">
+                        <div class="row">
+
+                            <!-- MATRIX -->
+                            <div class="col-sm-5">
+                                <p style="font-size:12px">Interaction matrix</p>
+                                <div id="PlotMatrix"></div>
+                            </div>
+
+                            <!-- VISCOSITY CHART -->
+                            <div class="col-sm-6">
+                                <p style="font-size:12px">Viscosity chart</p>
+                                <div id="TimeSeries"></div>
+
+                                <p style="font-size:10px; color:grey;">
+                                    <input type="checkbox" id="showMatrix" checked> Show interaction matrix &nbsp;&nbsp;</input>
+                                    <input type="checkbox" id="showSeries" checked> Plot global viscosity &nbsp;&nbsp;</input>
+                                    <input type="checkbox" id="showIndividualSeries"> Plot viscosity for each agent &nbsp;&nbsp;</input>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+            <!-- EXport data -->
+            <div class="row">
+                <div class="col-sm-2">
+                    <div style="font-size:12px; color:grey; float: right; padding-right: 20%;">
+                        <button type="button" data-toggle="collapse" data-target="#viscosityOutput" aria-expanded="false" aria-controls="viscosityOutput">Export visc. data</button>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <div class="collapse" id="viscosityOutput">
+                        <p style="font-size:10px; color:grey;">
+                            <button type="button" id="viscosities_to_JSON"> Each agent's viscosity to JSON</button>
+                            <button type="button" id="globalViscosity_to_JSON"> Global viscosity to JSON</button>
+                            <button type="button" id="globalViscosity_to_CSV"> Global viscosity to CSV</button>
+                            <button type="button" id="interactionMatrix_to_JSON"> Interaction Matrix to JSON</button>
+                            <button type="button" id="interactionMatrix_to_CSV"> Interaction Matrix to CSV</button>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
     <!-- End of last row-->
-
+    <hr>
 
     <!-- REFERENCES -->
-    <div class="row">
-      <div class="col-sm-12">
-        <p style="font-size:16px;">
-          <b>References</b>
-        </p>
-        <p>Shepard, R., & Cooper, L. (1992). The representation of colors in the blind, color-blind, and normally
-          sighted.
-          Psychological Science, 3(2), 97-113. </p>
-        <p>Stevens, S. S. (1957). On the psychophysical law. Psychological Review, 64(3), 153-181.
-          doi:10.1037/h0046162
-        </p>
-        <p>
-          <a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue </a>,
-          <a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js </a>,
-          <a href="http://p5js.org" target="_blank">P5.js</a>,
-          <a href="http://colormine.org/color-converter" target="_blank">Color converter</a>,
-          <a href="http://handprint.com/LS/CVS/color.html" target="_blank">Color vision theory</a>,
-          <a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a>
-        </p>
+    <div class="container">
 
-        <p style="font-size:11px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self">
+        <div class="row">
+            <div class="col-sm-12">
+                <p style="font-size:16px;">
+                    <b>References</b>
+                </p>
+                <p>Shepard, R., & Cooper, L. (1992). The representation of colors in the blind, color-blind, and normally sighted. Psychological Science, 3(2), 97-113. </p>
+                <p>Stevens, S. S. (1957). On the psychophysical law. Psychological Review, 64(3), 153-181. doi:10.1037/h0046162
+                </p>
+                <p>
+                    <a href="http://tools.medialab.sciences-po.fr/iwanthue/" target="_blank">I Want Hue </a>,
+                    <a href="http://gka.github.io/chroma.js/#color-luminance" target="_blank">chroma.js </a>,
+                    <a href="http://p5js.org" target="_blank">P5.js</a>,
+                    <a href="http://colormine.org/color-converter" target="_blank">Color converter</a>,
+                    <a href="http://handprint.com/LS/CVS/color.html" target="_blank">Color vision theory</a>,
+                    <a href="https://colorusage.arc.nasa.gov" target="_blank"> Color in Information display graphics</a>
+                </p>
+
+                <p style="font-size:11px"> Juan Salamanca 2019 &nbsp | &nbsp Made with <a href="http://P5js.org" target="self">
             P5.js</a>
-        </p>
-      </div>
+                </p>
+            </div>
+        </div>
     </div>
-    <hr>
-  </div>
 </body>
 
 </html>

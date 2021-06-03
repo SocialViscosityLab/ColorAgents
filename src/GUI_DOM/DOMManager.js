@@ -1,6 +1,6 @@
 /**
  * This static class manages all the GUI elements displayed in the browser and serves as an interface between the DOM and the JavaScript code.
-*/
+ */
 
 class DOM {
     // This constructor is not needed, but it is here because the documentation generatior requires it to format the documentation
@@ -25,7 +25,7 @@ class DOM {
         DOM.buttons.globalModelQuality_to_CSV = document.getElementById("globalModelQuality_to_CSV");
         DOM.buttons.interactionMatrix_to_JSON = document.getElementById("interactionMatrix_to_JSON");
         DOM.buttons.interactionMatrix_to_CSV = document.getElementById("interactionMatrix_to_CSV");
-        
+
 
         // Lists
         DOM.lists.cFactory = document.getElementById("cFactory");
@@ -166,7 +166,7 @@ class DOM {
         } else {
             param.exploration = [DOM.sliders.decreasing.value]
         }
-        
+
         param.runs = DOM.sliders.runs.value;
         return param;
     }
