@@ -8,7 +8,7 @@ class DOM {
 
     /** Initializes all the GUI elements ceated in the DOM
      */
-    static initialize = function() {
+    static initialize() {
         // Buttons 
         DOM.buttons.run = document.getElementById("run");
         DOM.buttons.reset = document.getElementById("reset");
@@ -81,7 +81,7 @@ class DOM {
      * @param {string} sliderName
      * @param {number} value
      */
-    static updateSliderValue = function(sliderName, value) {
+    static updateSliderValue(sliderName, value) {
         document.getElementById(sliderName).innerHTML = value;
     }
 
@@ -89,7 +89,7 @@ class DOM {
      * @param {string} listKey The name of the list whose options will be retrieved
      * @return {Array} The collection of options
      */
-    static getListOptions = function(listKey) {
+    static getListOptions(listKey) {
         let rtn = []
         for (let [key, value] of Object.entries(DOM.lists)) {
             if (key === listKey) {
@@ -107,7 +107,7 @@ class DOM {
      * @param {string} sliderKey The name of the slider whose parameters will be retrieved
      * @return {Array} The collection of values
      */
-    static getSliderParams = function(sliderKey) {
+    static getSliderParams(sliderKey) {
         for (let [key, value] of Object.entries(DOM.sliders)) {
             if (key === sliderKey) {
                 let tmp = [];
