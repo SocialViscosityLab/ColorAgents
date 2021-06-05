@@ -158,7 +158,7 @@ class Agent {
 
         //****** ESTO ES UNA CHAMBONADA *******/
         /** SE DEBE REVISAR COMO SE CALCULA LA LONGITUD DEL PASO PARA
-         * CONPENSAR LA SUMA DE VECTORES HECHA EN newAgent.js: calculateStep().
+         * COMPENSAR LA SUMA DE VECTORES HECHA EN newAgent.js: calculateStep().
          */
         let mappedStep = mainP5.map(dist, 0, 200, 0, stepLengthFactor * 100)
 
