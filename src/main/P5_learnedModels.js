@@ -73,14 +73,9 @@ var learnedModels = function(p5) {
             let x = p5.width / 2;
             let y = p5.height / (2 * learningAgents.length);
             let center = p5.createVector(x, y + (y * 2 * idx));
-            let diam = (p5.height - 150) / (2 * learningAgents.length);
+            let diam = (100 / learningAgents.length) + (p5.height / (2 * learningAgents.length));
             let angle = p5.TWO_PI / model.length;
 
-            // color name
-            p5.fill(learningAgent.colorValues.rgb());
-            p5.textSize(fontSize);
-            p5.textAlign(p5.CENTER, p5.CENTER)
-            p5.text(learningAgent.id, center.x, center.y);
 
             for (let c = 0; c < model.length; c++) {
                 if ((model[c] != "blanc")) {
@@ -96,10 +91,25 @@ var learnedModels = function(p5) {
 
                     let xPos = Math.cos(c * angle) * diam;
                     let yPos = Math.sin(c * angle) * diam;
-                    p5.ellipse(center.x + xPos, center.y + yPos, 30, 30)
-
+                    //p5.ellipse(center.x + xPos, center.y + yPos, 30, 30);
+                    p5.stroke(220);
+                    p5.strokeWeight(10);
+                    p5.arc(center.x, center.y, diam, diam, c * angle, (c + 1) * angle, p5.PIE);
                 }
             }
+
+            // color name
+            p5.fill(220);
+            p5.stroke(220)
+            p5.strokeWeight(5);
+            p5.ellipse(center.x, center.y, diam - 60, diam - 60)
+            p5.fill(learningAgent.colorValues.rgb());
+            p5.ellipse(center.x, center.y, 60, 60)
+            p5.noStroke()
+            p5.fill(0)
+            p5.textSize(fontSize);
+            p5.textAlign(p5.CENTER, p5.CENTER)
+            p5.text(learningAgent.id, center.x, center.y);
         }
     }
 }
