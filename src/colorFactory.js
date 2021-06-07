@@ -5,7 +5,7 @@ class ColorFactory {
 
     /**
      * Constructor
-     * @param {String} cSpace The name of color palette from the menu of available palettes: RGB, MUNSELL, SECONDARY, BINARY TEST
+     * @param {String} cSpace The name of color palette from the menu of available palettes in HTML interface
      */
     constructor(cSpace) {
         this.colors = [];
