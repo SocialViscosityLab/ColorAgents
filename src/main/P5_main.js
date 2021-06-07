@@ -36,14 +36,14 @@ var main = function(p5) {
         // set GUI elements
         DOM.initialize();
         DOM.buttons.run.onclick = runSimulation;
-        DOM.buttons.reset.onclick = initialize;
+        DOM.buttons.reset.onclick = function() {initialize(DOM.lists.cFactory.value)};
         DOM.buttons.runSweep.onclick = runSweep;
-        DOM.buttons.resetSweep.onclick = initialize;
+        DOM.buttons.resetSweep.onclick = function(){initialize(DOM.lists.cFactory.value)};
         DOM.lists.cFactory.addEventListener('change', () => {
-            initialize();
+            initialize(DOM.lists.cFactory.value);
         });
         DOM.sliders.news.addEventListener('change', () => {
-            initialize();
+            initialize(DOM.lists.cFactory.value);
         });
         DOM.buttons.trajectories_to_JSON.onclick = trajectoriesToJSON;
         DOM.buttons.trajectories_to_JSON2.onclick = trajectoriesToJSON2;
@@ -59,10 +59,16 @@ var main = function(p5) {
 
     }
 
-    function initialize() {
+    function initialize(colorPaletteString) {
         // Instantiate all the colors
-        var cFactory = new ColorFactory(DOM.lists.cFactory.value);
-        world.permuLoaded = Utils.loadPermutations(DOM.lists.cFactory.value, p5)
+        if(colorPaletteString == 'munsellSplitPopulation'){
+            var cFactory = new ColorFactory('munsell');
+            world.permuLoaded = Utils.loadPermutations('munsell', p5)
+    
+        }else{
+            var cFactory = new ColorFactory(colorPaletteString);
+            world.permuLoaded = Utils.loadPermutations(colorPaletteString, p5)    
+        }
 
         // Retrieve al the colors
         var colors = cFactory.getAll();
@@ -98,7 +104,16 @@ var main = function(p5) {
                     var agent = new NewHuman(x, y, colors[i].name, colors[i].chroma, 0, 100, modelPermu);
                     world.referenceModel = agent.getPerceivedColorDistanceFeatures(colors.map(a => a.name))
                 } else {
-                    var agent = new Human(x, y, colors[i].name, colors[i].chroma, DOM.lists.cFactory.value, 0, 100);
+                    if(colorPaletteString == 'munsellSplitPopulation'){
+                        if(i%2== 0){
+                            var agent = new Human(x, y, colors[i].name, colors[i].chroma, 'munsell', 0, 100);
+                        }else{
+                            var agent = new Human(x, y, colors[i].name, colors[i].chroma, 'munsellAlternated', 0, 100);
+                        }
+                    }
+                    else{
+                        var agent = new Human(x, y, colors[i].name, colors[i].chroma, colorPaletteString, 0, 100);
+                    }
                 }
                 //	agents.push(agent);
                 world.subscribe(agent);

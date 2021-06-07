@@ -160,12 +160,12 @@ class Agent {
         /** SE DEBE REVISAR COMO SE CALCULA LA LONGITUD DEL PASO PARA
          * COMPENSAR LA SUMA DE VECTORES HECHA EN newAgent.js: calculateStep().
          */
-        let mappedStep = mainP5.map(dist, 0, 200, 0, stepLengthFactor * 100)
+        // let mappedStep = mainP5.map(dist, 0, 200, 0, stepLengthFactor * 100)
 
         // Get step in x
-        var stepX = Math.cos(angle) * mappedStep; //dist * stepLengthFactor;
+        var stepX = Math.cos(angle) * dist * stepLengthFactor;
         // Get step in y
-        var stepY = Math.sin(angle) * mappedStep; //dist * stepLengthFactor;
+        var stepY = Math.sin(angle) * dist * stepLengthFactor;
         // move forward in x & y
         this.pos.x += stepX;
         this.pos.y += stepY;
