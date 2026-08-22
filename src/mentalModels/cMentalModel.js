@@ -17,7 +17,7 @@ class ColorMentalModel {
             cFactory = new ColorFactory(colorPalette);
         } else {
             // Instantiate all the colors
-            cFactory = new ColorFactory('newton');
+            cFactory = new ColorFactory('secondary');
         }
         // The color palette retrieved from the color Factory. By default it retrieves all the colors
         this.colorPalette = cFactory.getAll();

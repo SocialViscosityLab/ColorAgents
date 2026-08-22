@@ -82,14 +82,10 @@ class Human extends Agent {
 
             // Verfiy if the change is worth to execute the movement
             if (nextPos.mag() > Number(magnitudeThreshold)) {
-
                 this.bearing = nextPos.heading();
-
                 this.iAmDone = false;
                 // Move
-                // this.move2(nextPos.normalize());
-
-                this.move(nextPos.mag(), this.bearing, this.stepLengthFactor);
+                this.move(nextPos.mag(),nextPos.heading(), this.stepLengthFactor);
             } else {
                 this.iAmDone = true;
             }
@@ -114,7 +110,6 @@ class Human extends Agent {
 
             // Use the mental model to calculate the perceived distance to each interactant
             let perceivedColorDistance = this.cMentalModel.getPerceivedColorDistance(i.colorValues);
-
             /*
 			There are spatial distances between this agent's location and the interactants'
 			locations. Such distances may not correspond to this agent's perceived color

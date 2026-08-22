@@ -1,5 +1,5 @@
 
-class Lattice{
+export class Lattice{
   constructor(rowLables, colLabels, cellSize){
     this.xLables = this.setColCoords(colLabels, cellSize);
     this.yLables = this.setRowCoords(rowLables, cellSize);

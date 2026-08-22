@@ -40,8 +40,8 @@ class Agent {
         world in relation to ALL its interactants. It is used to control when this agents stops or resumes interactions*/
         this.iAmDone = false;
 
-        // Dampens the length of move step
-        this.stepLengthFactor = 0.001;
+        //Factor of movement for viscosity
+        this.stepLengthFactor = 0.01;
     }
 
     /**
@@ -86,7 +86,7 @@ class Agent {
      * @return {Boolean}         [description]
      */
     isHumanInteractant(element) {
-        return (element.interactant == true && element.agent instanceof Human);
+        return (element.interactant == true && (element.agent instanceof Human || element.agent instanceof NewHuman));
     }
 
     /**
@@ -155,6 +155,13 @@ class Agent {
     @param  angle the direction of this movement
     */
     move(dist, angle, stepLengthFactor) {
+
+        //****** ESTO ES UNA CHAMBONADA *******/
+        /** SE DEBE REVISAR COMO SE CALCULA LA LONGITUD DEL PASO PARA
+         * COMPENSAR LA SUMA DE VECTORES HECHA EN newAgent.js: calculateStep().
+         */
+        //let mappedStep = mainP5.map(dist, 0, 200, 0, stepLengthFactor * 100)
+
         // Get step in x
         var stepX = Math.cos(angle) * dist * stepLengthFactor;
         // Get step in y
