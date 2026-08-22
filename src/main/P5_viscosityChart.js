@@ -1,4 +1,6 @@
-var viscosityChart = function(p5) {
+import {Chart} from '../dataViz/chart.js';
+
+export var viscosityChart = function(p5) {
     // The chart object
     let series;
 
@@ -11,7 +13,7 @@ var viscosityChart = function(p5) {
         DOM.buttons.globalViscosity_to_CSV.onclick = globalViscosityToCSV;
     }
 
-    showIndividualSeries = function() {
+    function showIndividualSeries() {
         showIndividualSeries = !showIndividualSeries;
     }
 

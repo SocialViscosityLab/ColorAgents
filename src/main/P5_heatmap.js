@@ -1,4 +1,6 @@
-var heatMap = function(p5) {
+import { InteractionMatrixCanvas } from '../dataViz/interactionMatrixCanvas.js';
+
+export var heatMap = function(p5) {
 
     let vizMatrixCanvas;
     //let showIntlastMatrix = true;
@@ -24,7 +26,7 @@ var heatMap = function(p5) {
 
     }
 
-    initialize = function() {
+    function initialize () {
         // Reset matrix visualizer
         world.permuLoaded.then(a => {
             vizMatrixCanvas = new InteractionMatrixCanvas(p5, world);

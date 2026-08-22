@@ -1,10 +1,12 @@
+
+import {Lattice} from './lattice.js';
 /**
  * This class serves to visualize interactions between agents in the form of a heatmap.
  * For each intersection of the underlying matrix, it shows two trianges: the lightness of
  * lower triangle shows the target distance estimated by the agent in the row. The
  * lightness of upper triangle shows the current distance.
  */
-class InteractionMatrixCanvas {
+export class InteractionMatrixCanvas {
     /**
      * Constructor
      * @param {P5} p5    An instance of P5.js
@@ -170,3 +172,5 @@ class InteractionMatrixCanvas {
         return labels
     }
 }
+
+export default InteractionMatrixCanvas;
