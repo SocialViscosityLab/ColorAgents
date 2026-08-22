@@ -1,4 +1,6 @@
 // Global P5 instances
+console.log("This is the main P5 instance. Updated on August 2026");
+
 var mainP5, vizMatrix, viscositySeries, qualitySeries, vizLearnedModels;
 
 // The global variable world
