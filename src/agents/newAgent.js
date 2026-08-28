@@ -164,6 +164,7 @@ class NewHuman extends Agent {
         //If there is already a expected result from the agent
         if (this.cMentalModel.length > 0 && state == this.prevState) {
             let result = this.getResult(smplInteractants);
+         
             //Calculate the reward based on the diference from the expectation to the actual result
             rewards = this.calculateInferedReward(result);
         }
@@ -212,6 +213,7 @@ class NewHuman extends Agent {
      */
     getAbstractState(interactants) {
         let state = interactants.map(i => i.agent.id);
+
         let smplInteractants = {}
         state.sort();
 
@@ -380,6 +382,7 @@ class NewHuman extends Agent {
      * @return {Number} The value between 0 and 1, where 1 is the farthest perceived distance
      */
     getPerceivedColorDistance(targetColor) {
+
         let indexA = this.cMentalModel.indexOf(this.id)
         let indexB = this.cMentalModel.indexOf(targetColor);
 

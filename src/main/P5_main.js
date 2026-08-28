@@ -1,6 +1,4 @@
 // Global P5 instances
-console.log("This is the main P5 instance. Updated on August 2026");
-
 var mainP5, vizMatrix, viscositySeries, qualitySeries, vizLearnedModels;
 
 // The global variable world
@@ -130,7 +128,7 @@ var main = function(p5) {
             DOM.labels.nonhumansInWorld.innerHTML = world.getNonhumans().length;
             let newAgentsName = world.getLearningAgents().map(a => a.id)
             DOM.labels.learningAgent.innerHTML = newAgentsName.join(", ");
-            DOM.buttons.runSweep.innerHTML = "Start Sweep SImulation";
+            DOM.buttons.runSweep.innerHTML = "Start Sweep Simulation";
             DOM.buttons.runSweep.style.backgroundColor = "rgb(162, 209, 162)";
 
         });

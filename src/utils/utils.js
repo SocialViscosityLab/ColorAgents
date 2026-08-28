@@ -178,6 +178,7 @@ class Utils {
      * @return {Array} List of meaningful model permutations
      */
     static calculateCModelPermutations(agents) {
+
         let permutations = []
         let cmbs = Combinatorics.permutation(agents).toArray();
         cmbs.forEach(cmb => {

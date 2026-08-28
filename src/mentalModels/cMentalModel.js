@@ -195,4 +195,14 @@ class ColorMentalModel {
     updateSensibility(value) {
         this.sensibility = value;
     }
+
+    /**
+     * Returns the names of the colors in this mental model's palette.
+     * @return {Array} The color names in palette order
+     */
+    getColorNames() {
+        return this.colorPalette.map(color => color.name);
+    }
+
+    
 }
