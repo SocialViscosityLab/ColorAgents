@@ -306,7 +306,7 @@ class Metrics {
         let qualityRecord = this.getModelsAt(time);
         let record = qualityRecord.find(r => { return r.id == agent.id });
         // return quality 
-        return [record.qValue, record.qrValue];
+        return [record.qValue, record.rqValue];
     }
 
 

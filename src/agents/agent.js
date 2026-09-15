@@ -137,7 +137,7 @@ class Agent {
     }
 
     /**
-     * The observer notify() function renamed as updateMyWorld. Instances of this class observe an instance of the world class
+     * The observer notify() function renamed as updateMyWorld. Instances of this class observe an instance of the World class
      * https://pawelgrzybek.com/the-observer-pattern-in-javascript-explained/
      */
     updateMyWorld(world) {
